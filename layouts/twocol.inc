@@ -10,7 +10,7 @@ function panels_twocol_panels_layouts() {
     'icon' => 'layouts/twocol.png',
     'theme' => 'panels_twocol',
     'css' => 'layouts/twocol.css',
-    'content areas' => array('left' => t('Left side'), 'right' => t('Right side')),
+    'panels' => array('left' => t('Left side'), 'right' => t('Right side')),
   );
 
   return $items;

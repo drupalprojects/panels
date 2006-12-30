@@ -11,7 +11,7 @@ function panels_twocol_stacked_panels_layouts() {
     'icon' => 'layouts/twocol_stacked.png',
     'theme' => 'panels_twocol_stacked',
     'css' => 'layouts/twocol_stacked.css',
-    'content areas' => array('top' => t('Top'), 'left' => t('Left side'), 'right' => t('Right side'), 'bottom' => t('Bottom')),
+    'panels' => array('top' => t('Top'), 'left' => t('Left side'), 'right' => t('Right side'), 'bottom' => t('Bottom')),
   );
 
   return $items;

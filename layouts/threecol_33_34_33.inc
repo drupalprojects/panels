@@ -10,7 +10,7 @@ function panels_threecol_33_34_33_panels_layouts() {
     'icon' => 'layouts/threecol_33_34_33.png',
     'theme' => 'panels_threecol_33_34_33',
     'css' => 'layouts/threecol_33_34_33.css',
-    'content areas' => array('left' => t('Left side'), 'middle' => t('Middle column'), 'right' => t('Right side')),
+    'panels' => array('left' => t('Left side'), 'middle' => t('Middle column'), 'right' => t('Right side')),
   );
 
   return $items;

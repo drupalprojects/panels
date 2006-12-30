@@ -11,7 +11,7 @@ function panels_threecol_25_50_25_stacked_panels_layouts() {
     'icon' => 'layouts/threecol_25_50_25_stacked.png',
     'theme' => 'panels_threecol_25_50_25_stacked',
     'css' => 'layouts/threecol_25_50_25_stacked.css',
-    'content areas' => array('top' => t('Top'), 'left' => t('Left side'), 'middle' => t('Middle column'), 'right' => t('Right side'), 'bottom' => t('Bottom')),
+    'panels' => array('top' => t('Top'), 'left' => t('Left side'), 'middle' => t('Middle column'), 'right' => t('Right side'), 'bottom' => t('Bottom')),
   );
 
   return $items;

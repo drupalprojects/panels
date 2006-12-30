@@ -1,5 +1,6 @@
 ; $Id$
 name = Panels
-description = Create pages that are divided into areas of the page.
-version = 1.1
+description = Core Panels display functions; provides no external UI, at least one other module (such as Panel pages) should be enabled.
+version = "$Name$"
+package = "Panels"
 
