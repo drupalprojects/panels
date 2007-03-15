@@ -640,6 +640,7 @@ function panels_load_panels($did) {
   if (!$panels) {
     return NULL;
   }
+  $panels->content = array();
   $result = db_query("SELECT * FROM {panels_area} WHERE did = %d ORDER BY area, position", $did);
   while ($area = db_fetch_object($result)) {
     $area->configuration = unserialize($area->configuration);
