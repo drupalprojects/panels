@@ -397,7 +397,7 @@ function panels_edit_form($panels) {
     $order = unserialize($form['content'][$area]['order']['#value']);
     if ($add->area == $area) {
       // say THIS 5 times real fast
-      if ($panels->content[$area]) {
+      if ($panels->content[$area] && $order) {
         $position = max(max(array_keys($order)), max(array_keys($panels->content[$area]))) + 1;
       }
       else if ($order) {
