@@ -290,7 +290,10 @@ function panels_edit_form($panels) {
     '#description' => t('Select an area to add content to, then select a type of content and click the appropriate button. The content will be added.'),
   );
 
-  $default_radio = array_shift(array_keys($layout['content areas']));
+  // Drop the array keys into a temporary in order to protect references.
+  $temp = array_keys($layout['content areas']);
+  $default_radio = array_shift($temp);
+
   $form['add']['area'] = array(
     '#type' => 'radios',
     '#title' => t('Area'),
