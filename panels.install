@@ -36,6 +36,20 @@ EOT
 }
 
 /**
+ * Uninstall the panels tables
+ */
+function panels_uninstall() {
+  switch ($GLOBALS['db_type']) {
+    case 'pgsql':
+    case 'mysql':
+    case 'mysqli':
+    default:
+      db_query("DROP TABLE {panels_info}");
+      db_query("DROP TABLE {panels_area}");
+  }
+}
+
+/**
  * Update the tables to UTF-8
  */
 function panels_update_1() {
