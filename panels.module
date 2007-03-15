@@ -215,7 +215,7 @@ function panels_delete_confirm($did = '') {
 function panels_delete_confirm_submit($formid, $form) {
   if ($form['confirm']) {
     panels_delete_panels((object) $form);
-    drupal_goto('admin/build/panels');
+    return 'admin/build/panels';
   }
 }
 
