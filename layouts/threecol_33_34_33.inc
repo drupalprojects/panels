@@ -28,15 +28,15 @@ function theme_panels_threecol_33_34_33($id, $content) {
   $output = <<<EOT
 <div class="panel-3col-33" $idstr>
   <div class="panel-col-first">
-    <div>$content[left]</div>
+    <div class="inside">$content[left]</div>
   </div>
 
   <div class="panel-col">
-    <div>$content[middle]</div>
+    <div class="inside">$content[middle]</div>
   </div>
 
   <div class="panel-col-last">
-    <div>$content[right]</div>
+    <div class="inside">$content[right]</div>
   </div>
 </div>
 <br class="panel-clearer" />

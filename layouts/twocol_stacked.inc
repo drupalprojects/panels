@@ -29,17 +29,17 @@ function theme_panels_twocol_stacked($id, $content) {
   $output = <<<EOT
 <div class="panel-2col-stacked" $idstr>
   <div class="panel-col-top">
-    <div>$content[top]</div>
+    <div class="inside">$content[top]</div>
   </div>
   <div class="panel-col-first">
-    <div>$content[left]</div>
+    <div class="inside">$content[left]</div>
   </div>
 
   <div class="panel-col-last">
-    <div>$content[right]</div>
+    <div class="inside">$content[right]</div>
   </div>
   <div class="panel-col-bottom">
-    <div>$content[bottom]</div>
+    <div class="inside">$content[bottom]</div>
   </div>
 </div>
 <br class="panel-clearer" />
