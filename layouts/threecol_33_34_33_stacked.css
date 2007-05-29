@@ -11,7 +11,7 @@
 }
 
 .panel-3col-33-stacked .panel-col-top .inside {
-  margin-bottom: .5em;
+  margin-bottom: 1em;
 }
 
 .panel-3col-33-stacked .panel-col-first { 
@@ -19,8 +19,8 @@
   width: 33%; 
 }
 
-.panel-3col-33-stacked .panel-col .inside { 
-  margin: 0 .5em 1em .5em;
+.panel-3col-33-stacked .panel-col-first .inside { 
+  margin: 0 .5em 1em .0;
 }
 
 .panel-3col-33-stacked .panel-col { 
