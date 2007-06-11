@@ -31,12 +31,14 @@ function theme_panels_twocol_stacked($id, $content) {
   <div class="panel-col-top">
     <div class="inside">$content[top]</div>
   </div>
-  <div class="panel-col-first">
-    <div class="inside">$content[left]</div>
-  </div>
+  <div class="center-wrapper">
+    <div class="panel-col-first">
+      <div class="inside">$content[left]</div>
+    </div>
 
-  <div class="panel-col-last">
-    <div class="inside">$content[right]</div>
+    <div class="panel-col-last">
+      <div class="inside">$content[right]</div>
+    </div>
   </div>
   <div class="panel-col-bottom">
     <div class="inside">$content[bottom]</div>
