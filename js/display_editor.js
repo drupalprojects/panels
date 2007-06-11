@@ -1,3 +1,9 @@
+// $Id$
+/**
+ * @file display_editor.js 
+ *
+ * Contains the javascript for the Panels display editor.
+ */
 
 Drupal.Panels = {};
 
