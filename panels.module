@@ -421,6 +421,8 @@ function panels_change_layout(&$form, $display, $new_layout_id) {
 
   $form['old'] = array(
     '#tree' => true,
+    '#prefix' => '<div class="panels-layout-list">',
+    '#suffix' => '</div>',
   );
 
   foreach ($display->panels as $id => $content) {
