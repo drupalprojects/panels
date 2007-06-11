@@ -780,7 +780,7 @@ function panels_page_view_page($panel_page) {
     return drupal_not_found();
   }
 
-  drupal_set_title(filter_xss_admin(panels_page_get_title($panel_page)), 'page', '');
+  drupal_set_title(filter_xss_admin(panels_page_get_title($panel_page, 'page', '')));
   if ($panel_page->no_blocks) {
     print theme('page', $output, FALSE);
   }
