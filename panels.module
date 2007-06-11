@@ -208,6 +208,10 @@ function panels_edit_display($display, $destination) {
     '#value' => $destination
   );
 
+  $form['explanation'] = array(
+    '#value' => '<p>' . t('Grab the title bar of any pane to drag it to another panel. Click the add pane button in any panel to add more content. Click the configure button on any pane to re-configure that pane.') . '</p>',
+  );
+
   $form['button']['#tree'] = TRUE;
   foreach ($display->content as $pid => $panel) {
     $form['button'][$pid]['#tree'] = TRUE;
