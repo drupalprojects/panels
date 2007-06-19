@@ -29,15 +29,15 @@ Drupal.Panels.clickAdd = function() {
 
 /** hide all button **/
 Drupal.Panels.clickHideAll = function() {
-  $('.panel-portlet .content').hide();
-  $('.panel-portlet .toggle').addClass('toggle-collapsed');
+  $('div.panel-portlet div.content').hide(200);
+  $('div.panel-portlet div.toggle').addClass('toggle-collapsed');
   return false;
 }
 
 /** show all button **/
 Drupal.Panels.clickShowAll = function() {
-  $('.panel-portlet .content').show();
-  $('.panel-portlet .toggle').removeClass('toggle-collapsed');
+  $('div.panel-portlet div.content').show(200);
+  $('div.panel-portlet div.toggle').removeClass('toggle-collapsed');
   return false;
 }
 
