@@ -97,3 +97,27 @@ function panels_common_settings_submit($form_id, $form_values) {
   }
   drupal_set_message(t('Your changes have been saved.'));
 }
+
+function panels_common_get_allowed_types($module) {
+  $content_types = panels_get_available_content_types();
+  $default_types = variable_get($module . '_defaults', array());
+  $allowed_types = variable_get($module .'_allowed_types', array());
+
+  // By default, if they haven't gone and done the initial setup here,
+  // let all 'other' types (which will be all types) be available.
+  if (!isset($default_types['other'])) {
+    $default_types['other'] = TRUE;
+  }
+  foreach ($content_types as $id => $types) {
+    foreach ($types as $type => $info) {
+      $key = $id . '-' . $type;
+      if (!isset($allowed_types[$key])) {
+        $allowed_types[$key] = isset($default_types[$id]) ? $default_types[$id] : $default_types['other'];
+      }
+      if (!$allowed_types[$key]) {
+        unset($content_types[$id][$type]);
+      }
+    }
+  }
+  return $content_types;
+}
