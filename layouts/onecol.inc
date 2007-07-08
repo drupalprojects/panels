@@ -10,7 +10,7 @@ function panels_onecol_panels_layouts() {
     'icon' => 'layouts/onecol.png',
     'theme' => 'panels_onecol',
     'css' => 'layouts/onecol.css',
-    'content areas' => array('middle' => t('Middle column')),
+    'panels' => array('middle' => t('Middle column')),
   );
 
   return $items;
