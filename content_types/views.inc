@@ -1,4 +1,5 @@
 <?php
+// $Id$
 /**
  * Callback function to supply a list of content types.
  */

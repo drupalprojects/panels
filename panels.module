@@ -382,6 +382,8 @@ function panels_choose_layout($display, $finish, $destination) {
   foreach ($layouts as $id => $layout) {
     $options[$id] = panels_print_layout_icon($id, $layout, check_plain($layout['title']));
   }
+
+  drupal_add_js(panels_get_path('js/layout.js'));
   $form['layout'] = array(
     '#type' => 'radios',
     '#title' => t('Choose layout'),
