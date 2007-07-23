@@ -879,6 +879,7 @@ function panels_page_save(&$panel_page) {
  */
 function panels_page_delete($panel_page) {
   db_query("DELETE FROM {panels_page} WHERE pid = %d", $panel_page->pid);
+  menu_rebuild();
   return panels_delete_display($panel_page->did);
 }
 
