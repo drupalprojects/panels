@@ -37,7 +37,7 @@ function panels_content_views($conf, $panel_args) {
       $args = str_replace("%$id", $arg, $args);
     }
 
-    $args = preg_replace('/\\/%\d/', '', $args);
+    $args = preg_replace(',/?%\d,', '', $args);
     $args = $args ? explode('/', $args) : array();
 
     if ($conf['panel_args'] && is_array($panel_args)) {
