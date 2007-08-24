@@ -24,7 +24,6 @@ function panels_node_panels_content_types() {
  * based on the module and delta supplied in the configuration.
  */
 function panels_content_node($conf, $panel_args) {
-
   $nid = $conf['nid'];
   foreach (explode('/', $_GET['q']) as $id => $arg) {
     $nid = str_replace("%$id", $arg, $nid);
@@ -32,6 +31,11 @@ function panels_content_node($conf, $panel_args) {
 
   foreach ($panel_args as $id => $arg) {
     $nid = str_replace("@$id", $arg, $nid);
+  }
+
+  // Support node translation
+  if (module_exists('translation')) {
+    $nid = module_invoke('translation', 'node_nid', $nid, $GLOBALS['locale']);
   }
 
   $node = node_load($nid);
