@@ -231,3 +231,11 @@ function panels_admin_title_views($conf) {
   $title = views_get_title($view, 'admin');
   return $title ? $title : $view->name;
 }
+
+/**
+ * Don't show Views' blocks; we expose them already.
+ */
+function views_panels_block_info($module, $delta, &$info) {
+  $info = NULL;
+}
+

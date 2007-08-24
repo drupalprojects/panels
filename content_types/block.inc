@@ -206,13 +206,6 @@ function panels_default_block_info($module, $delta, &$info) {
 // These are all on behalf of modules that don't implement panels but we that
 // we care about.
 
-/**
- * Don't show Views' blocks; they're exposed another way.
- */
-function views_panels_block_info($module, $delta, &$info) {
-  $info = NULL;
-}
-
 function menu_panels_block_info($module, $delta, &$info) {
   $info['icon'] = 'icon_core_block_menu.png';
   $info['category'] = array(t('Menus'), -2);
