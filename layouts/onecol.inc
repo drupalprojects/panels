@@ -26,12 +26,11 @@ function theme_panels_onecol($id, $content) {
   }
 
   $output = <<<EOT
-<div class="panel-1col" $idstr>
+<div class="panel-1col clear-block" $idstr>
   <div class="panel-col">
     <div>$content[middle]</div>
   </div>
 </div>
-<br class="panel-clearer" />
 EOT;
   return $output;
 }

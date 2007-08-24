@@ -27,7 +27,7 @@ function theme_panels_threecol_33_34_33_stacked($id, $content) {
   }
 
   $output = <<<EOT
-<div class="panel-3col-33-stacked" $idstr>
+<div class="panel-3col-33-stacked  clear-block" $idstr>
   <div class="panel-col-top">
     <div class="inside">$content[top]</div>
   </div>
@@ -48,7 +48,6 @@ function theme_panels_threecol_33_34_33_stacked($id, $content) {
     <div class="inside">$content[bottom]</div>
   </div>
 </div>
-<br class="panel-clearer" />
 EOT;
   return $output;
 }

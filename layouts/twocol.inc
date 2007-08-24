@@ -26,7 +26,7 @@ function theme_panels_twocol($id, $content) {
   }
 
   $output = <<<EOT
-<div class="panel-2col" $idstr>
+<div class="panel-2col clear-block" $idstr>
   <div class="panel-col-first">
     <div class="inside">$content[left]</div>
   </div>
@@ -35,7 +35,6 @@ function theme_panels_twocol($id, $content) {
     <div class="inside">$content[right]</div>
   </div>
 </div>
-<br class="panel-clearer" />
 EOT;
   return $output;
 }

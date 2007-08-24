@@ -157,7 +157,7 @@ function theme_panels_flexible($id, $content, $settings) {
   $output = "<div class=\"panel-flexible\" $idstr>\n";
   
   for ($row = 1; $row <= intval($settings['rows']); $row++) {
-    $output .= "<div class=\"panel-row panel-row-$row\">\n";
+    $output .= "<div class=\"panel-row panel-row-$row clear-block\">\n";
     for ($col = 1; $col <= intval($settings["row_$row"]["columns"]); $col++) {
       if ($col == 1) {
         if (intval($settings["row_$row"]["columns"]) == 1) {
@@ -179,7 +179,6 @@ function theme_panels_flexible($id, $content, $settings) {
       $css .= "div.panel-flexible div.panel-row-$row div.panel-col-$col { width: " . intval($settings["row_$row"]["width_$col"]) . "%; }\n";
     }
     $output .= "</div>\n"; // panel-row-$row
-    $output .= '<br class="panel-clearer" />' . "\n";
   }
   $output .= "</div>\n"; // panel-flexible
   drupal_set_html_head("<style type=\"text/css\" media=\"all\">$css</style>\n");
