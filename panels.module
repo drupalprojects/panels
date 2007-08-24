@@ -1805,9 +1805,11 @@ function theme_panels_pane_dnd($block, $id, $label, $left_buttons = NULL, $butto
 }
 
 function theme_panels_pane($block, $display) {
-  $output = '<div class="panel-pane">';
-  $output .= theme('block', $block);
-  $output .= '</div>';
+  if (!empty($block->content)) {
+    $output = '<div class="panel-pane">';
+    $output .= theme('block', $block);
+    $output .= '</div>';
+  }
   return $output;
 }
 
