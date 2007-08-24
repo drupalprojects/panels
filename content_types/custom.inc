@@ -33,10 +33,12 @@ function theme_panels_custom_content($content, $id, $class) {
   if ($id) {
     $id = 'id="' . $id . '"';
   }
-
-  $output = '<div class="panels-custom ' . $class . '" ' . $id . '>';
-  $output .= $content;
-  $output .= '</div>';
+  
+  if ($content) {
+    $output = '<div class="panels-custom ' . $class . '" ' . $id . '>';
+    $output .= $content;
+    $output .= '</div>';
+  }
   return $output;
 }
 
