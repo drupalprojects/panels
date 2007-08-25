@@ -23,6 +23,7 @@ Drupal.Panels.clickAdd = function() {
     data: '',
     global: true,
     success: Drupal.Panels.bindAjaxResponse,
+    error: function() { alert("An error occurred."); $('#panels-modal').unmodalContent(); },
     dataType: 'json'
   });
   return false;
@@ -60,6 +61,7 @@ Drupal.Panels.bindClickConfigure = function (o) {
       data: '',
       global: true,
       success: Drupal.Panels.bindAjaxResponse,
+      error: function() { alert("An error occurred."); $('#panels-modal').unmodalContent(); },
       dataType: 'json'
     });
     return false;
@@ -118,6 +120,7 @@ Drupal.Panels.Subform.bindClickAddLink = function() {
     data: '',
     global: true,
     success: Drupal.Panels.bindAjaxResponse,
+  	error: function() { alert("An error occurred."); $('#panels-modal').unmodalContent(); },
     dataType: 'json'
   });
   return false;
