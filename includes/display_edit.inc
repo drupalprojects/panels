@@ -398,27 +398,6 @@ function panels_show_pane($pane, $left_buttons, $buttons, $skin = TRUE) {
  */
 
 /**
- * Simple render function to make sure output is what we want.
- */
-function panels_ajax_render($output = NULL, $title = NULL) {
-  if (!is_object($output)) {
-    $temp = new stdClass();
-    $temp->output = $output;
-    $temp->type = 'display';
-    $temp->title = $title;
-    $output = $temp;
-  }
-  if (!$output->output || !$output->type) {
-    $output->output = t('The input was invalid');
-    $output->type = 'display';
-    $output->title = t('Error');
-  }
-  drupal_set_header('Content-Type: text/javascript; charset=utf-8');
-  print drupal_to_js($output);
-  exit;
-}
-
-/**
  * entry point into all the ajax stuff
  */
 function panels_ajax($op = NULL, $did = NULL, $pid = NULL) {
