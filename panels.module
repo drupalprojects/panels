@@ -1075,6 +1075,28 @@ function panels_get_styles() {
 }
 
 /**
+ * Collate information about a specific panel argument.
+ *
+ * @param $argument
+ *   Name of a panel argument.
+ * @return
+ *   An array with information about the requested panel argument.
+ */
+function panels_get_argument($argument) {
+  return panels_get_plugins('arguments', 'panels_arguments', $argument);
+}
+
+/**
+ * Collate information about all available panel arguments.
+ *
+ * @return
+ *   An array of arrays with information about all available panel arguments.
+ */
+function panels_get_arguments() {
+  return panels_get_plugins('arguments', 'panels_arguments');
+}
+
+/**
  * Fetch a content_type plugin
  *
  * @param $content type
