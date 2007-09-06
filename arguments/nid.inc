@@ -12,6 +12,7 @@ function panels_nid_panels_arguments() {
     'description' => t('Restricts the argument to a node id.'),
     'context' => 'panels_nid_context',
     'settings form' => 'panels_nid_settings_form',
+    'title function' => 'panels_nid_title',
   );
   return $args;
 }
@@ -19,7 +20,12 @@ function panels_nid_panels_arguments() {
 /**
  * Discover if this argument gives us the node we crave.
  */
-function panels_nid_context($arg, $settings) {
+function panels_nid_context($arg = NULL, $settings = NULL) {
+  // If unset it wants a generic, unfilled context.
+  if (!isset($arg)) {
+    return new panels_context('node', NULL);
+  }
+
   if (!is_numeric($arg)) {
     return FALSE;
   }
@@ -29,7 +35,7 @@ function panels_nid_context($arg, $settings) {
     return FALSE;
   }
 
-  if (empty($settings['type'][$node->type])) {
+  if (empty($settings['types'][$node->type])) {
     return FALSE;
   }
 
@@ -47,7 +53,15 @@ function panels_nid_settings_form($settings) {
     '#type' => 'checkboxes',
     '#options' => $options,
     '#default_value' => $settings['types'],
+    '#prefix' => '<div class="clear-block">',
+    '#suffix' => '</div>',
   );
 
   return $form;
+}
+
+function panels_nid_title($context) {
+  if (isset($context->data->title)) {
+    return $context->data->title;
+  }
 }

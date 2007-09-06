@@ -110,7 +110,7 @@ function panels_admin_content_types_views() {
 /**
  * Returns the form for a new view.
  */
-function panels_admin_add_views($id) {
+function panels_admin_add_views($id, $parents) {
   $conf = array();
   $view = views_get_view($id);
   if (!$view) { 
@@ -134,7 +134,7 @@ function panels_admin_add_views($id) {
 /**
  * Returns an edit form for a block.
  */
-function panels_admin_edit_views($conf) {
+function panels_admin_edit_views($id, $parents, $conf) {
   $form['view'] = array(
     '#type' => 'value',
     '#default_value' => $conf['view'],

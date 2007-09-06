@@ -91,7 +91,7 @@ function panels_admin_content_types_block() {
 /**
  * Returns the form for a new block.
  */
-function panels_admin_add_block($id) {
+function panels_admin_add_block($id, $parents) {
   $conf = array();
   list($conf['module'], $conf['delta']) = explode('-', $id, 2);
   return panels_admin_edit_block($conf);
@@ -100,7 +100,7 @@ function panels_admin_add_block($id) {
 /**
  * Returns an edit form for a block.
  */
-function panels_admin_edit_block($conf) {
+function panels_admin_edit_block($id, $parents, $conf) {
   $form['module'] = array(
     '#type' => 'value',
     '#value' => $conf['module'],

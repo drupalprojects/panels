@@ -38,8 +38,6 @@ Drupal.list = function(base, settings) {
      }
   }
 
-  var maxPosition = max($(settings.order).val().split(','));
-
   this.settings = settings;
   this.base = '#' + base;
 
@@ -63,11 +61,19 @@ Drupal.list = function(base, settings) {
     if (settings.hidden) {
       $(settings.hidden).show();
     }
+//    console.log(order);
   }
 
   var changeOrder = function(item, how) {
-    var order = $(settings.order).val().split(',');
+    var order_text = $(settings.order).val();
+    if (order_text == '') {
+      var order = [];
+    }
+    else {
+      var order = order_text.split(',');
+    }
 
+//    console.log(order);
     if (how != 'add') {
       var tr = $(item).parents('tr').get(0);
       var id = $(tr).attr('id').replace(settings.tr, '');
@@ -285,8 +291,7 @@ Drupal.list = function(base, settings) {
           // Add the form and re-attach behavior.
           $('#' + base + ' tbody').append(data.output);
 
-          maxPosition++;
-          changeOrder(maxPosition, 'add');
+          changeOrder(data.position, 'add');
           bindButtons();
 
           Drupal.unfreezeHeight();

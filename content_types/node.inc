@@ -74,7 +74,7 @@ function panels_admin_content_types_node() {
 /**
  * Returns the form for a new node.
  */
-function panels_admin_add_node($id) {
+function panels_admin_add_node($id, $parents) {
   $conf = array();
   $form = panels_admin_edit_node($conf);
   $form['nid'] = array(
@@ -94,7 +94,7 @@ function panels_admin_add_node($id) {
 /**
  * Returns an edit form for the custom type.
  */
-function panels_admin_edit_node($conf) {
+function panels_admin_edit_node($id, $parents, $conf) {
   $form['nid'] = array(
     '#type' => 'value',
     '#default_value' => $conf['nid'],
