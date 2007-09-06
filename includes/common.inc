@@ -277,7 +277,6 @@ function panels_common_panel_settings_ajax($did, $name) {
   $style = panels_get_style($name);
   $style_settings = panels_common_cache_get('style_settings', $did);
   
-  $args = 
   $form = drupal_retrieve_form('panels_common_style_settings_form', $did, $style, $style_settings);
   if ($_POST) {
     $form['#programmed'] = TRUE;
