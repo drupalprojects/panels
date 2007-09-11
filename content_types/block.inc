@@ -91,10 +91,9 @@ function panels_admin_content_types_block() {
 /**
  * Returns the form for a new block.
  */
-function panels_admin_add_block($id, $parents) {
-  $conf = array();
+function panels_admin_add_block($id, $parents, $conf = array()) {
   list($conf['module'], $conf['delta']) = explode('-', $id, 2);
-  return panels_admin_edit_block($conf);
+  return panels_admin_edit_block($id, $parents, $conf);
 }
 
 /**

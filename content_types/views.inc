@@ -110,8 +110,7 @@ function panels_admin_content_types_views() {
 /**
  * Returns the form for a new view.
  */
-function panels_admin_add_views($id, $parents) {
-  $conf = array();
+function panels_admin_add_views($id, $parents, $conf = array()) {
   $view = views_get_view($id);
   if (!$view) { 
     return;
@@ -128,7 +127,7 @@ function panels_admin_add_views($id, $parents) {
   $conf['type'] = 'embed';
   $conf['pager_id'] = 1;
   $conf['use_pager'] = 0;
-  return panels_admin_edit_views($conf);
+  return panels_admin_edit_views($id, $parents, $conf);
 }
 
 /**

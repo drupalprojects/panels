@@ -74,9 +74,8 @@ function panels_admin_content_types_node() {
 /**
  * Returns the form for a new node.
  */
-function panels_admin_add_node($id, $parents) {
-  $conf = array();
-  $form = panels_admin_edit_node($conf);
+function panels_admin_add_node($id, $parents, $conf = array()) {
+  $form = panels_admin_edit_node($id, $parents, $conf);
   $form['nid'] = array(
     '#prefix' => '<div class="no-float">',
     '#suffix' => '</div>',
