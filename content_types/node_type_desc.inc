@@ -6,7 +6,7 @@
 function panels_node_type_desc_panels_content_types() {
   if (module_exists('comment')) {
     $items['node_type_desc'] = array(
-      'title' => t('Node comment form'),
+      'title' => t('Node type description'),
       'content_types' => 'panels_admin_content_types_node_type_desc',
       'render callback' => 'panels_content_node_type_desc',
       'add callback' => 'panels_admin_edit_node_type_desc',
