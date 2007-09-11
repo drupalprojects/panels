@@ -20,5 +20,6 @@ EOT
  */
 function panels_node_uninstall() {
   // TODO: Delete all actual nodes that are panels_nodes.
+  db_query("DELETE FROM {node} WHERE type = 'panel'");
   db_query("DROP TABLE {panels_node}");
 }
