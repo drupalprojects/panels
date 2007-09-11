@@ -35,7 +35,9 @@ function panels_content_node($conf, $panel_args) {
 
   // Support node translation
   if (module_exists('translation')) {
-    $nid = module_invoke('translation', 'node_nid', $nid, $GLOBALS['locale']);
+    if ($translation = module_invoke('translation', 'node_nid', $nid, $GLOBALS['locale'])) {
+      $nid = $translation;
+    }
   }
 
   $node = node_load($nid);
