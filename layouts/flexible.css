@@ -4,6 +4,10 @@
   overflow: hidden; 
 }
 
+.panel-flexible {
+  width: 99.9%;
+}
+
 .panel-flexible .panel-col { 
   float: left; 
   padding: 0;
@@ -15,19 +19,20 @@
   padding: 0;
   margin: 0;
   padding-bottom: .5em;
+  width: 99.9%;
 }
 
 .panel-flexible .panel-col-first .inside { 
-  margin-right: .5em;
+  padding-right: .5em;
 }
 
 .panel-flexible .panel-col-inside .inside { 
-  margin-right: .5em;
-  margin-left: .5em;
+  padding-right: .5em;
+  padding-left: .5em;
 }
 
 .panel-flexible .panel-col-last .inside { 
-  margin-left: .5em;
+  padding-left: .5em;
 }
 
 #panels-edit-display .panel-pane,
