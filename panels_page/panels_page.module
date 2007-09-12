@@ -747,8 +747,10 @@ function panels_page_fields() {
  * Save a panel page. 
  */
 function panels_page_save($panel_page) {
-  // Save the display.
-  $display = panels_save_display($panel_page->display);
+  // Save the display if one was given to us.
+  if (!empty($panel_page->display)) {
+    $display = panels_save_display($panel_page->display);
+  }
 
   // serialize the access string.
   $panel_page->access = $panel_page->access ? implode(', ', $panel_page->access) : '';
