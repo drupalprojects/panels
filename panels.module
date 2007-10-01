@@ -535,7 +535,7 @@ function panels_render_display(&$display) {
     $output .= $function($display);
   }
 
-  $output = panels_render_layout($layout, $display, $display->css_id, $display->layout_settings);
+  $output .= panels_render_layout($layout, $display, $display->css_id, $display->layout_settings);
 
   // Let modules act just prior to render.
   foreach (module_implements('panels_post_render') as $module) {
