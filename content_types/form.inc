@@ -8,6 +8,7 @@ function panels_form_panels_content_types() {
     $items['form'] = array(
       'title' => t('Generic form'),
       'content_types' => 'panels_admin_content_types_form',
+      'single' => TRUE, // only provides a single content type
       'render callback' => 'panels_content_form',
       'add callback' => 'panels_admin_edit_form',
       'edit callback' => 'panels_admin_edit_form',
@@ -24,7 +25,7 @@ function panels_form_panels_content_types() {
 function panels_admin_content_types_form() {
   return array(
     'node_type' => array(
-      'title' => t('General fom'),
+      'title' => t('General form'),
       'icon' => 'icon_node.png',
       'path' => panels_get_path('content_types/node'),
       'description' => t('The general parts of a form.'),

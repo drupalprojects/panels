@@ -7,6 +7,7 @@ function panels_node_comments_panels_content_types() {
   $items['node_comments'] = array(
     'title' => t('Node comments'),
     'content_types' => 'panels_admin_content_types_node_comments',
+    'single' => TRUE, // only provides a single content type
     'render callback' => 'panels_content_node_comments',
     'add callback' => 'panels_admin_edit_node_comments',
     'edit callback' => 'panels_admin_edit_node_comments',

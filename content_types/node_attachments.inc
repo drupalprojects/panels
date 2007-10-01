@@ -7,6 +7,7 @@ function panels_node_attachments_panels_content_types() {
   if (module_exists('comment')) {
     $items['node_attachments'] = array(
       'title' => t('Node type description'),
+      'single' => TRUE, // only provides a single content type
       'content_types' => 'panels_admin_content_types_node_attachments',
       'render callback' => 'panels_content_node_attachments',
       'add callback' => 'panels_admin_edit_node_attachments',

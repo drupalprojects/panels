@@ -8,6 +8,7 @@ function panels_node_type_desc_panels_content_types() {
     $items['node_type_desc'] = array(
       'title' => t('Node type description'),
       'content_types' => 'panels_admin_content_types_node_type_desc',
+      'single' => TRUE, // only provides a single content type
       'render callback' => 'panels_content_node_type_desc',
       'add callback' => 'panels_admin_edit_node_type_desc',
       'edit callback' => 'panels_admin_edit_node_type_desc',

@@ -7,6 +7,7 @@ function panels_custom_panels_content_types() {
   $items['custom'] = array(
     'title' => t('Custom'),
     'weight' => -10,
+    'single' => TRUE, // only provides a single content type
     'content_types' => 'panels_admin_content_types_custom',
     'render callback' => 'panels_content_custom',
     'add callback' => 'panels_admin_edit_custom',
@@ -33,7 +34,7 @@ function theme_panels_custom_content($content, $id, $class) {
   if ($id) {
     $id = 'id="' . $id . '"';
   }
-  
+
   if ($content) {
     $output = '<div class="panels-custom ' . $class . '" ' . $id . '>';
     $output .= $content;

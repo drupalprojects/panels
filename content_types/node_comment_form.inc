@@ -7,6 +7,7 @@ function panels_node_comment_form_panels_content_types() {
   if (module_exists('comment')) {
     $items['node_comment_form'] = array(
       'title' => t('Node comment form'),
+      'single' => TRUE, // only provides a single content type
       'content_types' => 'panels_admin_content_types_node_comment_form',
       'render callback' => 'panels_content_node_comment_form',
       'add callback' => 'panels_admin_edit_node_comment_form',
