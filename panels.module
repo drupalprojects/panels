@@ -540,6 +540,7 @@ function panels_render_display(&$display) {
     $function = $module . '_panels_post_render';
     $function($display);
   }
+  return $output;
 }
 
 /**
