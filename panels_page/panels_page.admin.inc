@@ -1111,7 +1111,7 @@ function panels_page_import_page() {
   if ($_POST['form_id'] == 'panels_page_edit_form') {
     $panel_page = $_SESSION['pp_import'];
     drupal_set_title(t('Import panel page "@s"', array('@s' => $panel_page->title)));
-    return panels_page_edit($panel_page);
+    return drupal_get_form('panels_page_edit_form', $panel_page);
   }
 
   return drupal_get_form('panels_page_import_form');
