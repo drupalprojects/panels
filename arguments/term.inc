@@ -22,7 +22,7 @@ function panels_term_panels_arguments() {
 
 
 /**
- * Discover if this argument gives us the node we crave.
+ * Discover if this argument gives us the term we crave.
  */
 function panels_term_context($arg = NULL, $conf = NULL, $context = NULL, $index = 0) {
   // If unset it wants a generic, unfilled context.

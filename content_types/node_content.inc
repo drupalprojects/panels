@@ -38,6 +38,10 @@ function panels_admin_content_types_node_content() {
  * based on the module and delta supplied in the configuration.
  */
 function panels_content_node_content($conf, $panel_args, $context) {
+  if (!empty($context) && empty($context->data)) {
+    return;
+  }
+
   $node = isset($context->data) ? drupal_clone($context->data) : NULL;
   $block->module = 'node';
   $block->delta = $node->nid;

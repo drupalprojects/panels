@@ -30,7 +30,7 @@ function theme_panels_list_style_render_panel($display, $panel_id, $panes, $sett
   foreach ($panes as $pane_id => $pane) {
     $items[] = theme('panels_pane', $pane, $display);
   }
-  return theme('item_list', $items, $settings['list_type']);
+  return theme('item_list', $items, NULL, $settings['list_type']);
 }
 
 function panels_list_style_settings_form($style_settings) {
