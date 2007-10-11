@@ -809,9 +809,6 @@ function panels_edit_submit_subform($display) {
 // Panels settings + ajax for modal popup
 
 /**
- * The panel settings fieldset that can optionally be added to
- * admin/panels/panel-%implementation%/%panel_id%/edit, if the panels
- * implementation wants to support panel settings.
  */
 function panels_common_panel_settings($display, $panels_implementation = '', $label = '') {
   $panel_settings = $display->panel_settings;

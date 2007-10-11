@@ -134,8 +134,8 @@ function panels_node_add_choose_display($conf, $context) {
     return;
   }
 
-  if (!empty($conf['displays'][$context->data->type])) {
-    return $context->data->type;
+  if (!empty($conf['displays'][$context->data['#node']->type])) {
+    return $context->data['#node']->type;
   }
 
   // Please note that 'default' is a special display.
