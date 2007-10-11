@@ -279,7 +279,6 @@ function panels_page_edit_form_validate($form_id, $form_values, $form) {
 function panels_page_edit_form_submit($form_id, $form_values) {
   $panel_page = $form_values['panel_page'];
 
-  $panel_page->display->panel_settings = $form_values['panel_settings'];
   $panel_page->title  = $form_values['title'];
   $panel_page->name  = preg_replace("/[\W]+/", '', $form_values['name']);
   $panel_page->css_id = $form_values['css_id'];
