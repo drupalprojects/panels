@@ -451,7 +451,7 @@ function panels_save_display(&$display) {
     db_query("DELETE FROM {panels_pane} WHERE did = %d", $display->did);
   }
   else {
-    $display->did = db_next_id("{panels_display}_id");
+    $display->did = db_next_id("{panels_display}_did");
     db_query("INSERT INTO {panels_display} (did, layout, layout_settings, panel_settings) VALUES (%d, '%s', '%s', '%s')", $display->did, $display->layout, serialize($display->layout_settings), serialize($display->panel_settings));
   }
 
