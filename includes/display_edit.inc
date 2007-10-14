@@ -818,12 +818,9 @@ function panels_common_panel_settings($display) {
   // panels implementation or specifically to this one.
   $options = array();
   foreach (panels_get_styles() as $name => $properties) {
-    if (!empty($properties['hidden'])) {
-      continue;
+    if (empty($properties['hidden'])) {
+      $options[$name] = $properties['title'];
     }
-
-    // TODO: 'label' is deprecated, will go away.
-    $options[$name] = empty($properties['title']);
   }
 
   $form = array();
