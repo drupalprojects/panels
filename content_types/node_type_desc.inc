@@ -55,7 +55,7 @@ function panels_admin_content_types_node_type_desc() {
       'icon' => 'icon_node.png',
       'path' => panels_get_path('content_types/node'),
       'description' => t('Node type description.'),
-      'required context' => 'node',
+      'required context' => new panels_required_context('node'),
       'category' => array(t('Node context'), -9),
     ),
   );

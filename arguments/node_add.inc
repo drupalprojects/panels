@@ -114,12 +114,14 @@ function panels_node_add_displays($conf, $id) {
       $options[$type] = $info->name;
     }
     foreach (array_keys(array_filter($conf['displays'])) as $type) {
-      $displays[$type] = array(
-        'title' => t('Node add form @id @type', array('@id' => $id, '@type' => $options[$type])),
-        // Tell it to base the template for this display off of the default.
-        'default' => 'default',
-        'context' => 'node',
-      );
+      if (!empty($options[$type])) {
+        $displays[$type] = array(
+          'title' => t('Node add form @id @type', array('@id' => $id, '@type' => $options[$type])),
+          // Tell it to base the template for this display off of the default.
+          'default' => 'default',
+          'context' => 'node',
+        );
+      }
     }
   }
 

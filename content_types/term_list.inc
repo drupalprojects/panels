@@ -80,7 +80,7 @@ function panels_admin_content_types_term_list() {
       'icon' => 'icon_node.png',
       'path' => panels_get_path('content_types/node'),
       'description' => t('Terms related to an existing term; may be child, siblings or top level.'),
-      'required context' => 'term',
+      'required context' => new panels_required_context('term'),
       'category' => array(t('Term context'), -9),
     ),
   );

@@ -27,7 +27,7 @@ function panels_admin_content_types_node_content() {
       'icon' => 'icon_node.png',
       'path' => panels_get_path('content_types/node'),
       'description' => t('The content of the referenced node.'),
-      'required context' => 'node',
+      'required context' => new panels_required_context('node'),
       'category' => array(t('Node context'), -9),
     ),
   );

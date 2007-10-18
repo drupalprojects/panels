@@ -29,7 +29,7 @@ function panels_admin_content_types_form() {
       'icon' => 'icon_node.png',
       'path' => panels_get_path('content_types/node'),
       'description' => t('The general parts of a form.'),
-      'required context' => 'form',
+      'required context' => new panels_required_context('form'),
       'category' => array(t('Form'), -9),
     ),
   );
