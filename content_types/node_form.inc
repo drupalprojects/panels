@@ -265,7 +265,7 @@ function panels_content_node_form($conf, $panel_args, &$context) {
         }
       }
       else {
-        $block->content = t('Input body_filter.');
+        $block->content = t('Input format.');
       }
       break;
   }
@@ -303,12 +303,13 @@ function panels_admin_edit_node_form($id, $parents, $conf = array()) {
 
   $form['id'] = array(
     '#type' => 'value',
-    '#value' => $id
+    '#value' => $id,
   );
 
   return $form;
 }
 
 function panels_admin_title_node_form($conf, $context) {
-  return t('Node form');
+  $choices = panels_admin_content_types_node_form();
+  return $choices[$conf['id']]['title'];
 }
