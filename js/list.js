@@ -70,7 +70,7 @@ Drupal.list = function(base, settings) {
       return;
     }
 
-    console.log(settings.order);
+//    console.log(settings.order);
 
     var order_text = $(settings.order).val();
     if (order_text == '') {
