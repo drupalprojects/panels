@@ -49,7 +49,12 @@ function theme_panels_rounded_corners_style_render_panel($display, $panel_id, $p
     $output = theme('rounded_corners_box', $output);
   }
 
-  theme('rounded_corners_css', $display, $where);
+  static $displays_used = array();
+  if (empty($displays_used[$display->name])) {
+    theme('rounded_corners_css', $display, $where);
+    $displays_used[$display->name] = TRUE;
+  }
+
   return $output;
 }
 
@@ -127,14 +132,16 @@ EOF;
  */
 function theme_rounded_corners_box($text) {
   return <<<EOF
-<div class="wrap-corner">
-  <div class="t-edge"><div class="l"></div><div class="r"></div></div>
-  <div class="l-edge">
-    <div class="r-edge">
-      $text
+<div class="rounded_corner">
+  <div class="wrap-corner">
+    <div class="t-edge"><div class="l"></div><div class="r"></div></div>
+    <div class="l-edge">
+      <div class="r-edge">
+        $text
+      </div>
     </div>
+    <div class="b-edge"><div class="l"></div><div class="r"></div></div>
   </div>
-  <div class="b-edge"><div class="l"></div><div class="r"></div></div>
 </div>
 EOF;
 }
