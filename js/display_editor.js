@@ -369,7 +369,7 @@ Drupal.Panels.DraggableHandler = function() {
       draggable.unsetDropZone();
     }
 
-    $('body').unbind('mouseup').unbind('mousemove');
+    $(document).unbind('mouseup').unbind('mousemove');
     draggable.savePositions();
   }
 
@@ -380,7 +380,8 @@ Drupal.Panels.DraggableHandler = function() {
     var windowMoved = parseInt(draggable.offsetDivHeight - $(draggable.main).innerHeight());
 
     draggable.object.style.top = mousePos.y - draggable.mouseOffset.y + windowMoved + 'px';
-    draggable.object.style.left = mousePos.x - draggable.mouseOffset.x  + 'px';  
+    draggable.object.style.left = mousePos.x - draggable.mouseOffset.x  + 'px';
+    $(draggable.object).toggleClass('moving');
   }
 
   mouseDown = function(e) {
@@ -453,7 +454,7 @@ Drupal.Panels.DraggableHandler = function() {
 
     draggable.object.style.top = windowOffset.top + 'px';
     draggable.object.style.left = windowOffset.left + 'px';
-    $('body').unbind('mouseup').unbind('mousemove').mouseup(mouseUp).mousemove(mouseMove);
+    $(document).unbind('mouseup').unbind('mousemove').mouseup(mouseUp).mousemove(mouseMove);
 
     draggable.calculateDropZones(mousePos, e);
     return false;

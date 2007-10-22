@@ -45,7 +45,7 @@ function panels_term_from_node_settings_form($conf) {
     $options[$vid] = $vocabulary->name;
   }
   $form['vid'] = array(
-    '#title' => t('Vocabularies'),
+    '#title' => t('Vocabulary'),
     '#type' => 'select',
     '#options' => $options,
     '#default_value' => $conf['vid'],

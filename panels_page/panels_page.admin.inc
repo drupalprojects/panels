@@ -862,6 +862,9 @@ function panels_page_ajax_argument_add($panel_name) {
   // Figure out which argument we're adding
   if (isset($_POST['buttons']['add_argument'])) {
     $name = $_POST['buttons']['add_argument'];
+    // For some reason, the form sometimes thinks it's been posted
+    // without this.
+    unset($_POST);
   }
   else if (isset($_POST['argument']['name'])) {
     $name = $_POST['argument']['name'];
@@ -905,11 +908,7 @@ function panels_page_ajax_argument_add($panel_name) {
   }
 
   $form = drupal_retrieve_form('panels_page_edit_argument_form', $panel_name, $argument, $arguments, $position);
-  if ($_POST && $_POST['form_id'] == 'panels_page_edit_argument_form') {
-    $form['#redirect'] = FALSE;
-//    $form['#programmed'] = TRUE;
-//    $form['#post'] = $_POST;
-  }
+  $form['#redirect'] = FALSE;
 
   $arguments = drupal_process_form('panels_page_edit_argument_form', $form);
   if ($arguments) {
@@ -992,11 +991,7 @@ function panels_page_ajax_argument_edit($panel_name) {
   $title = t('Edit argument @argument', array('@argument' => $argument['title']));
 
   $form = drupal_retrieve_form('panels_page_edit_argument_form', $panel_name, $argument, $arguments, $position);
-  if ($_POST && $_POST['form_id'] == 'panels_page_edit_argument_form') {
-    $form['#redirect'] = FALSE;
-//    $form['#programmed'] = TRUE;
-//    $form['#post'] = $_POST;
-  }
+  $form['#redirect'] = FALSE;
 
   $result = drupal_process_form('panels_page_edit_argument_form', $form);
   if ($result) {
@@ -1232,6 +1227,7 @@ function panels_page_ajax_relationship_add($panel_name) {
   // Figure out which relationship we're adding
   if (isset($_POST['buttons']['add_relationship'])) {
     $name = $_POST['buttons']['add_relationship'];
+    unset($_POST);
   }
   else if (isset($_POST['relationship']['name'])) {
     $name = $_POST['relationship']['name'];
