@@ -55,7 +55,7 @@ function panels_admin_content_types_node_comment_form() {
       'icon' => 'icon_node.png',
       'path' => panels_get_path('content_types/node'),
       'description' => t('A form to add a new comment.'),
-      'required context' => new panels_required_context('node'),
+      'required context' => new panels_required_context(t('Node'), 'node'),
       'category' => array(t('Node context'), -9),
     ),
   );

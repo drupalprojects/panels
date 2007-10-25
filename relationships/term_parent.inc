@@ -9,8 +9,9 @@
 function panels_term_parent_panels_relationships() {
   $args['term_parent'] = array(
     'title' => t("Term parent"),
+    'keyword' => 'term_parent',
     'description' => t('Adds a taxonomy term parent from a term context.'),
-    'required context' => new panels_required_context('term'),
+    'required context' => new panels_required_context(t('Node'), 'term'),
     'context' => 'panels_term_parent_context',
     'settings form' => 'panels_term_parent_settings_form',
     'settings form validate' => 'panels_term_parent_settings_form_validate',

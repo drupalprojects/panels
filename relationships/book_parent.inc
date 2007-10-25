@@ -9,8 +9,9 @@
 function panels_book_parent_panels_relationships() {
   $args['book_parent'] = array(
     'title' => t("Book parent"),
+    'keyword' => 'book_parent',
     'description' => t('Adds a book parent from a node context.'),
-    'required context' => new panels_required_context('node'),
+    'required context' => new panels_required_context(t('Node'), 'node'),
     'context' => 'panels_book_parent_context',
     'settings form' => 'panels_book_parent_settings_form',
     'settings form validate' => 'panels_book_parent_settings_form_validate',
