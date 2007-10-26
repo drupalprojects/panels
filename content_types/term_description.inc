@@ -28,7 +28,7 @@ function panels_content_term_description($conf, $panel_args, $context) {
 
   $block->subject = $term->name;
   if ($term) {
-    $block->content = filter_admin_xss($term->description);
+    $block->content = filter_xss_admin($term->description);
     $block->delta = $term->tid;
   }
   else {

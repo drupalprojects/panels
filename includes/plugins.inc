@@ -475,7 +475,7 @@ function panels_get_pane_content($pane, $args = array(), $context = NULL, $incom
  */
 function panels_get_pane_title(&$pane, $context = NULL, $incoming_content = NULL) {
   if (empty($pane->context)) {
-    $pane->context = panels_pane_select_context($pane, $display->context);
+    $pane->context = panels_pane_select_context($pane, $context);
     if ($pane->context === FALSE) {
       return FALSE;
     }
