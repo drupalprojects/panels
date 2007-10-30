@@ -986,6 +986,13 @@ function panels_page_ajax_argument_edit($panel_name) {
     drupal_ajax_render();
   }
 
+  // For some reason, some (but not all) systems can think this is a post,
+  // even though we're really just using $_POST to send some arguments.
+  // So we unset it to be safe.
+  if (!isset($_POST['form_id'])) {
+    unset($_POST);
+  }
+
   $panel_page = panels_common_cache_get('panel_page', $panel_name);
   if (!$panel_page) {
     drupal_ajax_render();
