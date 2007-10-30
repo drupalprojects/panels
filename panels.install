@@ -125,7 +125,7 @@ EOT
 EOT
       );
   }
-  db_query("UPDATE {sytem} SET weight = 10 WHERE name = 'panels'");
+  db_query("UPDATE {system} SET weight = 10 WHERE name = 'panels'");
 
   if (!module_exists('panels_page')) {
     drupal_set_message(t('It is recommended that you also enable the Panels page module.'));
