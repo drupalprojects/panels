@@ -106,7 +106,7 @@ function panels_common_settings_submit($form_id, $form_values) {
 /**
  * Based upon the settings, get the allowed types for this node.
  */
-function panels_common_get_allowed_types($module, $contexts = NULL, $has_content = FALSE, $default_defaults = array(), $default_allowed_types = array()) {
+function panels_common_get_allowed_types($module, $contexts = array(), $has_content = FALSE, $default_defaults = array(), $default_allowed_types = array()) {
 
   // Get a list of all types that are available
 
