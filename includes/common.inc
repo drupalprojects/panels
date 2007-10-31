@@ -119,6 +119,7 @@ function panels_common_get_allowed_types($module, $contexts = NULL, $has_content
     $default_types['other'] = TRUE;
   }
 
+  panels_load_include('plugins');
   $content_types = panels_get_available_content_types($contexts, $has_content, $allowed_types, $default_types);
 
   return $content_types;
