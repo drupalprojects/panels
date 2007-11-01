@@ -114,6 +114,7 @@ function panels_node_form(&$node, &$param) {
 
     $layout = arg(3);
     if (is_null($layout)) {
+      panels_load_include('plugins');
       $form['markup']['#value'] = '';
       $layouts = panels_get_layouts();
       foreach ($layouts as $id => $layout) {
