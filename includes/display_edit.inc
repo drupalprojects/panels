@@ -654,7 +654,7 @@ function panels_add_content_config_form_submit($form_id, $form) {
   $buttons = form_builder('dummy', $buttons);
 
   // Render the new pane for the javascript.
-  $return->output = panels_show_pane($display, $cache->display->content[$form['pid']], NULL, drupal_render($buttons));
+  $return->output = panels_show_pane($cache->display, $cache->display->content[$form['pid']], NULL, drupal_render($buttons));
 
   panels_set('return', $return);
   return FALSE;

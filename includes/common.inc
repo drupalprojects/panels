@@ -128,7 +128,7 @@ function panels_common_get_allowed_types($module, $contexts = array(), $has_cont
 /**
  * The layout information fieldset displayed at admin/edit/panel-%implementation%/add/%layout%.
  */
-function panels_common_get_layout_information($panel_implementation) {
+function panels_common_get_layout_information($panel_implementation, $contexts = array()) {
   $form = array();
   panels_load_include('plugins');
   $layout = panels_get_layout($panel_implementation->display->layout);
@@ -152,7 +152,7 @@ function panels_common_get_layout_information($panel_implementation) {
     if ($panel_implementation->display->panels[$panel_id]) {
       $content .= '<ol>';
       foreach ($panel_implementation->display->panels[$panel_id] as $pid) {
-        $content .= '<li>'. panels_get_pane_title($panel_implementation->display->content[$pid]) .'</li>';
+        $content .= '<li>'. panels_get_pane_title($panel_implementation->display->content[$pid], $contexts) .'</li>';
       }
       $content .= '</ol>';
     }
