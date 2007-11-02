@@ -159,7 +159,7 @@ function panels_page_add_page($layout = NULL) {
   $panel_page->did = 'new';
 
   drupal_set_title(t('Add panel page'));
-  return drupal_get_form('panels_page_edit_form', $panel_page);
+  return drupal_get_form('panels_page_edit_form', panels_page_sanitize($panel_page));
 }
 
 

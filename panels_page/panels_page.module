@@ -887,7 +887,7 @@ function panels_page_fields() {
  * Sanitize a panel prior to saving it.
  */
 function panels_page_sanitize($page) {
-  foreach (array('arguments', 'displays', 'contexts') as $id) {
+  foreach (array('arguments', 'displays', 'contexts', 'relationships') as $id) {
     if (empty($page->$id)) {
       $page->$id = array();
     }
