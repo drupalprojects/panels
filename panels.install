@@ -386,3 +386,11 @@ function panels_update_5210() {
   $ret[] = update_sql("UPDATE {system} SET weight = 10 WHERE name = 'panels'");
   return $ret;
 }
+
+/**
+ * Force a menu update
+ */
+function panels_update_5211() {
+  menu_rebuild();
+  return array();
+}
