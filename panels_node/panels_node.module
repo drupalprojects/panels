@@ -264,6 +264,7 @@ function panels_node_edit_layout($node) {
  * Pass through to the panels layout settings editor.
  */
 function panels_node_edit_layout_settings($node) {
+  panels_load_include('plugins');
   $display = panels_load_display($node->panels_node['did']);
   return panels_edit_layout_settings($display, t('Save'), "node/$node->nid/panel_settings");
 }
