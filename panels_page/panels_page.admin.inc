@@ -253,6 +253,7 @@ function panels_page_edit_form($panel_page) {
     '#default_value' => $panel_page->name,
     '#title' => t('Panel name'),
     '#description' => t('A unique name used to identify this panel page internally. It must be only be alpha characters and underscores. No spaces, numbers or uppercase characters.'),
+    '#required' => TRUE,
   );
 
   $form['left']['info']['title'] = array(
@@ -294,13 +295,19 @@ function panels_page_edit_form($panel_page) {
  */
 function panels_page_edit_form_validate($form_id, $form_values, $form) {
   // Test uniqueness of name:
-  $query = "SELECT pid FROM {panels_page} WHERE name = '%s'";
-  if (!empty($form_values['pid']) && is_numeric($form_values['pid'])) {
-    $query .= " AND pid != $form_values[pid]";
+  if (!$form_values['name']) {
+    form_error($form['left']['info']['name'], t('Panel name is required.'));
   }
-  if (db_result(db_query($query, $form_values['name']))) {
-    form_error($form['left']['info']['name'], t('Panel name must be unique.'));
+  else {
+    $query = "SELECT pid FROM {panels_page} WHERE name = '%s'";
+    if (!empty($form_values['pid']) && is_numeric($form_values['pid'])) {
+      $query .= " AND pid != $form_values[pid]";
+    }
+    if (db_result(db_query($query, $form_values['name']))) {
+      form_error($form['left']['info']['name'], t('Panel name must be unique.'));
+    }
   }
+
   if (!$form_values['path']) {
     form_error($form['left']['info']['path'], t('Path is required.'));
   }
