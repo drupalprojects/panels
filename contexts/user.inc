@@ -47,21 +47,5 @@ function panels_context_user_settings_form($conf, $external = FALSE) {
     $options[0] = t('External source');
   }
 
-  foreach (taxonomy_get_vocabularies() as $vid => $user) {
-    $options[$vid] = $user->name;
-  }
-
-  $form['vid'] = array(
-    '#title' => t('user'),
-    '#type' => 'select',
-    '#options' => $options,
-    '#default_value' => $conf['vids'],
-    '#prefix' => '<div class="clear-block">',
-    '#suffix' => '</div>',
-  );
-  if ($external) {
-    $form['vid']['#description'] .= ' ' . t('Select external to require this from an external source such as a containing panel page.');
-  }
-
   return $form;
 }
