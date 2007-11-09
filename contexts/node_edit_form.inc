@@ -13,6 +13,7 @@ function panels_node_edit_form_panels_contexts() {
     'context' => 'panels_context_create_node_edit_form',
     'settings form' => 'panels_context_node_edit_form_settings_form',
     'settings form validate' => 'panels_context_node_edit_form_settings_form_validate',
+    'keyword' => 'node_edit',
   );
   return $args;
 }

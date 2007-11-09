@@ -13,6 +13,7 @@ function panels_vocabulary_panels_contexts() {
     'context' => 'panels_context_create_vocabulary',
     'settings form' => 'panels_context_vocabulary_settings_form',
     'settings form validate' => 'panels_context_vocabulary_settings_form_validate',
+    'keyword' => 'vocabulary',
   );
   return $args;
 }

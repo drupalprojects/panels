@@ -861,6 +861,30 @@ function panels_context_get_contexts($contexts) {
   return $return;
 }
 
+/**
+ * Get a group of empty contexts for the object; this assumes all the
+ * standard context types, and doesn't punish you if they aren't
+ * available.
+ */
+function panels_context_load_contexts($object) {
+  // Get contexts from arguments
+  $contexts = array();
+  if (!empty($object->arguments) && is_array($object->arguments)) {
+    $contexts = panels_argument_get_contexts($object->arguments);
+  }
+
+  if (!empty($object->contexts) && is_array($object->contexts)) {
+    $contexts += panels_context_get_contexts($object->contexts);
+  }
+
+  // add contexts from relationships
+  if (!empty($object->relationships) && is_array($object->relationships)) {
+    panels_relationship_get_contexts($object->relationships, $contexts);
+  }
+
+  return $contexts;
+}
+
 // ---------------------------------------------------------------------------
 // panels data loading
 

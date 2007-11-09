@@ -13,6 +13,7 @@ function panels_term_panels_contexts() {
     'context' => 'panels_context_create_term',
     'settings form' => 'panels_context_term_settings_form',
     'settings form validate' => 'panels_context_term_settings_form_validate',
+    'keyword' => 'term',
   );
   return $args;
 }
