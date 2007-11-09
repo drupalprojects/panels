@@ -13,6 +13,7 @@ function panels_user_panels_contexts() {
     'context' => 'panels_context_create_user',
     'settings form' => 'panels_context_user_settings_form',
     'settings form validate' => 'panels_context_user_settings_form_validate',
+    'no ui' => TRUE,
   );
   return $args;
 }

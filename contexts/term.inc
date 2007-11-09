@@ -14,6 +14,7 @@ function panels_term_panels_contexts() {
     'settings form' => 'panels_context_term_settings_form',
     'settings form validate' => 'panels_context_term_settings_form_validate',
     'keyword' => 'term',
+    'no ui' => TRUE,
   );
   return $args;
 }
