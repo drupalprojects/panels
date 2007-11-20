@@ -71,14 +71,6 @@ function panels_page_menu($may_cache) {
       'type' => MENU_LOCAL_TASK,
     );
     $items[] = array(
-      'path' => 'admin/panels/panel-page/add/layout',
-      'title' => t('Add'),
-      'access' => $access,
-      'callback' => 'panels_page_passthru',
-      'callback arguments' => array('panels_page_add_layout_page'),
-      'type' => MENU_LOCAL_TASK,
-    );
-    $items[] = array(
       'path' => 'admin/panels/panel-page/disable',
       'access' => $access,
       'callback' => 'panels_page_passthru',
