@@ -118,7 +118,7 @@ Drupal.Panels.bindPortlet = function() {
 Drupal.Panels.changed = function(item) {
   if (!item.is('.changed')) {
     item.addClass('changed');
-    item.children('div.grabber span.text').prepend(' <b>*</b> ').css('background-color', 'red');
+    item.children('div.grabber span.text').append(' <span class="star">*</span> ');
   }
 };
 
