@@ -400,7 +400,7 @@ function panels_get_pane_edit_form($pane, $contexts, $parents) {
  */
 function panels_show_pane($display, $pane, $left_buttons, $buttons, $skin = TRUE) {
   $block = panels_render_pane($display, $pane);
-  $title = panels_get_pane_title($pane);
+  $title = panels_get_pane_title($pane, $display->context);
 
   $output = theme('panels_pane_dnd', $block, $pane->pid, $title, $left_buttons, $buttons);
   if ($skin) {
@@ -703,7 +703,7 @@ function panels_edit_pane_config_form($display, $pid = NULL) {
     '#value' => $content_type_id,
   );
 
-  $return->title = t('Configure !s', array('!s' => panels_get_pane_title($pane)));
+  $return->title = t('Configure !s', array('!s' => panels_get_pane_title($pane, $display->context)));
 
   $form['configuration'] = panels_get_pane_edit_form($pane, $display->context, array('configuration'));
   $form['configuration']['#tree'] = true;
