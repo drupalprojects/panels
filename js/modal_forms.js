@@ -122,8 +122,11 @@ Drupal.Panels.Subform.bindAjaxResponse = function(data) {
     $('#panels-modal').unmodalContent();
   }
   else if (data.type == 'replace') {
-    $('#panel-pane-' + data.id + ' .panel-pane-collapsible').html(data.output);
-    $('#panel-pane-' + data.id + ' .panel-pane-collapsible').each(Drupal.Panels.bindPortlet);
+    $('#panel-pane-' + data.id + ' .panel-pane-collapsible')
+      .html(data.output)
+      .each(Drupal.Panels.bindPortlet);
+    Drupal.Panels.changed($('#panel-pane-' + data.id));
+
     // dismiss the dialog
     $('#panels-modal').unmodalContent();
   } 

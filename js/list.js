@@ -143,7 +143,6 @@ Drupal.list = function(base, settings) {
     if (!item.is('.changed')) {
       item.addClass('changed').css('color', 'red');
       item.children('td:first').prepend(' <b>*</b> ');
-      $('p.nodequeue-warning').css('color', 'red');
     }
   }
 
