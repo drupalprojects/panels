@@ -25,7 +25,7 @@ function panels_term_parent_panels_relationships() {
 function panels_term_parent_context($context = NULL, $conf) {
   // If unset it wants a generic, unfilled context, which is just NULL
   if (empty($context->data)) {
-    return panels_context_create('term', NULL);
+    return panels_context_create_empty('term');
   }
 
   if (isset($context->data)) {

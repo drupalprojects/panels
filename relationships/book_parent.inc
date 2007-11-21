@@ -25,7 +25,7 @@ function panels_book_parent_panels_relationships() {
 function panels_book_parent_context($context = NULL, $conf) {
   // If unset it wants a generic, unfilled context, which is just NULL
   if (empty($context->data)) {
-    return new panels_context(array('book_parent', 'node'), NULL);
+    return panels_context_create_empty('node');
   }
 
   if (isset($context->data->parent)) {
@@ -46,7 +46,7 @@ function panels_book_parent_context($context = NULL, $conf) {
       // load the node
       $node = node_load($nid);
       // Generate the context.
-      return new panels_context(array('book_parent', 'node'), $node);
+      return panels_context_create('node', $node);
     }
   }
 }
