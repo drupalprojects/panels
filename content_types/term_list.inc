@@ -44,6 +44,8 @@ function panels_content_term_list($conf, $panel_args, $context) {
       case 'sibling':
         $parent = db_result(db_query("SELECT parent FROM {term_hierarchy} WHERE tid = %d", $term->tid));
         $terms = taxonomy_get_children($parent, $term->vid);
+        // Remove the term that started this.
+        unset($terms[$term->tid]);
         break;
       case 'synonyms':
         $terms = taxonomy_get_synonyms($term->tid);
