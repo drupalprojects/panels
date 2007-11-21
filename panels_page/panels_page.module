@@ -249,6 +249,16 @@ function panels_page_admin_menu_items(&$items, $base, $page) {
     'type' => MENU_LOCAL_TASK,
   );
 
+  $items[] = array(
+    'path' => $base . '/edit/context',
+    'title' => t('Context'),
+    'access' => $access,
+    'callback' => 'panels_page_passthru',
+    'callback arguments' => array('panels_page_edit_context', $page->name),
+    'weight' => -4,
+    'type' => MENU_LOCAL_TASK,
+  );
+
   // Set up for the 'default' display.
   $items[] = array(
     'path' => $base . '/edit/layout',
