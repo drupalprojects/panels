@@ -56,7 +56,7 @@ function panels_term_context($arg = NULL, $conf = NULL, $empty = FALSE) {
     return FALSE;
   }
 
-  if (array_filter($conf['vids']) && empty($conf['vids'][$term->vid])) {
+  if (!empty($conf['vids']) && array_filter($conf['vids']) && empty($conf['vids'][$term->vid])) {
     return FALSE;
   }
 
