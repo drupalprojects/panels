@@ -847,12 +847,14 @@ function panels_page_admin_view($panel_page, $args) {
 
   $contexts = panels_context_load_contexts($panel_page);
   $count = 0;
-  foreach ($contexts as $context) {
-    $form['fieldset']["arg$count"] = array(
-      '#type' => 'textfield',
-      '#title' => check_plain($context->identifier),
-      '#default_value' => isset($args[$count]) ? $args[$count] : '',
-    );
+  foreach ($contexts as $id => $context) {
+    if (substr($id, 0, 8) == 'argument') {
+      $form['fieldset']["arg$count"] = array(
+        '#type' => 'textfield',
+        '#title' => check_plain($context->identifier),
+        '#default_value' => isset($args[$count]) ? $args[$count] : '',
+      );
+    }
     if (isset($args[$count])) {
       unset($args[$count]);
     }
