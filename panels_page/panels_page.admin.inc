@@ -392,13 +392,6 @@ function panels_page_advanced_form($panel_page) {
 
   $form['right']['advanced'] = array(
     '#type' => 'fieldset',
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-    '#title' => t('Advanced settings'),
-  );
-
-  $form['right']['advanced'] = array(
-    '#type' => 'fieldset',
     '#collapsible' => FALSE,
     '#collapsed' => FALSE,
     '#title' => t('Advanced settings'),

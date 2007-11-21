@@ -14,6 +14,7 @@ function panels_node_panels_contexts() {
     'settings form' => 'panels_context_node_settings_form',
     'settings form validate' => 'panels_context_node_settings_form_validate',
     'keyword' => 'node',
+    'context name' => 'node',
   );
   return $args;
 }

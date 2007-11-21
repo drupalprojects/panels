@@ -666,6 +666,8 @@ function panels_page_view_page($panel_page, $admin) {
   // Get additional contexts from relationships
   panels_relationship_get_contexts($panel_page->relationships, $panel_page->context);
 
+//  dsm($panel_page->context);
+
   $panel_page->keywords = panels_context_get_keywords($panel_page->context);
   // Figure out which display to use.
   if (isset($display_candidate)) {
