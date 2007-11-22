@@ -20,7 +20,6 @@ function panels_node_menu($may_cache) {
       'path' => 'node/add/panel',
       'title' => t('Panel'),
       'access' => user_access('create panel-nodes'),
-      'callback' => 'panels_node_add',
       'type' => MENU_NORMAL_ITEM,
     );
     $items[] = array(

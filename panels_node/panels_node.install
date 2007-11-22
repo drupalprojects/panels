@@ -47,3 +47,10 @@ function panels_node_uninstall() {
       break;
   }
 }
+
+function panels_node_update_5000() {
+  $ret = array();
+  $ret[] = update_sql("UPDATE {system} SET weight = 11 WHERE name = 'panels_node'");
+  menu_rebuild();
+  return $ret;
+}
