@@ -40,6 +40,10 @@ function panels_content_node($conf, $panel_args) {
     }
   }
 
+  if (!is_numeric($nid)) {
+    return;
+  }
+
   $node = node_load($nid);
   if (!node_access('view', $node)) {
     return;
@@ -139,6 +143,10 @@ function panels_admin_validate_node($form, $form_values) {
  * Returns the administrative title for a node.
  */
 function panels_admin_title_node($conf) {
+  if (!is_numeric($conf['nid'])) {
+    return t('Node loaded from @var', array('@var' => $conf['nid']));
+  }
+
   $node = node_load($conf['nid']);
   if ($node) {
     return check_plain($node->title);
