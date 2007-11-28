@@ -5,7 +5,9 @@
  * Contains the javascript for the Panels display editor.
  */
 
-Drupal.Panels = {};
+if (!Drupal.Panels) {
+  Drupal.Panels = {};
+}
 
 /** edit settings button **/
 Drupal.Panels.clickEdit = function() {

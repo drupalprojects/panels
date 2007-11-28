@@ -101,11 +101,11 @@ Drupal.Panels.Subform.bindAjaxResponse = function(data) {
     $('a.panels-modal-add-config').click(Drupal.Panels.Subform.bindClickAddLink);
 
     if ($('#override-title-checkbox').size()) {
-      Drupal.Panels.bindCheckBox('#override-title-checkbox', '#override-title-textfield');
+      Drupal.Panels.Checkboxes.bindCheckbox('#override-title-checkbox', ['#override-title-textfield']);
     }
 
     if ($('#use-pager-checkbox').size()) {
-      Drupal.Panels.bindCheckBox('#use-pager-checkbox', '#use-pager-textfield');
+      Drupal.Panels.Checkboxes.bindCheckbox('#use-pager-checkbox', ['#use-pager-textfield']);
     }
 
     // hack: allow collapsible textareas to work
