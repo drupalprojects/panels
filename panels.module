@@ -519,7 +519,13 @@ function panels_export_display($display, $prefix = '') {
 }
 
 function panels_var_export($object, $prefix = '') {
-  $output = var_export($object, TRUE);
+  if (is_array($object) && empty($object)) {
+    $output = 'array()';
+  }
+  else {
+    $output = var_export($object, TRUE);
+  }
+
   if ($prefix) {
     $output = str_replace("\n", "\n$prefix", $output);
   }
