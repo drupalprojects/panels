@@ -8,7 +8,6 @@ Drupal.Panels.Checkboxes = {};
 
 /** Bind an item to a checkbox to auto disable it when unchecked **/
 Drupal.Panels.Checkboxes.bindCheckbox = function(checkbox, gadget) {
-  console.log(checkbox);
   var clickCheckBox = function() {
     var status = !$(checkbox).attr('checked');
 

@@ -282,6 +282,12 @@ function theme_panels_flexible($id, $content, $settings) {
     $settings = panels_flexible_default_panels();
   }
 
+  // Special check for updating.
+  if (empty($settings['width_type'])) {
+    $settings['width_type'] = '%';
+    $settings['percent_width'] = 100;
+  }
+
   if ($id) {
     $idstr = " id='$id'";
     $idcss = "#$id";
