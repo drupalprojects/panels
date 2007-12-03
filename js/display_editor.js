@@ -518,8 +518,6 @@ Drupal.Panels.attachPane = function(parent) {
       .each(Drupal.Panels.bindPortlet);
   }
 
-  Drupal.Panels.changed($(parent));
-
   $(parent).find('div.grabber').panelsDraggable();
 
   Drupal.Panels.bindClickCache();
