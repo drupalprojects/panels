@@ -665,6 +665,8 @@ function panel_page_fetch_panel_page($panel_page, $did) {
 
   if (empty($did)) {
     $panel_page->display = panels_load_display($panel_page->did);
+    $panel_page->display->owner = $panel_page;
+    $panel_page->display->owner->id = $panel_page->name;
   }
   else {
     $panel_page->display = panels_page_fetch_display($panel_page, $did);

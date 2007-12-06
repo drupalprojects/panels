@@ -1,9 +1,5 @@
 // $Id$
 
-if (!Drupal.Panels) {
-  Drupal.Panels = {};
-}
-
 Drupal.Panels.Checkboxes = {};
 
 /** Bind an item to a checkbox to auto disable it when unchecked **/

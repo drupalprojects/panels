@@ -86,7 +86,7 @@ function panels_common_settings($module_name = 'panels_common') {
     '#value' => t('Submit'),
   );
 
-  drupal_add_css(drupal_get_path('module', 'panels_page') . '/css/panels_page.css');
+  drupal_add_css(panels_get_path('css/panels_page.css'));
   return $form;
 }
 

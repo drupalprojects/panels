@@ -62,8 +62,17 @@ function panels_content_node_content($conf, $panel_args, $context) {
     $block->content = panels_admin_node_content($node, $conf);
   }
 
+  if (node_access('update', $node)) {
+    $block->admin_links['update'] = array(
+      'title' => t('Edit node'),
+      'alt' => t("Edit this node"),
+      'href' => "node/$node->nid/edit",
+      'query' => drupal_get_destination(),
+    );
+  }
+
   if (!empty($conf['link']) && $node) {
-    $block->subject_link = $conf['link'];
+    $block->title_link = $conf['link'];
   }
 
   return $block;

@@ -5,10 +5,6 @@
  * Contains the javascript for the Panels display editor.
  */
 
-if (!Drupal.Panels) {
-  Drupal.Panels = {};
-}
-
 /** edit settings button **/
 Drupal.Panels.clickEdit = function() {
   // show the empty dialog right away.

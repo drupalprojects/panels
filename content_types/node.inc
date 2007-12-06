@@ -49,6 +49,15 @@ function panels_content_node($conf, $panel_args) {
     return;
   }
 
+  if (node_access('update', $node)) {
+    $block->admin_links['update'] = array(
+      'title' => t('Edit node'),
+      'alt' => t("Edit this node"),
+      'href' => "node/$node->nid/edit",
+      'query' => drupal_get_destination(),
+    );
+  }
+
   $block->module = 'node';
   $block->delta = $node->nid;
 

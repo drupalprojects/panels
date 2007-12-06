@@ -30,6 +30,15 @@ function panels_content_term_description($conf, $panel_args, $context) {
   if ($term) {
     $block->content = filter_xss_admin($term->description);
     $block->delta = $term->tid;
+
+    if (user_access('administer taxonomy')) {
+      $block->admin_links['update'] = array(
+        'title' => t('Edit term'),
+        'alt' => t("Edit this term"),
+        'href' => "admin/content/taxonomy/edit/term/$term->tid",
+        'query' => drupal_get_destination(),
+      );
+    }
   }
   else {
     $block->content = t('Term description goes here.');

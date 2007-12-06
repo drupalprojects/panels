@@ -5,10 +5,6 @@
  * Contains the javascript for the Panels display editor.
  */
 
-if (!Drupal.Panels) {
-  Drupal.Panels = {};
-}
-
 /** add content button **/
 Drupal.Panels.clickAdd = function() {
   var id = $(this)[0].id.replace('pane-add-', '');

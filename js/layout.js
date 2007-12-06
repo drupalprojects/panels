@@ -5,11 +5,11 @@
  * Contains javascript to make layout modification a little nicer.
  */
 
-Drupal.PanelsLayout = {};
-Drupal.PanelsLayout.autoAttach = function() {
+Drupal.Panels.Layout = {};
+Drupal.Panels.Layout.autoAttach = function() {
   $('div.form-item div.layout-icon').click(function() {
     $(this).prev().find('input').attr('checked', true);
   });
 }
 
-$(Drupal.PanelsLayout.autoAttach);
+$(Drupal.Panels.Layout.autoAttach);

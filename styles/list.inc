@@ -27,8 +27,8 @@ function panels_list_panels_styles() {
 function theme_panels_list_style_render_panel($display, $panel_id, $panes, $settings) {
   $items = array();
 
-  foreach ($panes as $pane_id => $pane) {
-    $items[] = theme('panels_pane', $pane, $display);
+  foreach ($panes as $pane_id => $content) {
+    $items[] = theme('panels_pane', $content, $display->content[$pid], $display);
   }
   return theme('item_list', $items, NULL, $settings['list_type']);
 }
