@@ -476,7 +476,10 @@ function panels_get_pane_content($display, $pane, $args = array(), $context = NU
   $content = FALSE;
   if (empty($pane->cache['method'])) {
     $content = panels_ct_get_content($pane->type, $pane->configuration, $args, $context, $incoming_content);
-    drupal_alter('panels_pane', $content, $pane, $args, $context);
+    foreach (module_implements('panels_pane_content_alter') as $module) {
+      $function = $module . 'panels_pane_content_alter';
+      $function($content, $pane, $args, $context);
+    }
   }
   else {
     $cache = panels_get_cached_content($display, $args, $context, $pane);
