@@ -27,7 +27,6 @@ Drupal.Panels.Checkboxes.bindCheckboxes = function() {
       }
     }
   }
-
 }
 
 $(Drupal.Panels.Checkboxes.bindCheckboxes);

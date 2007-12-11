@@ -35,7 +35,7 @@ div.panel-pane div.panel-hide {
 div.panel-pane div.hover {
   display: block;
   position: absolute;
-  z-index: 20;
+  z-index: 200;
   margin-top: -1.5em;
 }
 
