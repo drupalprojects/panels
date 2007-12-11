@@ -819,20 +819,6 @@ function panels_page_import_form_submit($formid, $form) {
   }
 }
 
-function panels_page_get_url($panel_page, $args) {
-  $parts = explode('/', $panel_page->path);
-  $url = array();
-  foreach ($parts as $part) {
-    if ($part == '%') {
-      $url[] = array_shift($args);
-    }
-    else {
-      $url[] = $part;
-    }
-  }
-  return implode('/', array_merge($url, $args));
-}
-
 function panels_page_admin_view($panel_page, $args) {
   $form = array();
 

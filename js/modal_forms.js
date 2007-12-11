@@ -137,6 +137,9 @@ Drupal.Panels.Subform.bindAjaxResponse = function(data) {
   } 
 }
 
+/**
+ * Display the modal
+ */
 Drupal.Panels.Subform.show = function() {
   $('#panels-modal').modalContent({
       opacity: '.40', 
@@ -146,6 +149,9 @@ Drupal.Panels.Subform.show = function() {
   $('#modalContent .modal-content').html($('div#panels-throbber').html());
 }
 
+/**
+ * Hide the modal
+ */
 Drupal.Panels.Subform.dismiss = function() {
   $('#panels-modal').unmodalContent();
 }

@@ -1,7 +1,7 @@
 /* $Id$ */
 
 .panel-1col { 
-  overflow: hidden; 
+/*  overflow: hidden;  */
 }
 
 .panel-2col .panel-col-first .inside { 
