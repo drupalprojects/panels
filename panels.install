@@ -110,7 +110,7 @@ EOT
           layout VARCHAR(32),
           layout_settings longtext,
           panel_settings longtext,
-          cache text,
+          cache text
         ) /*!40100 DEFAULT CHARACTER SET utf8 */
 EOT
       );
