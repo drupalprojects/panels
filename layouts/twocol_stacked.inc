@@ -27,20 +27,20 @@ function theme_panels_twocol_stacked($id, $content) {
   }
 
   $output = <<<EOT
-<div class="panel-2col-stacked clear-block" $idstr>
-  <div class="panel-col-top">
+<div class="panel-2col-stacked clear-block panel-display" $idstr>
+  <div class="panel-col-top panel-panel">
     <div class="inside">$content[top]</div>
   </div>
   <div class="center-wrapper">
-    <div class="panel-col-first">
+    <div class="panel-col-first panel-panel">
       <div class="inside">$content[left]</div>
     </div>
 
-    <div class="panel-col-last">
+    <div class="panel-col-last panel-panel">
       <div class="inside">$content[right]</div>
     </div>
   </div>
-  <div class="panel-col-bottom">
+  <div class="panel-col-bottom panel-panel">
     <div class="inside">$content[bottom]</div>
   </div>
 </div>

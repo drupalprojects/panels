@@ -39,32 +39,32 @@ function theme_panels_twocol_bricks($id, $content) {
   }
 
   $output = <<<EOT
-<div class="panel-2col-bricks clear-block" $idstr>
-  <div class="panel-col-top">
+<div class="panel-display panel-2col-bricks clear-block" $idstr>
+  <div class="panel-panel panel-col-top">
     <div class="inside">$content[top]</div>
   </div>
   <div class="center-wrapper">
-    <div class="panel-col-first">
+    <div class="panel-panel panel-col-first">
       <div class="inside">$content[left_above]</div>
     </div>
 
-    <div class="panel-col-last">
+    <div class="panel-panel panel-col-last">
       <div class="inside">$content[right_above]</div>
     </div>
   </div>
-  <div class="panel-col-middle">
+  <div class="panel-panel panel-col-middle">
     <div class="inside">$content[middle]</div>
   </div>
   <div class="center-wrapper">
-    <div class="panel-col-first">
+    <div class="panel-panel panel-col-first">
       <div class="inside">$content[left_below]</div>
     </div>
 
-    <div class="panel-col-last">
+    <div class="panel-panel panel-col-last">
       <div class="inside">$content[right_below]</div>
     </div>
   </div>
-  <div class="panel-col-bottom">
+  <div class="panel-panel panel-col-bottom">
     <div class="inside">$content[bottom]</div>
   </div>
 </div>
