@@ -1139,6 +1139,10 @@ function panels_context_load_contexts($object, $placeholders = TRUE, $contexts =
 
 function panels_context_match_required_contexts($required, $contexts) {
   $return = array();
+  if (!is_array($required)) {
+    return $return;
+  }
+
   foreach ($required as $r) {
     $return[panels_context_context_id($r, 'requiredcontext')] = array_shift($contexts);
   }

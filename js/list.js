@@ -349,7 +349,7 @@ Drupal.list = function(base, settings) {
           return;
         case 'dismiss':
           // just dismiss the dialog.
-          console.log(data.replace);
+//          console.log(data.replace);
           if (data.replace_id && data.replace) {
             $(data.replace_id).html(data.replace);
             changed($(data.replace_id));
