@@ -337,17 +337,6 @@ function theme_panels_flexible($id, $content, $settings) {
     if ($settings['sidebars']['width_type'] == '%') {
       $css .= "$idcss div.panel-flexible-sidebars div.panel-sidebar-middle { width: " . (intval($settings['percent_width']) - intval($settings['sidebars']['left_width']) - intval($settings['sidebars']['right_width'])) . "; }\n";
     }
-    else {
-/*
-      if (!empty($settings['sidebars']['left'])) {
-        $css .= "$idcss div.panel-sidebar-middle { padding-left: " . intval($settings['sidebars']['left_width']) . $settings['sidebars']['width_type'] . "; }\n";
-        $css .= "$idcss div.panel-sidebar-middle .squeeze { margin-left: " . intval($settings['sidebars']['left_width']) . $settings['sidebars']['width_type'] . "; }\n";
-      }
-      if (!empty($settings['sidebars']['right'])) {
-        $width .= "margin-right: " . intval($settings['sidebars']['right_width']) . $settings['sidebars']['width_type'] . ';';
-      }
-*/
-    }
   }
 
   if (!empty($settings['sidebars']['left'])) {
