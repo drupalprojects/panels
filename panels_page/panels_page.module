@@ -737,7 +737,7 @@ function theme_panels_page_render_form($form) {
 /**
  * Load a display based upon information from the $displays list.
  */
-function panels_page_fetch_display(&$panel_page, $id) {
+function panels_page_fetch_display(&$panel_page, $id = NULL) {
   $did = NULL;
   if (empty($id)) {
     // If empty, use the default display.
