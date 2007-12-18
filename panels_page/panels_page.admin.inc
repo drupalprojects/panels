@@ -45,11 +45,9 @@ function panels_page_list_page() {
     $item[] = check_plain($panel_page->name);
     $item[] = $panel_page->type; // this is safe as it's always programmatic
 
-    if (empty($panel_page->display)) {
-      $panel_page->display = panels_load_display($panel_page->did);
-    }
+    $display = panels_page_fetch_display($panel_page);
 
-    $item[] = check_plain($layouts[$panel_page->display->layout]['title']);
+    $item[] = check_plain($layouts[$display->layout]['title']);
     $item[] = $path;
     $item[] = implode(' | ', $ops);
     $items[] = $item;
