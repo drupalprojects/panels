@@ -811,7 +811,7 @@ function panels_argument_load_contexts($arguments, &$contexts, $args) {
  */
 function panels_argument_get_display($arguments, $contexts) {
   $display_candidate = NULL;
-  foreach ($arguments as $argument) {
+  foreach ($arguments as $i => $argument) {
     $id = panels_argument_context_id($argument);
     if (!empty($contexts[$id]) && !empty($contexts[$id]->data)) {
       $context = $contexts[$id];
