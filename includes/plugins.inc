@@ -722,6 +722,7 @@ function panels_get_pane_title(&$pane, $context = array(), $incoming_content = N
 function panels_argument_get_context($argument, $arg, $empty = FALSE) {
   if ($function = panels_plugin_get_function('arguments', $argument['name'], 'context')) {
     $context = $function($arg, $argument['argument_settings'], $empty);
+
     if ($context) {
       $context->identifier = $argument['identifier'];
       $context->page_title = $argument['title'];

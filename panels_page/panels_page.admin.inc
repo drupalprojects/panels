@@ -736,6 +736,7 @@ function panels_page_edit_content($panel_page, $did = NULL) {
 
   // Collect a list of contexts required by the arguments on this page.
   $contexts = panels_context_load_contexts($panel_page);
+
   $display->context = $contexts;
   $display->args = array();
 

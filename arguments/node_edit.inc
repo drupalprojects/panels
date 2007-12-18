@@ -23,7 +23,7 @@ function panels_node_edit_panels_arguments() {
 /**
  * Discover if this argument gives us the node we crave.
  */
-function panels_node_edit_context($arg = NULL, $conf = NULL, $context = NULL, $index = 0) {
+function panels_node_edit_context($arg = NULL, $conf = NULL, $empty = FALSE) {
   // If unset it wants a generic, unfilled context.
   if ($empty) {
     return panels_context_create_empty('node_edit_form');
