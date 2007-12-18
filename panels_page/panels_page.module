@@ -676,7 +676,7 @@ function panels_page_view_page($panel_page, $admin) {
   $panel_page->keywords = panels_context_get_keywords($panel_page->context);
 
   // Figure out which display to use.
-  $display_id = panels_argument_get_display($panel_page->arguments, $panel_page->context));
+  $display_id = panels_argument_get_display($panel_page->arguments, $panel_page->context);
   $display = panels_page_fetch_display($panel_page, $display_id);
 
   // Figure out if these contexts include a form; will be NULL if there

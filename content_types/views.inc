@@ -289,7 +289,12 @@ function panels_admin_edit_views($id, $parents, $conf) {
 function panels_admin_title_views($conf) {
   $view = views_get_view($conf['view']);
   $title = views_get_title($view, 'admin');
-  return $title ? $title : $view->name;
+
+  // Embed the offset into title information to make it easier to see offsets
+  // of the same view.
+  $offset = intval($conf['offset']);
+  $result = $title ? $title : $view->name;
+  return $result . ($offset ? (' (offset ' . $offset . ')') : '');
 }
 
 /**

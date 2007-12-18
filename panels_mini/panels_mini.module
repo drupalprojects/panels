@@ -848,6 +848,8 @@ function panels_mini_content($conf, $panel_args, &$contexts) {
 
   $mini->display->args = $panel_args;
   $mini->display->css_id = 'mini-panel-' . $conf['name'];
+  $mini->display->owner = $mini;
+  $mini->display->owner->id = $mini->name; // unique ID of this mini.
 
   $block->module = 'panels_mini';
   $block->delta = $conf['name'];
