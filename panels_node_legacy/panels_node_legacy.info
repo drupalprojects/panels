@@ -1,0 +1,6 @@
+; $Id$
+name = Legacy node panes
+description = Allows embedding specific nodes into panes without using contexts
+package = "Panels"
+dependencies = panels
+
