@@ -64,7 +64,8 @@ function panels_admin_title_node_comment_form($conf, $context) {
 function panels_comment_form($edit) {
   $form = comment_form($edit);
   // force the form to come back to here.
-  $path = parse_url($_GET['q'], PHP_URL_PATH);
+  $url = parse_url($_GET['q']);
+  $path = $url['path'];
   $form['#action'] = url($path, NULL, 'new');
   $form['#redirect'] = array($path, NULL, 'new');
   $form['#validate']['comment_form_validate'] = array();
