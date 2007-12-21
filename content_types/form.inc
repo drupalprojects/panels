@@ -4,19 +4,17 @@
  * Callback function to supply a list of content types.
  */
 function panels_form_panels_content_types() {
-  if (module_exists('comment')) {
-    $items['form'] = array(
-      'title' => t('Generic form'),
-      'content_types' => 'panels_admin_content_types_form',
-      'single' => TRUE, // only provides a single content type
-      'render callback' => 'panels_content_form',
-      'add callback' => 'panels_admin_edit_form',
-      'edit callback' => 'panels_admin_edit_form',
-      'title callback' => 'panels_admin_title_form',
-      'render last' => TRUE,
-    );
-    return $items;
-  }
+  $items['form'] = array(
+    'title' => t('Generic form'),
+    'content_types' => 'panels_admin_content_types_form',
+    'single' => TRUE, // only provides a single content type
+    'render callback' => 'panels_content_form',
+    'add callback' => 'panels_admin_edit_form',
+    'edit callback' => 'panels_admin_edit_form',
+    'title callback' => 'panels_admin_title_form',
+    'render last' => TRUE,
+  );
+  return $items;
 }
 
 /**
