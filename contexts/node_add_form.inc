@@ -13,6 +13,7 @@ function panels_node_add_form_panels_contexts() {
     'context' => 'panels_context_create_node_add_form',
     'settings form' => 'panels_context_node_add_form_settings_form',
     'keyword' => 'node_add',
+    'context name' => 'node_add_form',
   );
   return $args;
 }

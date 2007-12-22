@@ -14,6 +14,7 @@ function panels_vocabulary_panels_contexts() {
     'settings form' => 'panels_context_vocabulary_settings_form',
     'settings form validate' => 'panels_context_vocabulary_settings_form_validate',
     'keyword' => 'vocabulary',
+    'context name' => 'vocabulary',
   );
   return $args;
 }
