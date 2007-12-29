@@ -1,6 +1,6 @@
 ; $Id$
 name = Legacy node panes
-description = Allows embedding specific nodes into panes without using contexts
+description = "Allows embedding specific nodes into panes without using contexts; this module is deprecated and should only be used if necessary"
 package = "Panels"
 dependencies = panels
 
