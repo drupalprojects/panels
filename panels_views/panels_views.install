@@ -6,6 +6,13 @@
  */
 function panels_views_install() {
   // This is a poor man's schema implementation ala Drupal 6.
+
+  // The documentation says this shouldn't be necessary but sometimes the
+  // .module file is not actually loaded at this time, so we have to load it.
+  if (!function_exists('panels_views_pane_fields')) {
+    require_once drupal_get_path('module', 'panels_views') . '/panels_views.module';
+  }
+
   $fields = panels_views_pane_fields();
   $sql = "";
   foreach ($fields as $field => $data) {
