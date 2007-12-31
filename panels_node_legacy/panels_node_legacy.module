@@ -198,4 +198,7 @@ function panels_node_legacy_title($conf) {
   if ($node) {
     return check_plain($node->title);
   }
+  else {
+    return t('Missing/deleted node');
+  }
 }

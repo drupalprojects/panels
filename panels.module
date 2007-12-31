@@ -703,7 +703,7 @@ function panels_render_panes($display) {
   // can do the leftovers of forms).
   $panes = array();
   $later = array();
-
+  
   foreach ($display->content as $pid => $pane) {
     // If the user can't see this pane, do not render it.
     if (!panels_pane_access($pane)) {
