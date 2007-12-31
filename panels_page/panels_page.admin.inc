@@ -333,6 +333,12 @@ function panels_page_edit_form_validate($form_id, $form_values, $form) {
     if ($result) {
       form_error($form['left']['info']['path'], t('Path may not be the same as another panel page path.'));
     }
+
+    // validate against aliases
+    $result = db_result(db_query("SELECT src FROM {url_alias} WHERE dst = '%s'", $form_values['path']));
+    if ($result) {
+      form_error($form['left']['info']['path'], t('The path you have chosen is already aliased to @src.', array('@src' => $result)));
+    }
   }
 }
 

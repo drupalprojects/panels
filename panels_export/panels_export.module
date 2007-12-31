@@ -41,6 +41,7 @@ function panels_export_perm() {
  * Page callback to export panels in bulk.
  */
 function panels_export_export() {
+  $exportables = array();
   foreach (module_implements('panels_exportables') as $module) {
     $function = $module . '_panels_exportables';
     $exportables[$module] = $function('list');
