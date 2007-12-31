@@ -349,7 +349,7 @@ function panels_common_cache_clear($obj, $did) {
  */
 function panels_cron() {
   // delete anything 7 days old or more.
-  db_query("DELETE FROM {panels_cache_object} WHERE timestamp < %d", time() - (86400 * 7));
+  db_query("DELETE FROM {panels_object_cache} WHERE timestamp < %d", time() - (86400 * 7));
 }
 
 /**
