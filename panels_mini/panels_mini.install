@@ -49,6 +49,9 @@ function panels_mini_uninstall() {
   $result = db_query("SELECT * FROM {panels_mini} ORDER BY title");
   while ($panel_mini = db_fetch_object($result)) {
     // Delete all associated displays.
+    if (!function_exists('panels_delete_display')) {
+      require_once drupal_get_path('module', 'panels') .'/panels.module';
+    }
     panels_delete_display($panel_mini->did);
 
     // Delete all configured blocks.
