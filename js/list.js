@@ -300,6 +300,10 @@ Drupal.list = function(base, settings) {
             return false;
             
           });
+          // hack: allow collapsible textareas to work
+          Drupal.Panels.Subform.bindCollapsible();
+
+          Drupal.Panels.Subform.bindAutocomplete();
           return;
         case 'add':
           // add new data

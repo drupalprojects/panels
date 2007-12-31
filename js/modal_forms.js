@@ -56,7 +56,7 @@ Drupal.Panels.Subform.bindCollapsible = function() {
 /** ripped from Drupal cause it's not easy to re-autoattach cleanly */
 Drupal.Panels.Subform.bindAutocomplete = function() {
   var acdb = [];
-  $('.panels-modal-content input.autocomplete').each(function () {
+  $('div.panels-modal-content input.autocomplete').each(function () {
     var uri = this.value;
     if (!acdb[uri]) {
       acdb[uri] = new Drupal.ACDB(uri);
