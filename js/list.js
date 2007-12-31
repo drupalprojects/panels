@@ -357,6 +357,10 @@ Drupal.list = function(base, settings) {
           if (data.replace_id && data.replace) {
             $(data.replace_id).html(data.replace);
             changed($(data.replace_id));
+            // Run a bind for every list we know about
+            for (list in Drupal.list.lists) {
+              Drupal.list.lists[list].bindButtons();
+            }
           }
 
           $('#panels-modal').unmodalContent();
