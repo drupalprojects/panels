@@ -1385,3 +1385,35 @@ function panels_views_export($pv, $prefix = '') {
 
   return $output;
 }
+
+/**
+ * Implementation of hook_panels_exportables()
+ */
+function panels_views_panels_exportables($op = 'list', $panels = NULL, $name = 'foo') {
+  static $all_panels = NULL;
+  if ($op == 'list') {
+    if (empty($all_panels)) {
+      $all_panels = panels_views_load_all();
+    }
+
+    foreach ($all_panels as $name => $panel) {
+      $return[$name] = check_plain($name) . ' (' . check_plain($panel->title) . ')';
+    }
+    return $return;
+  }
+
+  if ($op == 'export') {
+    $code = "/**\n";
+    $code .= " * Implementation of hook_default_panel_views()\n";
+    $code .= " */\n";
+    $code .= "function " . $name . "_default_panel_views() {\n";
+    foreach ($panels as $panel => $truth) {
+      $code .= panels_views_export($all_panels[$panel], '  ');
+      $code .= '  $panel_views[\'' . check_plain($panel) . '\'] = $panel_view;' . "\n\n\n";
+    }
+    $code .= "  return \$panel_views;\n";
+    $code .= "}\n";
+    return $code;
+  }
+
+}
