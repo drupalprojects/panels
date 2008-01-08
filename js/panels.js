@@ -9,8 +9,8 @@ Drupal.Panels.autoAttach = function() {
       $('div.panel-hide', this).addClass("hover"); return true;
     }
    );
-   $("div.panel-pane").mouseout(
-    function(){
+  $("div.panel-pane").mouseout(
+   function(){
       $('div.panel-hide', this).removeClass("hover"); return true;
     }
   );
