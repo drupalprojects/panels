@@ -898,7 +898,7 @@ function panels_render_panel($display, $panel, $panes) {
     $owner_id = $display->owner->id;
   }
 
-  return theme($style['render panel'], $display, $owner_id, $panes, $display->panel_settings['style_settings'], $panel);
+  return theme($style['render panel'], $display, $owner_id, $panes, $style_settings, $panel);
 }
 
 
