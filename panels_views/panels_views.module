@@ -1116,11 +1116,6 @@ function panels_views_pane_fields() {
       'arg' => '%d',
       'definition' => 'integer',
     ),
-    'arguments' => array(
-      'default' => '',
-      'arg' => "'%s'",
-      'definition' => 'integer',
-    ),
     'contexts' => array(
       'default' => array(),
       'arg' => "'%s'",
