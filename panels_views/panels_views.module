@@ -689,6 +689,7 @@ function panels_views_panels_content_types() {
  */
 function panels_views_content_types() {
   $panes = panels_views_load_all();
+  $types = array();
   foreach ($panes as $name => $pv) {
     // Skip default but disabled panel views.
     if (!empty($pv->disabled)) {

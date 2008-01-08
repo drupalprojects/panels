@@ -720,7 +720,7 @@ function panels_page_edit_layout_settings($panel_page, $did = NULL, $next = NULL
 
   // The following form will return the $display upon successful submit, if
   // we didn't send the $dest. Which we don't, here.
-  $output = panels_edit_layout_settings($panel_page->display, $button);
+  $output = panels_edit_layout_settings($display, $button);
   if (is_object($output)) {
     panels_page_set_display($panel_page, $did, $output);
     drupal_goto($dest);
