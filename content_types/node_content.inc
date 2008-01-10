@@ -72,7 +72,7 @@ function panels_content_node_content($conf, $panel_args, $context) {
   }
 
   if (!empty($conf['link']) && $node) {
-    $block->title_link = $conf['link'];
+    $block->title_link = "node/$nide->nid";
   }
 
   return $block;
