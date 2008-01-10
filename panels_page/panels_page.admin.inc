@@ -56,7 +56,7 @@ function panels_page_list_page() {
       case 'title':
         $sorts[] = $item[0];
         break;
-      case 'title':
+      case 'name':
       default:
         $sorts[] = $item[1];
         break;
