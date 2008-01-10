@@ -33,7 +33,7 @@ div.panel-pane div.panel-hide {
   display: none;
 }
 
-div.panel-pane div.hover {
+div.panel-pane div.panel-hide-hover {
   display: block;
   position: absolute;
   z-index: 200;
