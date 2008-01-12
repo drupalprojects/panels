@@ -1024,7 +1024,9 @@ function panels_context_select($contexts, $required, $context) {
   if (is_array($required)) {
     $result = array();
     foreach ($required as $id => $r) {
-      $result[] = _panels_context_select($contexts, $r, $context[$id]);
+      if ($result[] = _panels_context_select($contexts, $r, $context[$id]) == FALSE) {
+        return FALSE;
+      }
     }
     return $result;
   }
@@ -1034,7 +1036,7 @@ function panels_context_select($contexts, $required, $context) {
 
 function _panels_context_select($contexts, $required, $context) {
   if (!is_object($required)) {
-    return;
+    return FALSE;
   }
   return $required->select($contexts, $context);
 }
