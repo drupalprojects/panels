@@ -846,6 +846,7 @@ function panels_pane_select_context($pane, $contexts) {
   }
 
   $context = panels_context_select($contexts, $content_type[$pane->subtype]['required context'], $pane->configuration['context']);
+
   if (empty($context)) {
     return FALSE;
   }
