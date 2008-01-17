@@ -172,12 +172,14 @@ function panels_uninstall() {
       db_query("DROP TABLE {panels_display}");
       db_query("DROP TABLE {panels_pane}");
       db_query("DROP TABLE {panels_page}");
+      db_query("DROP TABLE {panels_object_cache}");
       break;
     case 'mysql':
     case 'mysqli':
       db_query("DROP TABLE IF EXISTS {panels_display}");
       db_query("DROP TABLE IF EXISTS {panels_pane}");
       db_query("DROP TABLE IF EXISTS {panels_page}");
+      db_query("DROP TABLE IF EXISTS {panels_object_cache}");
       break;
   }
 }

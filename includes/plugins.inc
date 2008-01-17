@@ -381,12 +381,13 @@ function panels_ct_get_types($type) {
 
   $function = $content_type['content_types'];
   if (is_array($function)) {
-    return $function;
+    return (array) $function;
   }
 
   if (function_exists($function)) {
-    return $function($conf);
+    return (array) $function($conf);
   }
+  return array();
 }
 
 /**
