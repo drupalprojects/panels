@@ -208,6 +208,6 @@ function panels_node_legacy_title($conf) {
     return check_plain($node->title);
   }
   else {
-    return t('Missing/deleted node');
+    return t('Deleted/missing node @nid', array('@nid' => $conf['nid']));
   }
 }

@@ -480,12 +480,12 @@ function panels_show_pane($display, $pane, $left_buttons, $buttons, $skin = TRUE
     $block = new stdClass();
     $block->title = t('Missing content type');
     $block->content = t('This pane\'s content type is either missing or has been deleted. This pane will not render.');
-    $title = t('Unknown');
   }
   else {
     $block = panels_render_pane($display, $pane);
-    $title = panels_get_pane_title($pane, $display->context);
   }
+
+    $title = panels_get_pane_title($pane, $display->context);
 
   $output = theme('panels_pane_dnd', $block, $pane->pid, $title, $left_buttons, $buttons);
   if ($skin) {

@@ -195,8 +195,8 @@ function panels_admin_fix_block_tree(&$form, $key = NULL) {
  */
 function panels_admin_title_block($conf) {
   $block = module_invoke($conf['module'], 'block', 'list');
-  if (empty($block)) {
-    return t('Deleted/missing block');
+  if (empty($block) || empty($block[$conf['delta']])) {
+    return t('Deleted/missing block @module-@delta', array('@module' => $conf['module'], '@delta' => $conf['delta']));
   }
 
   $title = filter_xss_admin($block[$conf['delta']]['info']);

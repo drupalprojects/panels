@@ -836,6 +836,7 @@ function panels_page_import_form_submit($formid, $form) {
     $_SESSION['pp_import'] = $page;
     $output = drupal_get_form('panels_page_edit_form', $page);
     print theme('page', $output);
+    exit;
   }
   else {
     drupal_set_message(t('Unable to get a panel page out of that.'));

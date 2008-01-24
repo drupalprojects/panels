@@ -314,7 +314,7 @@ function panels_views_legacy_edit($id, $parents, $conf) {
 function panels_views_legacy_title($conf) {
   $view = views_get_view($conf['view']);
   if (empty($view)) {
-    return t('Deleted/missing view');
+    return t('Deleted/missing view @view', array('@view' => $conf['view']));
   }
   $title = views_get_title($view, 'admin');
   return $title ? $title : $view->name;
