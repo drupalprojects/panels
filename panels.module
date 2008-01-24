@@ -719,6 +719,11 @@ function panels_render_layout($layout, $content, $css_id = NULL, $settings = arr
  * the display theme function.
  */
 function panels_render_panes($display) {
+  // Safety check.
+  if (empty($display->content)) {
+    return array();
+  }
+
   // First, render all the panes into little boxes. We do this here because
   // some panes request to be rendered after other panes (primarily so they
   // can do the leftovers of forms).
