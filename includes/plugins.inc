@@ -101,11 +101,16 @@ class panels_optional_context extends panels_required_context {
 
   function select($contexts, $context) {
     $this->add_empty($contexts);
+    if (empty($context)) {
+      return $contexts['empty'];
+    }
+
     $result = parent::select($contexts, $context);
 
-    // Because this one is optional, turn a FALSE result into a NULL.
-    if ($result === FALSE) {
-      $result = NULL;
+    // Don't flip out if it can't find the context; this is optional, put
+    // in an empty.
+    if ($result == FALSE) {
+      $result = $contexts['empty'];
     }
     return $result;
   }
@@ -711,7 +716,7 @@ function panels_get_pane_title(&$pane, $context = array(), $incoming_content = N
   if (empty($pane->context)) {
     $pane->context = panels_pane_select_context($pane, $context);
     if ($pane->context === FALSE) {
-      return t('Bad context requirements');
+      return t('Does not meet context requirements');
     }
   }
   return panels_ct_get_title($pane->type, $pane->configuration, $pane->context, $incoming_content);
