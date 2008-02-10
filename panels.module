@@ -114,9 +114,7 @@ function panels_menu($may_cache) {
   }
   else {
     drupal_add_css(panels_get_path('css/panels.css'));
-    if (user_access('view pane admin links')) {
-      drupal_add_js(panels_get_path('js/panels.js'));
-    }
+    drupal_add_js(panels_get_path('js/panels.js'));
   }
 
   return $items;
