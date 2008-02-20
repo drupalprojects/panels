@@ -26,9 +26,6 @@ function panels_node_panels_contexts() {
 function panels_context_create_node($empty, $data = NULL, $conf = FALSE) {
   $context = new panels_context('node');
   $context->plugin = 'node';
-  if ($empty) {
-    return $context;
-  }
 
   if ($empty) {
     return $context;
