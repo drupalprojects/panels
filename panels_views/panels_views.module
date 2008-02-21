@@ -726,7 +726,8 @@ function panels_views_render($conf, $panel_args, &$contexts) {
     return;
   }
 
-  $view = views_get_view($pv->view);
+  // Use clone to make sure this is fresh.
+  $view = drupal_clone(views_get_view($pv->view));
   if (empty($view)) {
     return;
   }

@@ -981,7 +981,7 @@ function panels_page_save($panel_page) {
     if (isset($info['display'])) {
       $d = panels_save_display($info['display']);
       $page->displays[$did]['did'] = $d->did;
-      unset($page->displays[$did]['did']);
+      unset($page->displays[$did]['display']);
     }
   }
   // serialize the access string.

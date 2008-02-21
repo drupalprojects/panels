@@ -53,8 +53,10 @@ function panels_views_legacy_render($conf, $panel_args, $contexts) {
     $contexts = array($contexts);
   }
 
-  $view = views_get_view($conf['view']);
-  if ($view) {
+  // Use clone to make sure this is fresh.
+  $v = views_get_view($conf['view']);
+  if ($v) {
+    $view = drupal_clone($v);
     if (function_exists('views_access') && !views_access($view)) {
       return NULL;
     }
