@@ -356,7 +356,7 @@ function theme_panels_flexible($id, $content, $settings) {
   }
 
   // Wrap the whole thing up nice and snug
-  $output = "<div class=\"panel-flexible\" $idstr>\n<div class=\"panel-flexible-sidebars\">\n" . $output . "</div>\n</div>\n";
+  $output = "<div class=\"panel-flexible clear-block\" $idstr>\n<div class=\"panel-flexible-sidebars\">\n" . $output . "</div>\n</div>\n";
   drupal_set_html_head("<style type=\"text/css\" media=\"all\">\n$css</style>\n");
   return $output;
 }
