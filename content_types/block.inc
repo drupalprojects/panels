@@ -62,10 +62,10 @@ function panels_content_block($conf) {
   if ($block_visibility && $block_visibility->pages) {
     if ($block_visibility->visibility < 2) {
       $path = drupal_get_path_alias($_GET['q']);
-      $regexp = '/^('. preg_replace(array('/(\r\n?|\n)/', '/\\\\\*/', '/(^|\|)\\\\<front\\\\>($|\|)/'),  array('|', '.*', '\1'. preg_quote(variable_get('site_frontpage', 'node'), '/') .'\2'), preg_quote($block->pages, '/')) .')$/';
-      $page_match = !($block->visibility xor preg_match($regexp, $path));
+      $regexp = '/^('. preg_replace(array('/(\r\n?|\n)/', '/\\\\\*/', '/(^|\|)\\\\<front\\\\>($|\|)/'),  array('|', '.*', '\1'. preg_quote(variable_get('site_frontpage', 'node'), '/') .'\2'), preg_quote($block_visibility->pages, '/')) .')$/';
+      $page_match = !($block_visibility->visibility xor preg_match($regexp, $path));
     } else {
-      $page_match = drupal_eval($block->pages);
+      $page_match = drupal_eval($block_visibility->pages);
     }
   } else {
     $page_match = TRUE;
