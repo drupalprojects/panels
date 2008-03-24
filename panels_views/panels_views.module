@@ -775,7 +775,7 @@ function panels_views_render($conf, $panel_args, &$contexts) {
   $block->delta = $view->name;
 
   $view_type = $pv->view_type == 'embed' ? 'page' : $pv->view_type;
-  $block->subject = views_get_title($view, $view_type);
+  $block->subject = views_get_title($view, $view_type, $args);
 
   // link to view
   if (($pv->allow_link_to_view && !empty($conf['link_to_view'])) ||
