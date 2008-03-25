@@ -90,6 +90,7 @@ function panels_views_legacy_render($conf, $panel_args, $contexts) {
       $view->url = $conf['url'];
     }
 
+    $block = new stdClass();
     $block->module = 'views';
     $block->delta = $view->name;
 
