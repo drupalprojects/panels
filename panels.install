@@ -138,7 +138,7 @@ EOT
           configuration longtext,
           cache longtext,
           position int(5),
-          KEY (did),
+          KEY (did)
         ) /*!40100 DEFAULT CHARACTER SET utf8 */
 EOT
       );
