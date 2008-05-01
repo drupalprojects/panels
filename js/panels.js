@@ -13,6 +13,14 @@ Drupal.Panels.autoAttach = function() {
         $('div.panel-hide', this).removeClass("panel-hide-hover"); return true;
       }
     );
+    $("div.admin-links").hover(
+      function() {
+        $(this).addClass("admin-links-hover"); return true;
+      },
+      function(){
+        $(this).removeClass("admin-links-hover"); return true;
+      }
+    );
   }
 }
 

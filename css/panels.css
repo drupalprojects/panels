@@ -15,7 +15,8 @@ div.panel-pane div.admin-links li {
   z-index: 201;
 }
 
-div.panel-pane div.admin-links:hover a {
+div.panel-pane div.admin-links:hover a,
+div.panel-pane div.admin-links-hover a {
   color: #000;
 }
 
