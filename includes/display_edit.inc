@@ -1,12 +1,21 @@
 <?php
 // $Id$
 
-/**
- * Main API entry point to edit a panel display.
- *
- * TODO: Doc this. Important.
+/*
+ * @file display_edit.inc
+ * Core Panels API include file containing various display-editing functions.
+ * This includes all the basic editing forms (content, layout, layout settings)
+ * as well as the ajax modal forms associated with them.
  */
-function _panels_edit($display, $destination = NULL, $content_types = NULL) {
+
+/**
+ * Handle calling and processing of the display editing form.
+ * 
+ * Helper function for panels_edit(). 
+ *
+ * @see panels_edit() for details on the various behaviors of this function.
+ */
+function _panels_edit($display, $destination, $content_types) {
   $did = $display->did;
   if (!$did) {
     $display->did = $did = 'new';
