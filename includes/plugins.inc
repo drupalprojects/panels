@@ -1307,7 +1307,7 @@ function panels_load_includes($plugintype, $hook, $file = NULL) {
  * failure to follow the conventions can result in namespace collisions between your
  * module and other modules invoking the panels API.
  * 
- * @ingroup panels-mainapi
+ * @ingroup mainapi
  * 
  * @param string $plugintype
  *   The type of Panels plugin being requested. Can be any of the following seven:
