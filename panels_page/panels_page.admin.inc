@@ -275,7 +275,7 @@ function panels_page_edit_form($panel_page, $next = NULL) {
     '#size' => 35,
     '#default_value' => $panel_page->title,
     '#title' => t('Page title'),
-    '#description' => t('The page title for this panels layout'),
+    '#description' => t("The page title for this panels layout. It will be used as the main title on this panel page, unless it is overriden later."),
   );
 
   $form['left']['info']['css_id'] = array(
@@ -720,7 +720,7 @@ function panels_page_edit_layout_settings($panel_page, $did = NULL, $next = NULL
 
   // The following form will return the $display upon successful submit, if
   // we didn't send the $dest. Which we don't, here.
-  $output = panels_edit_layout_settings($display, $button);
+  $output = panels_edit_layout_settings($display, $button, NULL, $panel_page->title);
   if (is_object($output)) {
     panels_page_set_display($panel_page, $did, $output);
     drupal_goto($dest);
