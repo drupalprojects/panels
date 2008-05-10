@@ -810,13 +810,13 @@ function panels_page_import_form() {
     '#type' => 'textarea',
     '#title' => t('Panel page code'),
     '#cols' => 60,
-    '#rows' => 6,
-    '#description' => t('Cut and paste the results of an Export Panel Page here.'),
+    '#rows' => 15,
+    '#description' => t('Cut and paste the results of an exported panel page here.'),
   );
 
   $form['submit'] = array(
     '#type' => 'submit',
-    '#value' => t("Submit"),
+    '#value' => t('Import'),
   );
 
   $form['#redirect'] = FALSE;
