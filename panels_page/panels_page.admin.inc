@@ -355,6 +355,7 @@ function panels_page_edit_form_submit($form_id, $form_values) {
 
   if ($panel_page->pid == 'new') {
     unset($_SESSION['pp_import']);
+    drupal_set_message(t('Your new panel page %title has been saved.', array('%title' => $panel_page->title)));
     $pid = panels_page_save($panel_page);
     $GLOBALS['form_values']['pid'] = $pid;
     $layout = panels_get_layout($panel_page->display->layout);

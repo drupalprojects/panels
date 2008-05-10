@@ -553,6 +553,7 @@ function panels_mini_edit_form_submit($form_id, $form_values) {
 
   if ($panel_mini->pid == 'new') {
     unset($_SESSION['pm_import']);
+    drupal_set_message(t('Your new mini panel %title has been saved.', array('%title' => $panel_mini->title)));
     panels_mini_save($panel_mini);
     $GLOBALS['form_values']['pid'] = $panel_mini->pid;
 
