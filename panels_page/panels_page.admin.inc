@@ -145,7 +145,7 @@ function panels_page_delete_confirm($panel_page) {
 /*
  * Handle the submit button to delete a panel page.
  */
-function panels_page_delete_confirm_submit($formid, $form) {
+function panels_page_delete_confirm_submit($form_id, $form) {
   if ($form['confirm']) {
     panels_page_delete((object) $form);
     // TODO: Is this necessary or did we feed it the location already?
@@ -826,7 +826,7 @@ function panels_page_import_form() {
 /*
  * Handle the submit button on importing a panel page.
  */
-function panels_page_import_form_submit($formid, $form) {
+function panels_page_import_form_submit($form_id, $form) {
   ob_start();
   eval($form['panel_page']);
   ob_end_clean();
