@@ -491,6 +491,7 @@ function panels_edit_layout_settings_form($display, $finish, $destination, $titl
     $form['display_title']['hide_title'] = array(
       '#type' => 'checkbox',
       '#title' => t('Hide Title?'),
+      '#default_value' => $display->hide_title,
       '#description' => t('Check this box to hide the main page title for this panel.'),
     );
           
