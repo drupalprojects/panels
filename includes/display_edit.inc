@@ -157,10 +157,6 @@ function panels_edit_display($display, $destination) {
     '#id' => 'panels-cache-settings',
   );
 
-  if ($submit) {
-    // The caller wants their own submit.
-    $form['#submit'] = array($submit => array());
-  }
   return $form;
 }
 
