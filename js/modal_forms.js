@@ -115,7 +115,7 @@ Drupal.Panels.Subform.bindAjaxResponse = function(data) {
   }
   else if (data.type == 'add') {
     // Give it all the goodies that our existing panes have.   
-    $('#panel-pane-' + data.area).append(data.output);
+    $('#panel-pane-' + data.region).append(data.output);
     
     Drupal.Panels.attachPane('#panel-pane-' + data.id);
     Drupal.Panels.changed($('#panel-pane-' + data.id));
