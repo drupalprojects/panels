@@ -23,7 +23,7 @@ Drupal.Panels.Subform.bindClickAddLink = function() {
     data: '',
     global: true,
     success: Drupal.Panels.Subform.bindAjaxResponse,
-  	error: function() { alert("An error occurred."); $('#panels-modal').unmodalContent(); },
+  	error: function() { alert("An error occurred while attempting to render the pane configuration modal form.."); $('#panels-modal').unmodalContent(); },
     dataType: 'json'
   });
   return false;

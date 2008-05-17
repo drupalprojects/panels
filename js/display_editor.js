@@ -16,7 +16,7 @@ Drupal.Panels.clickAdd = function() {
     data: '',
     global: true,
     success: Drupal.Panels.Subform.bindAjaxResponse,
-    error: function() { alert("An error occurred."); Drupal.Panels.Subform.dismiss(); },
+    error: function() { alert("An error occurred while attempting to render the Add Content modal form."); Drupal.Panels.Subform.dismiss(); },
     dataType: 'json'
   });
   return false;
@@ -47,7 +47,7 @@ Drupal.Panels.clickCacheSettings = function () {
     data: '',
     global: true,
     success: Drupal.Panels.Subform.bindAjaxResponse,
-    error: function() { alert("An error occurred."); Drupal.Panels.Subform.dismiss(); },
+    error: function() { alert("An error occurred while attempting to render the Caching modal form."); Drupal.Panels.Subform.dismiss(); },
     dataType: 'json'
   });
   return false;
@@ -67,7 +67,7 @@ Drupal.Panels.bindClickConfigure = function (o) {
       data: '',
       global: true,
       success: Drupal.Panels.Subform.bindAjaxResponse,
-      error: function() { alert("An error occurred."); Drupal.Panels.Subform.dismiss(); },
+      error: function() { alert("An error occurred while attempting to render the pane configuration modal form."); Drupal.Panels.Subform.dismiss(); },
       dataType: 'json'
     });
     return false;
@@ -88,7 +88,7 @@ Drupal.Panels.bindClickCache = function (o) {
       data: '',
       global: true,
       success: Drupal.Panels.Subform.bindAjaxResponse,
-      error: function() { alert("An error occurred."); Drupal.Panels.Subform.dismiss(); },
+      error: function() { alert("An error occurred while attempting to render the Caching modal form."); Drupal.Panels.Subform.dismiss(); },
       dataType: 'json'
     });
     return false;

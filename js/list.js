@@ -396,7 +396,7 @@ Drupal.list = function(base, settings) {
               bindAjaxResponse(data);
             },
             error: function(data) {
-              alert('An error occurred');
+              alert('An error occurred while attempting to process the data.');
               $(input).parent().removeClass('throbbing');
               $(input).attr('disabled', false);
             }
@@ -422,7 +422,7 @@ Drupal.list = function(base, settings) {
             global: true,
             success: bindAjaxResponse,
             error: function(data) {
-              alert('An error occurred');
+              alert('An error occurred  while attempting to process the data.');
             }
           });
           return false;
