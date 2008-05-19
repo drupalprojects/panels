@@ -22,6 +22,9 @@
   float: left; 
   width: 50%; 
 }
+* html .panel-2col-bricks .panel-col-first {
+  width: 49.9%;
+}
 
 .panel-2col-bricks .panel-col-first .inside { 
   margin: 0 .5em .5em 0;
@@ -30,6 +33,9 @@
 .panel-2col-bricks .panel-col-last { 
   float: left; 
   width: 50%; 
+}
+* html .panel-2col-bricks .panel-col-last {
+  width: 49.9%;
 }
 
 .panel-2col-bricks .panel-col-last .inside { 
