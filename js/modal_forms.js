@@ -71,9 +71,6 @@ Drupal.Panels.Subform.bindAutocomplete = function() {
 Drupal.Panels.Subform.bindAjaxResponse = function(data) {
   // On success, append the returned HTML to the panel's element.
   if (data.type == 'display') {
-    if (data.debug) {
-      alert(data.debug);
-    }
     // append the output
     $('#modalContent span.modal-title').html(data.title);
     $('#modalContent div.modal-content').html(data.output);
