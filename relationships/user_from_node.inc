@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 /**
  * Plugin to provide an relationship handler for node from user
