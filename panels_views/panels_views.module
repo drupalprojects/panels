@@ -17,7 +17,7 @@ function panels_views_menu($may_cache) {
   if ($may_cache) {
     $items[] = array(
       'path' => 'admin/panels/views',
-      'title' => t('Views'),
+      'title' => t('Views panes'),
       'access' => $access,
       'type' => MENU_NORMAL_ITEM,
       'callback' => 'panels_views_list_views',
