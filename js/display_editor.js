@@ -53,6 +53,25 @@ Drupal.Panels.clickCacheSettings = function () {
   return false;
 }
 
+/** Toggle pane show/hide button **/
+Drupal.Panels.bindClickToggleHidden = function (o) {
+  $('input.pane-toggle-hidden').unbind('click');
+  $('input.pane-toggle-hidden').click(function() {
+    var id = $(this)[0].id.replace('edit-button-', '').replace('-show-hide', '');
+    var op = $(this)[0].title.replace(' this pane', '');
+    $.ajax({
+      type: "POST",
+      url: Drupal.settings.panelsAjaxURL + "/toggle-hidden/" + $('#panel-did').val() + '/' + id + '/' + op,
+      data: '',
+      global: true,
+      success: Drupal.Panels.Subform.bindAjaxResponse,
+      error: function() { alert("An error occurred while attempting to toggle the pane's hidden status.")},
+      dataType: 'json'
+    });
+    return false;
+  });
+}
+
 /** Configure pane button */
 Drupal.Panels.bindClickConfigure = function (o) {
   $('input.pane-configure').unbind('click');
@@ -498,6 +517,7 @@ Drupal.Panels.attachPane = function(parent) {
 
   $(parent).find('div.grabber').panelsDraggable();
 
+  Drupal.Panels.bindClickToggleHidden();
   Drupal.Panels.bindClickCache();
   Drupal.Panels.bindClickConfigure();
   Drupal.Panels.bindClickDelete();
