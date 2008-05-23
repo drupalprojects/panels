@@ -20,7 +20,7 @@ Drupal.Panels.clickEdit = function() {
     data: '',
     global: true,
     success: Drupal.Panels.Subform.bindAjaxResponse,
-    error: function() { alert("An error occurred while attempting to render the pane styles configuration modal form."); $('#panels-modal').unmodalContent(); },
+    error: function() { alert("An error occurred while attempting to process the pane styles configuration modal form."); $('#panels-modal').unmodalContent(); },
     dataType: 'json'
   });
   return false;

@@ -134,9 +134,9 @@ function panels_pane_access($pane, $display) {
   global $user;
 
   // Administrator privileges
-/*  if (user_access('view all pane', $user)) {
+  if (user_access('view all pane', $user)) {
     return TRUE;
-  }*/
+  }
 
   $role_access = _panels_pane_access_role($pane, $user);
   $type = panels_get_content_type($pane->type);
