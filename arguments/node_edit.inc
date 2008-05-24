@@ -58,6 +58,7 @@ function panels_node_edit_settings_form($conf) {
     '#title' => t('Node types'),
     '#type' => 'checkboxes',
     '#options' => $options,
+    '#description' => t('You can restrict this argument to use the checked node types. Arguments from non-conforming node types will be ignored, and Panels will behave as if no argument were given. Leave all unchecked to impose no restriction.'),
     '#default_value' => $conf['types'],
     '#prefix' => '<div class="clear-block">',
     '#suffix' => '</div>',
