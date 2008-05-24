@@ -19,7 +19,7 @@ function panels_views_install() {
     if ($sql) {
       $sql .= ', ';
     }
-    if ($field == "offset") {
+    if ($field == "offset" && $GLOBALS['db_type'] == 'pgsql') {
         $field = '"offset"';        // offset is a reserved word in postgres, needs to be quoted
     }    
     $sql .= $field . ' ' . $data['definition'];
