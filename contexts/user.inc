@@ -45,7 +45,6 @@ function panels_context_create_user($empty, $data = NULL, $conf = FALSE) {
 }
 
 function panels_context_user_settings_form($conf, $external = FALSE) {
-  $options = array();
-
+  $form = array();
   return $form;
 }

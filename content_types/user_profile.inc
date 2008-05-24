@@ -20,6 +20,7 @@ function panels_user_profile_panels_content_types() {
  */
 function panels_content_user_profile($conf, $panel_args, $context) {
   $account = isset($context->data) ? drupal_clone($context->data) : NULL;
+  $block = new stdClass();
   $block->module = 'term-list';
   
   if ($account === FALSE || ($account->access == 0 && !user_access('administer users'))) {

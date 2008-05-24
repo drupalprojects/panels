@@ -53,6 +53,8 @@ function panels_node_panels_content_types() {
  */
 function panels_node_legacy_render($conf, $panel_args) {
   $nid = $conf['nid'];
+  $block = new stdClass();
+
   foreach (explode('/', $_GET['q']) as $id => $arg) {
     $nid = str_replace("%$id", $arg, $nid);
   }

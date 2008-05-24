@@ -22,6 +22,7 @@ function panels_node_attachments_panels_content_types() {
  */
 function panels_content_node_attachments($conf, $panel_args, $context) {
   $node = isset($context->data) ? drupal_clone($context->data) : NULL;
+  $block = new stdClass();
   $block->module = 'attachments';
 
   $block->subject = t('Attached files');

@@ -43,6 +43,7 @@ function panels_content_node_content($conf, $panel_args, $context) {
   }
 
   $node = isset($context->data) ? drupal_clone($context->data) : NULL;
+  $block = new stdClass();
   $block->module = 'node';
   $block->delta = $node->nid;
 

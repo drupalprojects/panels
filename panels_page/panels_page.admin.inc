@@ -170,6 +170,7 @@ function panels_page_add_page($layout = NULL) {
     return drupal_not_found();
   }
 
+  $panel_page = new stdClass();
   $panel_page->display = panels_new_display();
   $panel_page->display->layout = $layout;
   $panel_page->pid = 'new';

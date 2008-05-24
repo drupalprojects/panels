@@ -24,6 +24,7 @@ function panels_node_comment_form_panels_content_types() {
  */
 function panels_content_node_comment_form($conf, $panel_args, $context) {
   $node = isset($context->data) ? drupal_clone($context->data) : NULL;
+  $block = new stdClass();
   $block->module = 'comments';
   $block->delta = $node->nid;
 

@@ -121,6 +121,7 @@ function panels_admin_content_types_node_form() {
  * based on the module and delta supplied in the configuration.
  */
 function panels_content_node_form($conf, $panel_args, &$context) {
+  $block = new stdClass();
   $block->module = 'node-form';
 
   switch ($conf['id']) {

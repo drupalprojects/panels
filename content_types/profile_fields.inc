@@ -24,6 +24,7 @@ function panels_profile_fields_panels_content_types() {
  */
 function panels_profile_fields_content($conf, $panel_args, $context) {
   $account = isset($context->data) ? drupal_clone($context->data) : NULL;
+  $block = new stdClass();
   $block->module = 'profile fields';
 
   if ($account) { 

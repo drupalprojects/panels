@@ -1042,6 +1042,7 @@ function panels_common_ajax_context_item_edit($module, $type, $panel_name) {
 
   $retval = drupal_process_form($form_id, $form);
   if ($retval) {
+  	$output = new stdClass();
     // successful submit
 
     // Save changes

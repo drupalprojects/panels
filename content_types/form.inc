@@ -38,6 +38,7 @@ function panels_admin_content_types_form() {
  * based on the module and delta supplied in the configuration.
  */
 function panels_content_form($conf, $panel_args, &$context) {
+  $block = new stdClass();
   $block->module = 'form';
 
   if (isset($context->form)) {

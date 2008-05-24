@@ -45,6 +45,7 @@ function panels_context_create_term($empty, $data = NULL, $conf = FALSE) {
 }
 
 function panels_context_term_settings_form($conf, $external = FALSE) {
+  $form = array();
   if ($external) {
     $form['external'] = array(
       '#type' => 'checkbox',
@@ -53,7 +54,6 @@ function panels_context_term_settings_form($conf, $external = FALSE) {
       '#description' => t('If selected, term selection (below) will be ignored'),
     );
   }
-
   return $form;
 }
 

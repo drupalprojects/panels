@@ -37,6 +37,7 @@ function panels_content_vocabulary_terms($conf, $panel_args, $context) {
     $output = theme('item_list', _panels_content_vocabulary_terms(0, $max_depth));
   }
 
+  $block = new stdClass();
   $block->module = 'node_type';
   $block->subject = $vocab->name;
   $block->content = $output;

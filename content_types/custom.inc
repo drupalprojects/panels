@@ -24,6 +24,8 @@ function panels_custom_panels_content_types() {
  */
 function panels_content_custom($conf) {
   static $delta = 0;
+
+  $block = new stdClass();
   $block->module = 'custom';
   $block->delta = ++$delta;
   $block->subject = filter_xss_admin($conf['title']);

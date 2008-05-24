@@ -24,6 +24,7 @@ function panels_node_book_nav_panels_content_types() {
  */
 function panels_content_node_book_nav($conf, $panel_args, $context) {
   $node = isset($context->data) ? drupal_clone($context->data) : NULL;
+  $block = new stdClass();
   $block->module = 'book_nav';
 
   $block->subject = t('Book navigation');

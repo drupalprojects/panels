@@ -22,6 +22,7 @@ function panels_term_description_panels_content_types() {
  */
 function panels_content_term_description($conf, $panel_args, $context) {
   $term = isset($context->data) ? drupal_clone($context->data) : NULL;
+  $block = new stdClass();
   $block->module = 'node_type';
 
   $block->subject = $term->name;
