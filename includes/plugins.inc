@@ -1290,8 +1290,6 @@ function panels_load_includes($plugin_type, $hook, $file = NULL) {
   foreach(array_filter($file_list) as $module => $files) {
     foreach ($files as $file) {
       require_once('./'. $file->filename);
-      // TODO-FUTURE: this would be one of the ideal places to consider using a class for panels .inc files
-      // in order to improve their flexibility and readability.
       $result = _panels_process_plugin('panels', $module . $file->name, dirname($file->filename), $hook);
       if (is_array($result)) {
         $info = array_merge($info, $result);

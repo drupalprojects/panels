@@ -288,5 +288,5 @@ function panels_admin_edit_node_form($id, $parents, $conf = array()) {
 
 function panels_admin_title_node_form($conf, $context) {
   $choices = panels_admin_content_types_node_form();
-  return t('"@s" @type', array('@s' => $context->identifier, '@type' => strtolower($choices[$conf['id']]['title'])));
+  return t('"@s" @type', array('@s' => $context->identifier, '@type' => drupal_strtolower($choices[$conf['id']]['title'])));
 }

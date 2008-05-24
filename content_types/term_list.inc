@@ -122,5 +122,5 @@ function panels_admin_edit_term_list($id, $parents, $conf = array()) {
 
 function panels_admin_title_term_list($conf, $context) {
   $options = panels_admin_term_list_options();
-  return t('"@s" @type', array('@s' => $context->identifier, '@type' => strtolower($options[$conf['type']])));
+  return t('"@s" @type', array('@s' => $context->identifier, '@type' => drupal_strtolower($options[$conf['type']])));
 }

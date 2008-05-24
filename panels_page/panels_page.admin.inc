@@ -69,7 +69,7 @@ function panels_page_list_page() {
     }
   }
 
-  if (strtolower($ts['sort']) == 'desc') {
+  if (drupal_strtolower($ts['sort']) == 'desc') {
     arsort($sorts);
   }
   else {
