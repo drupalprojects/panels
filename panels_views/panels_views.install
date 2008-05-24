@@ -19,6 +19,9 @@ function panels_views_install() {
     if ($sql) {
       $sql .= ', ';
     }
+    if ($field == "offset") {
+        $field = '"offset"';        // offset is a reserved word in postgres, needs to be quoted
+    }    
     $sql .= $field . ' ' . $data['definition'];
   }
   db_query("CREATE TABLE {panels_views} ($sql) /*!40100 DEFAULT CHARACTER SET utf8 */");
