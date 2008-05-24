@@ -4,20 +4,18 @@
  * Callback function to supply a list of content types.
  */
 function panels_profile_fields_panels_content_types() {
-	$items = array();
-	
-	if (module_exists('profile') && !is_null(profile_categories())) {
-	  $items['profile_fields'] = array(
-	    'title' => t('Profile Fields'),
-	    'content_types' => 'panels_profile_fields_content_type',
-	    'single' => TRUE, // only provides a single content type
-	    'render callback' => 'panels_profile_fields_content',
-	    'add callback' => 'panels_profile_fields_configure',
-	    'edit callback' => 'panels_profile_fields_configure',
-	    'title callback' => 'panels_profile_fields_configure_title',
-	  );
-	}
-	
+  $items = array();
+  if (module_exists('profile') && !is_null(profile_categories())) {
+    $items['profile_fields'] = array(
+      'title' => t('Profile Fields'),
+      'content_types' => 'panels_profile_fields_content_type',
+      'single' => TRUE, // only provides a single content type
+      'render callback' => 'panels_profile_fields_content',
+      'add callback' => 'panels_profile_fields_configure',
+      'edit callback' => 'panels_profile_fields_configure',
+      'title callback' => 'panels_profile_fields_configure_title',
+    );
+  }  
   return $items;
 }
 
