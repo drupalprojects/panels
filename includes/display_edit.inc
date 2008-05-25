@@ -471,10 +471,9 @@ function panels_edit_layout_settings_form($display, $finish, $destination, $titl
   $layout = panels_get_layout($display->layout);
   if (!empty($layout['settings form']) && function_exists($layout['settings form'])) { // TODO doc the ability to do this as part of the API
     $form['layout_settings'] = $layout['settings form']($display, $layout, $display->layout_settings);
+    $form['layout_settings']['#tree'] = TRUE;
   }
 
-  $form['layout_settings']['#tree'] = TRUE;
-  
   if ($title) {
     $form['display_title'] = array (
       '#type' => 'fieldset',
