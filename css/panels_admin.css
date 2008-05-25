@@ -113,6 +113,11 @@
   margin: .5em;
 }
 
+#panels-edit-display .inline-icon-help {
+  vertical-align: middle;
+  margin: 2px 1px;
+}
+
 table .operation {
   text-align: right;
   padding-right: 6px;
