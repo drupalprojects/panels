@@ -65,7 +65,7 @@ EOT
           panel varchar(32),
           type varchar(32),
           subtype varchar(64),
-          shown tinyint,
+          shown tinyint DEFAULT 1,
           access varchar(128),
           visibility text,
           configuration text,
@@ -144,7 +144,7 @@ EOT
           panel varchar(32),
           type varchar(32),
           subtype varchar(64),
-          shown tinyint,
+          shown int(1) DEFAULT 1,
           access varchar(128),
           visibility text,
           configuration longtext,
@@ -529,7 +529,7 @@ function panels_update_5216() {
   switch($GLOBALS['db_type']) {
     case 'mysql':
     case 'mysqli':
-      $ret[] = update_sql("ALTER TABLE {panels_pane} ADD COLUMN shown int(1) AFTER subtype");
+      $ret[] = update_sql("ALTER TABLE {panels_pane} ADD COLUMN shown int(1) DEFAULT 1 AFTER subtype");
       $ret[] = update_sql("ALTER TABLE {panels_display} ADD COLUMN title varchar(128) AFTER cache");
       $ret[] = update_sql("ALTER TABLE {panels_display} ADD COLUMN hide_title int(1) AFTER title");
       $ret[] = update_sql("ALTER TABLE {panels_display} DROP COLUMN name");
