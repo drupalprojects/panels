@@ -282,7 +282,13 @@ function _panels_edit_layout($display, $finish, $destination, $allowed_layouts) 
  * @ingroup forms
  */
 function panels_choose_layout($display, $finish, $destination, $allowed_layouts) {
-  $layouts = array_intersect_key(panels_get_layouts(), $allowed_layouts);
+  $layouts = array();
+  $available_layouts = panels_get_layouts();
+  foreach ($available_layouts as $layout_key => $layout_settings) {
+    if (!empty($allowed_layouts[$layout_key])) {
+      $layouts[$layout_key] = $layout_settings;
+    }
+  }
   foreach ($layouts as $id => $layout) {
     $options[$id] = panels_print_layout_icon($id, $layout, check_plain($layout['title']));
   }
