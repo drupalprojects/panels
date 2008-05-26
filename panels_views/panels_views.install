@@ -19,8 +19,9 @@ function panels_views_install() {
     if ($sql) {
       $sql .= ', ';
     }
+    // offset is a reserved word in postgres, needs to be quoted
     if ($field == "offset" && $GLOBALS['db_type'] == 'pgsql') {
-        $field = '"offset"';        // offset is a reserved word in postgres, needs to be quoted
+        $field = '"offset"';
     }    
     $sql .= $field . ' ' . $data['definition'];
   }
