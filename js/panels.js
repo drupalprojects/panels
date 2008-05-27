@@ -9,7 +9,7 @@ Drupal.Panels.autoAttach = function() {
       function() {
         $('div.panel-hide', this).addClass("panel-hide-hover"); return true;
       },
-      function(){
+      function() {
         $('div.panel-hide', this).removeClass("panel-hide-hover"); return true;
       }
     );
@@ -22,6 +22,6 @@ Drupal.Panels.autoAttach = function() {
       }
     );
   }
-}
+};
 
 $(Drupal.Panels.autoAttach);
