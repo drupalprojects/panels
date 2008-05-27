@@ -1,12 +1,15 @@
 <?php
 // $Id$
+
+
 /**
  * Callback function to supply a list of content types.
  */
 function panels_node_attachments_panels_content_types() {
   $items['node_attachments'] = array(
     'title' => t('Node type description'),
-    'single' => TRUE, // only provides a single content type
+    // only provides a single content type
+    'single' => TRUE,
     'content_types' => 'panels_admin_content_types_node_attachments',
     'render callback' => 'panels_content_node_attachments',
 //      'add callback' => 'panels_admin_edit_node_attachments',
@@ -57,3 +60,4 @@ function panels_admin_content_types_node_attachments() {
 function panels_admin_title_node_attachments($conf, $context) {
   return t('"@s" attachments', array('@s' => $context->identifier));
 }
+

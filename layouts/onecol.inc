@@ -1,5 +1,7 @@
 <?php
 // $Id$
+
+
 /**
  * implementation of hook_panels_layouts
  */
@@ -34,3 +36,4 @@ function theme_panels_onecol($id, $content) {
 EOT;
   return $output;
 }
+

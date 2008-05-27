@@ -1,5 +1,7 @@
 <?php
 // $Id$
+
+
 /**
  * @file contexts/term.inc
  *
@@ -37,8 +39,8 @@ function panels_context_create_term($empty, $data = NULL, $conf = FALSE) {
   }
 
   if (!empty($data)) {
-    $context->data = $data;
-    $context->title = $data->name;
+    $context->data     = $data;
+    $context->title    = $data->name;
     $context->argument = $data->tid;
     return $context;
   }

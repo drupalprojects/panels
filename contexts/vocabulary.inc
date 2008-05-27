@@ -1,5 +1,7 @@
 <?php
 // $Id$
+
+
 /**
  * @file contexts/vocabulary.inc
  *
@@ -36,8 +38,8 @@ function panels_context_create_vocabulary($empty, $data = NULL, $conf = FALSE) {
   }
 
   if (!empty($data)) {
-    $context->data = $data;
-    $context->title = $data->name;
+    $context->data     = $data;
+    $context->title    = $data->name;
     $context->argument = $data->vid;
     return $context;
   }
@@ -67,3 +69,4 @@ function panels_context_vocabulary_settings_form($conf, $external = FALSE) {
 
   return $form;
 }
+

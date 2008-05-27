@@ -1,5 +1,7 @@
 <?php
 // $Id$
+
+
 /**
  * @file twocol_bricks.inc
  *
@@ -71,3 +73,4 @@ function theme_panels_twocol_bricks($id, $content) {
 EOT;
   return $output;
 }
+

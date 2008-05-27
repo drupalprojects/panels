@@ -1,5 +1,7 @@
 <?php
 // $Id$
+
+
 /**
  * @file relationships/term_parent.inc
  *
@@ -59,8 +61,9 @@ function panels_term_parent_settings_form($conf) {
     '#type' => 'select',
     '#title' => t('Relationship type'),
     '#options' => array('parent' => t('Immediate parent'), 'top' => t('Top level term')),
-    '#default_value' => $conf['type']
+    '#default_value' => $conf['type'],
   );
 
   return $form;
 }
+

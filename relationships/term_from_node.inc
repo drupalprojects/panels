@@ -1,5 +1,7 @@
 <?php
 // $Id$
+
+
 /**
  * @file relationships/term_from_node.inc
  *
@@ -56,3 +58,4 @@ function panels_term_from_node_settings_form($conf) {
 
   return $form;
 }
+

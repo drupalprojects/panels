@@ -1,5 +1,7 @@
 <?php
 // $Id$
+
+
 /**
  * @file contexts/user.inc
  *
@@ -37,8 +39,8 @@ function panels_context_create_user($empty, $data = NULL, $conf = FALSE) {
   }
 
   if (!empty($data)) {
-    $context->data = $data;
-    $context->title = $data->name;
+    $context->data     = $data;
+    $context->title    = $data->name;
     $context->argument = $data->uid;
     return $context;
   }
@@ -48,3 +50,4 @@ function panels_context_user_settings_form($conf, $external = FALSE) {
   $form = array();
   return $form;
 }
+

@@ -1,15 +1,17 @@
 <?php
 // $Id$
+
+
 /**
  * @file arguments/nid.inc
  *
  * Plugin to provide an argument handler for a Node add form
  */
-
 function panels_node_add_panels_arguments() {
   $args['node_add'] = array(
     'title' => t("Node add form"),
-    'keyword' => 'node_type', // keyword to use for %substitution
+    // keyword to use for %substitution
+    'keyword' => 'node_type',
     'description' => t('Displays the node add form for a content type.'),
     'context' => 'panels_node_add_context',
     'settings form' => 'panels_node_add_settings_form',
@@ -149,3 +151,4 @@ function panels_node_add_displays($conf, $id) {
 
   return $displays;
 }
+
