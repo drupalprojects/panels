@@ -128,7 +128,7 @@ Drupal.Panels.bindClickDelete = function(o) {
 };
 
 Drupal.Panels.bindPortlet = function() {
-  var handle = $(this).find('h2.title');
+  var handle = $(this).find('.panel-pane-collapsible>h2.title');
   var content = $(this).find('div.content');
   if (content.length) {
     var toggle = $('<span class="toggle toggle-collapsed"></span>');
