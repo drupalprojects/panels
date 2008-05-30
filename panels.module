@@ -680,6 +680,11 @@ function panels_load_displays($dids) {
 
     $displays[$display->did] = $display;
   }
+  
+  foreach (module_implements('panels_layout_content_alter') as $module) {
+    $function = $module . '_panels_layout_content_alter';
+    $function($content, $layout, $settings);
+  }
 
   $result = db_query("SELECT * FROM {panels_pane} WHERE did IN ($subs) ORDER BY did, panel, position", $dids);
 
