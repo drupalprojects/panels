@@ -510,7 +510,7 @@ function panels_get_pane_content($display, $pane, $args = array(), $context = NU
     $content = panels_ct_get_content($pane->type, $pane->configuration, $args, $context, $incoming_content);
     foreach (module_implements('panels_pane_content_alter') as $module) {
       // TODO This makes the third hook invocation on the render path. How badly is this hindering performance?
-      $function = $module . 'panels_pane_content_alter';
+      $function = $module . '_panels_pane_content_alter';
       $function($content, $pane, $args, $context);
     }
   }
