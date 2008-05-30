@@ -34,8 +34,17 @@ function panels_context_create_node($empty, $data = NULL, $conf = FALSE) {
   }
 
   if ($conf) {
-    $data = node_load($data['nid']);
+    $nid = $data['nid'];
+
+    if (module_exists('translation')) {
+       if ($translation = module_invoke('translation', 'node_nid', $nid, $GLOBALS['locale'])) {
+        $nid = $translation;
+      }
+    }
+
+    $data = node_load($nid);
   }
+
   if (!empty($data)) {
     $context->data     = $data;
     $context->title    = $data->title;
