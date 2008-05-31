@@ -81,7 +81,14 @@ function panels_content_block($conf) {
 }
 
 /**
- * Return all content types available.
+ * Return all block content types available.
+ * 
+ * @ingroup mainapi
+ * @ingroup hook_invocations
+ * 
+ * Modules wanting to make special adjustments the way that panels handles their blocks
+ * can implement an extension to the hook_block() family, where the function name is
+ * of the form "$module . '_panels_block_info'".
  */
 function panels_admin_content_types_block() {
   $types = array();
@@ -95,7 +102,7 @@ function panels_admin_content_types_block() {
           'title' => strip_tags($block['info']),
         );
 
-        // Ask around for further information.
+        // Ask around for further information by invoking the hook_block() extension.
         $function = $module . '_panels_block_info';
         if (!function_exists($function)) {
           $function = 'panels_default_block_info';
