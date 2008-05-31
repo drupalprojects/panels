@@ -685,7 +685,6 @@ function panels_ajax($op = NULL, $did = NULL, $pid = NULL) {
       break;
 
     default:
-      pdbg('panels_ajax', serialize(array('did' => $did, 'data' => array('op' => $op, 'pid' => $pid))));
   }
 
   panels_ajax_render($output);
