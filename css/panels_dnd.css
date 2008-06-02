@@ -246,6 +246,7 @@ a.close img {
 }
 
 .content-type-button div {
+  width: 85%;
   top: -5px;
   left: 2px;
   float: left;
