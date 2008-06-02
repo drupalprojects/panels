@@ -338,7 +338,7 @@ Drupal.Panels.Draggable = {
       $(draggable.formId + this.id.replace(/_/g, '-')).val(val);
     });
     return false;
-  },
+  }
 };
 
 
