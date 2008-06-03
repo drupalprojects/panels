@@ -176,6 +176,9 @@ function panels_page_menu($may_cache) {
 
     $plugins_loaded = FALSE;
     foreach ($panels as $panel_page) {
+      if (!empty($panel_page->disabled)) {
+        continue;
+      }
       if (strpos($panel_page->path, '%') !== FALSE) {
         $path = explode('/', $panel_page->path);
         $match = TRUE;
