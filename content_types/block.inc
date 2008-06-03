@@ -83,7 +83,6 @@ function panels_content_block($conf) {
 /**
  * Return all block content types available.
  * 
- * @ingroup mainapi
  * @ingroup hook_invocations
  * 
  * Modules wanting to make special adjustments the way that panels handles their blocks
