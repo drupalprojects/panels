@@ -69,8 +69,8 @@ function panels_context_node_edit_form_settings_form($conf, $external = FALSE) {
     $form['external'] = array(
       '#type' => 'checkbox',
       '#default_value' => $conf['external'],
-      '#title' => t('Require this context from an external source (such as containing panel page)'),
-      '#description' => t('If selected, node selection (below) will be ignored'),
+      '#title' => t('Require this context from an external source (such as a containing panel page).'),
+      '#description' => t('If selected, node selection (below) will be ignored.'),
     );
   }
 
@@ -130,7 +130,7 @@ function panels_context_node_edit_form_settings_form_validate($form, $form_value
   }
 
   if (!$node) {
-    form_error($form['node'], t('Invalid post selected'));
+    form_error($form['node'], t('Invalid node selected.'));
   }
 }
 

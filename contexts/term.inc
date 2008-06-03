@@ -52,7 +52,7 @@ function panels_context_term_settings_form($conf, $external = FALSE) {
     $form['external'] = array(
       '#type' => 'checkbox',
       '#default_value' => $conf['external'],
-      '#title' => t('Require this context from an external source (such as containing panel page)'),
+      '#title' => t('Require this context from an external source (such as a containing panel page).'),
       '#description' => t('If selected, term selection (below) will be ignored'),
     );
   }

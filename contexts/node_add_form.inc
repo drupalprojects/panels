@@ -82,7 +82,7 @@ function panels_context_node_add_form_settings_form($conf, $external = FALSE) {
   );
 
   if ($external) {
-    $form['types']['#description'] .= ' ' . t('Select external to require this from an external source such as a containing panel page.');
+    $form['types']['#description'] .= ' ' . t('Select external to require this from an external source (such as a containing panel page).');
   }
 
   return $form;

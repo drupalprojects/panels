@@ -62,9 +62,10 @@ function panels_context_vocabulary_settings_form($conf, $external = FALSE) {
     '#default_value' => $conf['vids'],
     '#prefix' => '<div class="clear-block">',
     '#suffix' => '</div>',
+    '#description' => t('Select the vocabulary for this form.'),
   );
   if ($external) {
-    $form['vid']['#description'] .= ' ' . t('Select external to require this from an external source such as a containing panel page.');
+    $form['vid']['#description'] .= ' ' . t('Select external to require this from an external source (such as a containing panel page).');
   }
 
   return $form;

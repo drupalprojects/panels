@@ -57,7 +57,7 @@ function panels_vid_settings_form($conf) {
     '#type' => 'checkboxes',
     '#options' => $options,
     '#default_value' => $conf['displays'],
-    '#description' => t('Each checked type will get its own special display to layout its content.'),
+    '#description' => t('Each checked vocabulary will get its own special display to layout its content.'),
     '#prefix' => '<div class="clear-block">',
     '#suffix' => '</div>',
   );
