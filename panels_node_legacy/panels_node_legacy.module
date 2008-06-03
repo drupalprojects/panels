@@ -44,7 +44,6 @@ function panels_node_panels_content_types() {
   $items['node'] = array(
     'title' => t('Node'),
     'weight' => -10,
-    // only provides a single content type
     'single' => TRUE,
     'content_types' => 'panels_node_legacy_content_types',
     'render callback' => 'panels_node_legacy_render',
