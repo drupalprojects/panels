@@ -679,7 +679,7 @@ function panels_page_view_page($panel_page, $admin) {
     }
     // Add default panels that apply to the list as well
     foreach (panels_page_default_panels() as $page) {
-      if ($page->switcher_name = $panel_page->name) {
+      if ($page->switcher_name == $panel_page->name) {
         $candidates[$page->name] = $page;
       }
     }
