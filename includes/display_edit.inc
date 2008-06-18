@@ -799,7 +799,7 @@ function panels_add_content($cache, $panel_id) {
       $count = count($titles[$category]) + 3;
       // Determine which column to use by seeing which column has the most
       // free space. This algorithm favors left.
-      foreach (range($columns, 2, -1) as $column) {
+      foreach (range($columns, 2) as $column) {
         if ($size[$column - 1] - $size[$column] > $count / 2) {
           $which = $column;
           break;
