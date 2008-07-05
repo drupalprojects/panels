@@ -1,7 +1,6 @@
 <?php
 // $Id$
 
-
 /**
  * @file panels_mini.module
  *
@@ -803,6 +802,8 @@ function panels_mini_block($op = 'list', $delta = 0, $edit = array()) {
     $panel_mini = panels_mini_load($delta);
     panels_load_include('plugins');
     $panel_mini->context = $panel_mini->display->context = panels_context_load_contexts($panel_mini);
+    $panel_mini->display->css_id = panels_mini_get_id($panel_mini->name);
+
     $block = array(
       'subject' => $panel_mini->title,
       'content' => panels_render_display($panel_mini->display),
