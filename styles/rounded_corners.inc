@@ -47,7 +47,7 @@ function theme_panels_rounded_corners_style_render_panel($display, $panel_id, $p
     if ($print_separator) {
       $output .= '<div class="panel-separator"></div>';
     }
-    $text = theme('panels_pane', $pane, $display->content[$pane_id], $display);
+    $text = panels_render_pane($pane, $display->content[$pane_id], $display);
     if ($text) {
       $output .= ($where == 'pane') ? theme('rounded_corners_box', $text) : $text;
     }
