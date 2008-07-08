@@ -476,7 +476,9 @@ Drupal.Panels.DraggableHandler = function() {
       'padding-bottom': 0,
       'padding-top': 0,
       'padding-left': 0,
-      'padding-right': 0
+      'padding-right': 0,
+      'left': 0,
+      'top': 0
     })
       .insertAfter($(draggable.main));
     var newPos = $(draggable.object).offset();
