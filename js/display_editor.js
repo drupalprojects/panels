@@ -70,7 +70,7 @@ Drupal.Panels.bindClickToggleShown = function (o) {
     });
     return false;
   });
-}
+};
 
 /** Configure pane button */
 Drupal.Panels.bindClickConfigure = function (o) {
