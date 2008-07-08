@@ -22,18 +22,19 @@
 .layout-container,
 .right-container {
   float: right;
-  padding: 0 0 0 1em;
+  padding: 0 0 0 .5em;
   margin: 0;
-  width: 49%;
+  width: 48.5%;
 }
 
 .info-container,
 .left-container {
-  padding-right: 1em;
-  width: 49%;
+  padding-right: .5em;
+  width: 48.5%;
 }
 
 .right-container fieldset,
+.left-container fieldset,
 .layout-container fieldset {
   margin-top: 0;
 }
