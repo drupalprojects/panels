@@ -1,12 +1,10 @@
 <?php
 // $Id$
 
-
 /**
- * @file styles/rounded_corners.inc
+ * @file styles/block.inc
  * Definition of the 'default' panel style.
  */
-
 
 // ---------------------------------------------------------------------------
 // Panels hooks.
@@ -23,7 +21,6 @@ function panels_default_panels_styles() {
     ),
   );
 }
-
 
 // ---------------------------------------------------------------------------
 // Panels style plugin callbacks.

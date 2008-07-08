@@ -1116,6 +1116,20 @@ function panels_render_pane_content(&$display, &$pane) {
  *   The display.
  */
 function panels_render_pane($content, $pane, $display) {
+  if (!empty($pane->configuration['style'])) {
+    $style = panels_get_style($pane->configuration['style']);
+
+    if (isset($style)) {
+      $output = theme($style['render pane'], $content, $pane, $display);
+
+      // This could be null if no theme function existed.
+      if (isset($output)) {
+        return $output;
+      }
+    }
+  }
+
+  // fallback
   return theme('panels_pane', $content, $pane, $display);
 }
 
