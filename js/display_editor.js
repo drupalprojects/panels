@@ -457,6 +457,12 @@ Drupal.Panels.DraggableHandler = function() {
     draggable.offsetDivHeight = $(draggable.main).innerHeight();
     draggable.findDropZone(mousePos.x, mousePos.y);
 
+    // Make copies of these because in FF3, they actually change when we
+    // move the item, whereas they did not in FF2.
+    var layerX = e.layerX;
+    var layerY = e.layerY;
+
+
     // Make the draggable relative, get it out of the way and make it
     // invisible.
     $(draggable.object).css({
@@ -479,10 +485,10 @@ Drupal.Panels.DraggableHandler = function() {
     
     // if they grabbed outside the area where we make the draggable smaller, move it
     // closer to the cursor.
-    if (e.layerX != 'undefined' && e.layerX > width) {
-      windowOffset.left += e.layerX - 10;
+    if (layerX != 'undefined' && layerX > width) {
+      windowOffset.left += layerX - 10;
     }
-    else if (e.layerX != 'undefined' && e.offsetX > width) {
+    else if (layerX != 'undefined' && e.offsetX > width) {
       windowOffset.left += e.offsetX - 10;
     }
 
