@@ -828,6 +828,12 @@ function panels_views_render($conf, $panel_args, &$contexts) {
   $offset = ($pv->allow_offset) ? $conf['offset'] : $pv->offset;
 
   $stored_feeds = drupal_add_feed();
+
+  // remove any trailing NULL arguments as these are non-args:
+  while (count($args) && end($args) === NULL) {
+    array_pop($args);
+  }
+
   $block->content = views_build_view($pv->view_type, $view, $args, $pager_id, $nodes_per_page, 0, $offset);
 
   if ($view->num_rows < $nodes_per_page) {
