@@ -1254,7 +1254,15 @@ function panels_ajax_cache_settings($cache, $pid, $method = NULL) {
   }
 
   panels_cache_set($cache->display->did, $cache);
-  panels_ajax_render('dismiss');
+
+  if ($pid) {
+    $ajax_vars = new stdClass();
+    list($ajax_vars->id, $ajax_vars->output, $ajax_vars->type) = array($pid, 'Changed', 'dismiss-changed');
+    panels_ajax_render($ajax_vars);
+  }
+  else {
+    panels_ajax_render('dismiss');
+  }
 }
 
 /**

@@ -139,6 +139,12 @@ Drupal.Panels.Subform.bindAjaxResponse = function(data) {
     $('#panel-pane-' + data.id).toggleClass('hidden-pane');
     Drupal.Panels.changed($('#panel-pane-' + data.id));
   }
+  else if (data.type == 'dismiss-changed') {
+    // Just mark the pane as changed.   
+    Drupal.Panels.changed($('#panel-pane-' + data.id));
+    // Dismiss the dialog.
+    $('#panels-modal').unmodalContent();
+	  }
   else {
     // just dismiss the dialog.
     $('#panels-modal').unmodalContent();
