@@ -121,9 +121,14 @@ Drupal.Panels.Subform.bindAjaxResponse = function(data) {
     $('#panels-modal').unmodalContent();
   }
   else if (data.type == 'replace') {
+    // Replace the HTML in the pane
     $('#panel-pane-' + data.id + ' .panel-pane-collapsible')
-      .html(data.output)
-      .each(Drupal.Panels.bindPortlet);
+      .html(data.output);
+
+    // Re-attach the collapse/expand behavior to the pane.
+    $('#panel-pane-' + data.id).addClass('panel-portlet').each(Drupal.Panels.bindPortlet);
+
+    // Mark that this pane has been changed.
     Drupal.Panels.changed($('#panel-pane-' + data.id));
 
     // dismiss the dialog
