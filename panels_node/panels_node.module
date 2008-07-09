@@ -177,17 +177,18 @@ function panels_node_add() {
 function panels_node_form(&$node, &$param) {
   $form['panels_node']['#tree'] = TRUE;
   if (!$node->nid) {
-    // Grab our selected layout from arg(3). If it doesn't exist, present them with
-    // a list to pick from.
+    // Grab our selected layout from the $node, If it doesn't exist, try arg(3) 
+    // and if that doesn't work present them with a list to pick from.
+    $panel_layout = $node->panel_layout ? $node->panel_layout : arg(3);
 
     panels_load_include('plugins');
-    $layout = panels_get_layout(arg(3));
+    $layout = panels_get_layout($panel_layout);
     if (empty($layout)) {
       return drupal_not_found();
     }
     $form['panels_node']['layout'] = array(
       '#type' => 'value',
-      '#value' => arg(3),
+      '#value' => $panel_layout,
     );
   }
 
