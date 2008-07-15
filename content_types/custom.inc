@@ -58,8 +58,8 @@ function panels_admin_content_custom($display, $pane) {
       $php_filter = TRUE;
     }
   }
-  // If a php filter is active, pass NULL and use the default filter.
-  $block->content = check_markup($pane->configuration['body'], $php_filter ? NULL : $pane->configuration['format'], FALSE);
+  // If a php filter is active, pass 1 to use core's most restrictive filter.
+  $block->content = check_markup($pane->configuration['body'], $php_filter ? 1 : $pane->configuration['format'], FALSE);
   return $block;
 }
 
