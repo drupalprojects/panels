@@ -90,3 +90,14 @@ Known Issue http://drupal.org/node/207859
     from a secure page, the browser denies the call.
   Solution:
     The solution is to simply add panels/* to your Secure Pages configuration.
+
+Known Issue http://drupal.org/node/274806
+	When using the Live Search module, various javascript-driven aspects of the
+	Panels UI stop functioning correctly, and may begin generating error messages.
+
+	Cause:
+		There is a known bug with the Live Search module. There is nothing Panels
+		can do about it. See http://drupal.org/node/152125
+	Solution:
+		Disable the Live Search module.
+

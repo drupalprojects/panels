@@ -275,10 +275,6 @@ function panels_flexible_panels($display, $settings) {
   return $panels;
 }
 
-/**
- * This function uses heredoc notation to make it easier to convert
- * to a template.
- */
 function theme_panels_flexible($id, $content, $settings) {
   if (empty($settings)) {
     $settings = panels_flexible_default_panels();
