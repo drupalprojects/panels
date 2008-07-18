@@ -7,12 +7,13 @@
  */
 function panels_onecol_panels_layouts() {
   $items['onecol'] = array(
-    'module' => 'panels',
     'title' => t('Single column'),
     'icon' => 'layouts/onecol.png',
     'theme' => 'panels_onecol',
     'css' => 'layouts/onecol.css',
-    'panels' => array('middle' => t('Middle column')),
+    'panels' => array(
+      'middle' => t('Middle column')
+    ),
   );
 
   return $items;

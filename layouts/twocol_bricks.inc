@@ -13,7 +13,6 @@
  */
 function panels_twocol_bricks_panels_layouts() {
   $items['twocol_bricks'] = array(
-    'module' => 'panels',
     'title' => t('Two column bricks'),
     'icon' => 'layouts/twocol_bricks.png',
     'theme' => 'panels_twocol_bricks',
