@@ -278,7 +278,7 @@ function panels_common_settings($module_name = 'panels_common') {
     foreach ($content_types as $id => $info) {
       if (isset($allowed[$id])) {
         $form['content_types'][$id] = array(
-          '#prefix' => '<div class="panels-page-type-container">',
+          '#prefix' => '<div class="panels-page-type-container clear-block">',
           '#suffix' => '</div>',
           '#type' => 'checkboxes',
           '#title' => t('Allowed @s content', array('@s' => $info['title'])),
