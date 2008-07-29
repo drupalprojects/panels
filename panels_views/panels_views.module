@@ -1433,6 +1433,8 @@ function panels_views_load_all() {
 
 /**
  * Get all 'default' view panes.
+ *
+ * @ingroup HookInvokers
  */
 function panels_views_default_panels() {
   $panels = module_invoke_all('default_panel_views');

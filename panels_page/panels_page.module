@@ -1186,6 +1186,8 @@ function panels_page_export($panel_page, $prefix = '') {
 
 /**
  * Get all 'default' panels.
+ *
+ * @ingroup HookInvokers
  */
 function panels_page_default_panels() {
   $panels = module_invoke_all('default_panel_pages');
