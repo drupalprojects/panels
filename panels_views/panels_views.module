@@ -1073,7 +1073,7 @@ function panels_views_title($conf) {
  */
 function panels_views_get_all_views() {
   views_load_cache();
-  $result = db_query("SELECT name, description FROM {view_view}");
+  $result = db_query("SELECT name, description FROM {view_view} ORDER BY name");
   $views = array();
   while ($view = db_fetch_object($result)) {
     $views[$view->name] = check_plain($view->name);
