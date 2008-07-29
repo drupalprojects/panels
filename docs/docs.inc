@@ -21,6 +21,12 @@ Functions in this list invoke one of Panels' numerous hooks. This includes hooks
  */
 
 /**
+@addtogroup PanelsAjax Panels Ajax Handlers
+
+These functions comprise Panels' ajax handling on the php end. They're pretty much only used for admin/editing at the moment.
+ */
+
+/**
 @mainpage Panels 2 Documentation
 
 The Panels 2 API Documentation is intended as a guide to the innerworkings of Panels, and will primarily be of interest to Drupal themers and developers. \n\n Panels is a complex and abstract system, which necessitates the use of a lot of specialized terms. If you are new to Panels, we strongly recommend you consult the @ref panels_glossary "Panels Glossary" to familiarize yourself with the jargon.\n\n
