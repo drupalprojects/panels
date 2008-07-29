@@ -118,18 +118,10 @@ function panels_context_node_edit_form_settings_form_validate($form, $form_value
     return;
   }
 
-  $nid = $form_values['node'];
-  if (is_numeric($nid)) {
-    $node = db_fetch_object(db_query(db_rewrite_sql("SELECT n.nid FROM {node} n WHERE n.nid = %d"), $nid));
+  if ($nid = panels_nid_autocomplete($form_values['node'])) {
+    form_set_value($form['nid'], $nid);
   }
   else {
-    $node = db_fetch_object(db_query(db_rewrite_sql("SELECT n.nid FROM {node} n WHERE LOWER(n.title) = LOWER('%s')"), $nid));
-    if ($node) {
-      form_set_value($form['nid'], $node->nid);
-    }
-  }
-
-  if (!$node) {
     form_error($form['node'], t('Invalid node selected.'));
   }
 }
