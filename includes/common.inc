@@ -10,7 +10,7 @@
 /**
  * Class definition for the allowed layouts governing structure.
  *
- * @ingroup mainapi
+ * @ingroup MainAPI
  *
  * This class is designed to handle panels allowed layouts data from start to finish, and sees
  * action at two times:\n
