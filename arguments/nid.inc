@@ -28,7 +28,7 @@ function panels_nid_panels_arguments() {
 function panels_nid_context($arg = NULL, $conf = NULL, $empty = FALSE) {
   // If unset it wants a generic, unfilled context.
   if ($empty) {
-    return panels_context_create_empty('node');
+    return panels_context_create_empty('node', $conf);
   }
 
   if (!is_numeric($arg)) {
@@ -44,7 +44,7 @@ function panels_nid_context($arg = NULL, $conf = NULL, $empty = FALSE) {
     return FALSE;
   }
 
-  return panels_context_create('node', $node);
+  return panels_context_create('node', $node, $conf);
 }
 
 /**

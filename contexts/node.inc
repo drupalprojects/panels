@@ -26,7 +26,15 @@ function panels_node_panels_contexts() {
  * are not always created from the UI.
  */
 function panels_context_create_node($empty, $data = NULL, $conf = FALSE) {
-  $context = new panels_context('node');
+  $types = array('node');
+  if (!empty($conf['types'])) {
+    foreach ($conf['types'] as $type) {
+      if ($type) {
+        $types[] = 'node-'. $type;
+      }
+    }
+  }
+  $context = new panels_context($types);
   $context->plugin = 'node';
 
   if ($empty) {
