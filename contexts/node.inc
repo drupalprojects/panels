@@ -42,15 +42,18 @@ function panels_context_create_node($empty, $data = NULL, $conf = FALSE) {
   }
 
   if ($conf) {
-    $nid = $data['nid'];
+    $nid = is_array($data) ? $data['nid'] : $data->nid;
 
     if (module_exists('translation')) {
        if ($translation = module_invoke('translation', 'node_nid', $nid, $GLOBALS['locale'])) {
         $nid = $translation;
+        $reload = TRUE;
       }
     }
-
-    $data = node_load($nid);
+    
+    if (is_array($data) || !empty($reload)) {
+      $data = node_load($nid);
+    }
   }
 
   if (!empty($data)) {
