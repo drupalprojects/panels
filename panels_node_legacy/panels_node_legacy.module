@@ -6,8 +6,8 @@
  * @file panels_node_legacy.module
  *
  * This module exposes nodes directly to the add content interface.
- * The context system provided by the main panel module is a much more powerful
- * replacement for this simple, yet deprecated method.
+ * The context system provides the same functionality with considerably more
+ * power, but this module is sufficient for some targeted use cases.
  */
 
 /**
