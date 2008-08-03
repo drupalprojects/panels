@@ -7,8 +7,8 @@
 
 Drupal.Panels.Layout = {};
 Drupal.Panels.Layout.autoAttach = function() {
-  $('div.form-item div.layout-icon').click(function() {
-    $(this).prev().find('input').attr('checked', true);
+  $('div.form-item .layout-icon').click(function() {
+    $(this).prev().attr('checked', true);
   });
 };
 

@@ -312,11 +312,7 @@ function panels_choose_layout($display, $finish, $destination, $allowed_layouts)
     '#title' => t('Choose layout'),
     '#options' => $options,
     '#default_value' => in_array($display->layout, array_keys($layouts)) ? $display->layout : NULL,
-  );
-
-  $form['clearer'] = array(
-    // TODO: FIx this to use clear-block instead
-    '#value' => '<div style="clear: both;"></div>',
+    '#attributes' => array('class' => 'clear-block'),
   );
 
   $form['variables'] = array(
