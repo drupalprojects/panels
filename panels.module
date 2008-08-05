@@ -1392,8 +1392,8 @@ function panels_node_type($op, $info) {
           }
           db_query("UPDATE {panels_pane} SET configuration = '%s' WHERE pid = %d", serialize($conf), $pane->pid);
         }
-        // Manage single-pane contexts.
-        if ($conf['context'] == 'node-' . $info->old_type) {
+        // Manage single-context panes.
+        else if ($conf['context'] == 'node-' . $info->old_type) {
           $conf['context'] = 'node-' . $info->type;
           db_query("UPDATE {panels_pane} SET configuration = '%s' WHERE pid = %d", serialize($conf), $pane->pid);
         }
