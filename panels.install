@@ -582,7 +582,7 @@ function panels_update_5218() {
   switch ($GLOBALS['db_type']) {
     case 'mysql':
     case 'mysqli':
-      $ret[] = array('success' => TRUE, 'query' => t('Update #5218 only has changes for PostgreSQL. There are no updates for MySQL databases - since you\'re running MySQL, you should consider this update successful).'));
+      $ret[] = array('success' => TRUE, 'query' => t('Update #5218 only has changes for PostgreSQL. There are no updates for MySQL databases - since you\'re running MySQL, you should consider this update successful.'));
       break;
 
     case 'pgsql':
