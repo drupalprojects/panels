@@ -500,7 +500,7 @@ function _panels_page_get_title($panel_page, $op, $default_title) {
   }
 
   // Fall back on the panel default title
-  if ($panel_page->title) {
+  if (!empty($panel_page->title)) {
     return $panel_page->title;
   }
 
