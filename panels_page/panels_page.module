@@ -1133,7 +1133,7 @@ function panels_page_export($panel_page, $prefix = '') {
   foreach ($panel_page->contexts as $id => $info) {
     $output .= $prefix . '  $page->contexts[\'' . $id . "'] = array(\n";
     foreach ($info as $key => $value) {
-      $output .= $prefix . "    '$key' => " . panels_var_export($value, '    ') . ";\n";
+      $output .= $prefix . "    '$key' => " . panels_var_export($value, '    ') . ",\n";
     }
     $output .= $prefix . "  );\n";
   }
