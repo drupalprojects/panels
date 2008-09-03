@@ -1,16 +1,19 @@
 <?php
 // $Id$
+
 /**
  * implementation of hook_panels_layouts
  */
 function panels_twocol_panels_layouts() {
   $items['twocol'] = array(
-    'module' => 'panels',
     'title' => t('Two column'),
     'icon' => 'layouts/twocol.png',
     'theme' => 'panels_twocol',
     'css' => 'layouts/twocol.css',
-    'panels' => array('left' => t('Left side'), 'right' => t('Right side')),
+    'panels' => array(
+      'left' => t('Left side'),
+      'right' => t('Right side')
+    ),
   );
 
   return $items;

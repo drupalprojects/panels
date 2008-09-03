@@ -5,12 +5,15 @@
  */
 function panels_threecol_33_34_33_panels_layouts() {
   $items['threecol_33_34_33'] = array(
-    'module' => 'panels',
     'title' => t('Three column 33/34/33'),
     'icon' => 'layouts/threecol_33_34_33.png',
     'theme' => 'panels_threecol_33_34_33',
     'css' => 'layouts/threecol_33_34_33.css',
-    'panels' => array('left' => t('Left side'), 'middle' => t('Middle column'), 'right' => t('Right side')),
+    'panels' => array(
+      'left' => t('Left side'),
+      'middle' => t('Middle column'),
+      'right' => t('Right side')
+    ),
   );
 
   return $items;
