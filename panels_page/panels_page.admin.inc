@@ -813,7 +813,7 @@ function panels_page_edit_content($panel_page) {
 }
 
 function panels_page_preview_page($panel_page) {
-  return t('Dynamic previews have not yet been ported to Drupal 6. Expect them in the next alpha release.');
+  return t('Dynamic previews have not yet been ported to Drupal 6. Expect them in a later alpha release.');
 
   $args = func_get_args();
   $panel_page = array_shift($args);

@@ -60,6 +60,8 @@ function panels_node_menu() {
     'page arguments' => array(1),
     'type' => MENU_LOCAL_TASK,
   );
+  // FIXME Statically setting the path in this way makes these tabs render on
+  // ALL node - appropriate or not
   $items['node/%node/panel_layout'] = array(
     'path' => $base . 'layout',
     'title' => 'Panel layout',
