@@ -72,7 +72,7 @@ function _panels_page_insert(&$panel_page) {
   $clone->did = $panel_page->primary->did;
 
   foreach ($schema['fields'] as $field => $info) {
-    if (isset($panel_page->$field)) {
+    if (isset($panel_page->$field) && $info['type'] != 'serial') {
       $fields[] = $field;
       $placeholders[] = db_type_placeholder($info['type']);
       $values[] = _panels_page_save_value($info, $clone->$field);
