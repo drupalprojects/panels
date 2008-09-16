@@ -620,3 +620,15 @@ function panels_views_panes_title($subtype, $conf) {
   $title = $view->display_handler->get_option('pane_title');
   return check_plain($title ? $title : $view->name);
 }
+
+/**
+ * Implementation of hook_views_api().
+ *
+ * This one is used as the base to reduce errors when updating.
+ */
+function panels_views_views_api() {
+  return array(
+    'api' => 2,
+    'path' => drupal_get_path('module', 'panels_views'),
+  );
+}
