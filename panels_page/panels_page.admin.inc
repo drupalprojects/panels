@@ -764,7 +764,7 @@ function panels_page_edit_content($panel_page, $did = NULL) {
   $display->args = array();
 
   // Get a list of available content.
-  require_once drupal_get_path('module', 'panels') . '/includes/common.inc';
+  panels_load_include('common');
   $content_types = panels_common_get_allowed_types('panels_page', $contexts);
 
   $output = panels_edit($display, NULL, $content_types);
