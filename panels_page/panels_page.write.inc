@@ -27,6 +27,11 @@ function panels_page_fields() {
  */
 function panels_page_save_display(&$panel_page) {
   if (empty($panel_page->displays[$panel_page->current]['did']) || $panel_page->displays[$panel_page->current]['did'] == 'new') {
+    if (!empty($panel_page->export)) {
+      $code = panels_export_display($panel_page->display);
+      eval($code);
+      $panel_page->display =& $display;
+    }
     return panels_page_save($panel_page);
   }
 }
