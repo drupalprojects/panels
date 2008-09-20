@@ -104,9 +104,9 @@ function _panels_page_update(&$panel_page) {
   // Save the display if one was given to us.
   if (!empty($panel_page->display)) {
     panels_save_display($panel_page->display);
-    if ($panel_page->current != 'primary') {
-      $panel_page->displays[$panel_page->current]['did'] = $panel_page->display->did;
-      unset($panel_page->displays[$panel_page->current]['display']);
+    if (!empty($panel_page->export)) {
+      $panel_page->displays[$panel_page->export]['did'] = $panel_page->display->did;
+      unset($panel_page->displays[$panel_page->export]['display']);
     }
   }
 
