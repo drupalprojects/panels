@@ -579,9 +579,7 @@ function panels_load_displays($dids) {
     return $displays;
   }
 
-  $subs = implode(', ', array_fill(0, count($dids), '%d'));
-
-  $result = db_query("SELECT * FROM {panels_display} WHERE did IN ($subs)", $dids);
+  $result = db_query("SELECT * FROM {panels_display} WHERE did IN (".  db_placeholders($dids) .")", $dids);
 
   while ($obj = db_fetch_array($result)) {
     $display = new panels_display();
@@ -604,7 +602,7 @@ function panels_load_displays($dids) {
     $function($content, $layout, $settings);
   }
 
-  $result = db_query("SELECT * FROM {panels_pane} WHERE did IN ($subs) ORDER BY did, panel, position", $dids);
+  $result = db_query("SELECT * FROM {panels_pane} WHERE did IN (". db_placeholders($dids) .") ORDER BY did, panel, position", $dids);
 
   while ($pane = db_fetch_object($result)) {
     $pane->configuration = unserialize($pane->configuration);
