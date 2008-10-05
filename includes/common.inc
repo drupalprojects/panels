@@ -832,7 +832,8 @@ function theme_panels_common_context_item_form($form) {
     $output .= '<thead>';
     $output .= '<tr>';
     $output .= '<th class="title">' . $type_info['title'] . '</th>';
-    $output .= '<th class="operation operation">' . t('Operation') . '</th>';
+    $output .= '<th class="operation">' . t('Operation') . '</th>';
+    $output .= '</tr>';
     $output .= '</thead>';
     $output .= '<tbody>';
 
