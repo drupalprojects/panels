@@ -888,8 +888,8 @@ function panels_page_admin_view($panel_page, $args) {
   if ($args_missing = max($required_args - count($args), 0)) {
     $value = $url;
     $description = format_plural($args_missing,
-      t('1 argument is missing to generate a valid URL.'),
-      t('%count arguments are missing to generate a valid URL.', array('%count' => $args_missing))
+      '1 argument is missing to generate a valid URL.',
+      '@count arguments are missing to generate a valid URL.'
     );
   }
   else {
