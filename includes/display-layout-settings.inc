@@ -94,7 +94,7 @@ function panels_edit_layout_settings_form(&$form_state) {
     );
 
     if (isset($title) && is_string($title)) {
-      $form['display_title']['title']['#description'] .= t(" If you leave this field blank, then the default title, '@title', will be used instead.", array('@title' => $title));
+      $form['display_title']['title']['#description'] .= " " . t("If you leave this field blank, then the default title, '@title', will be used instead.", array('@title' => $title));
     }
   }
 
@@ -279,7 +279,7 @@ function panels_edit_layout_settings_form_submit($form, &$form_state) {
   $display->panel_settings = $form_state['values']['panel_settings'];
 
   panels_save_display($display);
-  drupal_set_message("Your layout settings have been saved.");
+  drupal_set_message(t("Your layout settings have been saved."));
 }
 
 // ------------------------------------------------------------------

@@ -371,7 +371,7 @@ function panels_mini_add_page($layout = NULL) {
   $panel_mini->name = '';
   $panel_mini->category = '';
 
-  drupal_set_title('Add mini panel');
+  drupal_set_title(t('Add mini panel'));
   return panels_mini_edit($panel_mini);
 }
 

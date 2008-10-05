@@ -608,7 +608,7 @@ function panels_page_export_page(&$form_state, $panel_page) {
   $code = panels_page_export($panel_page);
   $lines = substr_count($code, "\n");
   $form = array('output' => array(
-    '#title' => t("Export of '@title' ", array('@title' => $panel_page->title)),
+    '#title' => t("Export of '@title'", array('@title' => $panel_page->title)),
     '#type' => 'textarea',
     '#default_value' => $code,
     '#rows' => $lines,
@@ -889,8 +889,8 @@ function panels_page_admin_view(&$form_state) {
   if ($args_missing = max($required_args - count($args), 0)) {
     $value = $url;
     $description = format_plural($args_missing,
-      t('1 argument is missing to generate a valid URL.'),
-      t('%count arguments are missing to generate a valid URL.', array('%count' => $args_missing))
+      '1 argument is missing to generate a valid URL.',
+      '@count arguments are missing to generate a valid URL.'
     );
   }
   else {
