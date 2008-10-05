@@ -866,7 +866,7 @@ function panels_mini_content_types() {
       'icon' => 'icon_contrib_block.png',
       'path' => panels_get_path("content_types/block"),
       'description' => filter_xss_admin($mini->title),
-      'category' => array(t(!empty($mini->category) ? $mini->category : 'Mini panel'), -8),
+      'category' => array(!empty($mini->category) ? filter_xss_admin($mini->category) : t('Mini panel'), -8),
     );
     if (!empty($mini->requiredcontexts)) {
       $types[$mini->name]['required context'] = array();
