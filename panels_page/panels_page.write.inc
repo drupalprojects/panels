@@ -177,9 +177,10 @@ function panels_page_export($panel_page, $prefix = '') {
   $output = '';
   $fields = panels_page_fields();
   $output .= $prefix . '$page = new stdClass()' . ";\n";
-  $output .= $prefix . '$page->pid = \'new\'' . ";\n";
+  $output .= $prefix . '  $page->pid = \'new\'' . ";\n";
+  $output .= $prefix . '  $page->did = \'new\'' . ";\n";
   foreach (array_keys($fields) as $field) {
-    if (isset($panel_page->$field) && !in_array($field, array('displays', 'contexts', 'display'))) {
+    if (isset($panel_page->$field) && !in_array($field, array('displays', 'contexts', 'display', 'pid', 'did'))) {
       $output .= $prefix . '  $page->' . $field . ' = ' . panels_var_export($panel_page->$field, '  ') . ";\n";
     }
   }
