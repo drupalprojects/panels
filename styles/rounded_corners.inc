@@ -66,7 +66,7 @@ function theme_panels_rounded_corners_style_render_panel($display, $panel_id, $p
 
 function panels_add_rounded_corners_css($display, $where) {
   static $displays_used = array();
-  if (empty($displays_used[$display->name])) {
+  if (empty($displays_used[$display->css_id])) {
     theme('rounded_corners_css', $display, $where);
     $displays_used[$display->name] = TRUE;
   }
