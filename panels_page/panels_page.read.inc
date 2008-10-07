@@ -75,8 +75,8 @@ function panels_page_load($id, $load_display = FALSE) {
   }
 
   $where = is_numeric($id) ? 'pid = %d' : "name = '%s'";
-  $page = db_fetch_object(db_query("SELECT * FROM {panels_page} WHERE $where", $id);
-  
+  $page = db_fetch_object(db_query("SELECT * FROM {panels_page} WHERE $where", $id));
+
   if (!$page) {
     $defaults = panels_page_default_panels();
     if (isset($defaults[$id])) {
