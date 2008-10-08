@@ -348,10 +348,10 @@ function panels_page_get_raw_path($path) {
 /**
  * Modified version of _menu_router_build();
  */
-function _panels_page_menu_router_build($callbacks, $matches) {
+function _panels_page_menu_router_build($callbacks, $panels_matches) {
   $menu = array();
   $sort = array();
-  foreach ($matches as $path => $match) {
+  foreach ($panels_matches as $path => $match) {
     $item = $callbacks[$path];
     $load_functions = array();
     $to_arg_functions = array();
