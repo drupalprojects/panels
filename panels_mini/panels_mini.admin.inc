@@ -503,7 +503,7 @@ function panels_mini_edit_form_validate($form, &$form_state) {
   else {
     $query = "SELECT pid FROM {panels_mini} WHERE name = '%s'";
     if (!empty($form_state['values']['pid']) && is_numeric($form_state['values']['pid'])) {
-      $query .= " AND pid != $form_state['values'][pid]";
+      $query .= ' AND pid != ' . $form_state['values']['pid'];
     }
     if (db_result(db_query($query, $form_state['values']['name']))) {
       form_error($form['left']['settings']['name'], t('Panel name must be unique.'));
