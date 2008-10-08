@@ -126,15 +126,12 @@ function panels_page_loaded_cache($id, $panel_page = NULL) {
  */
 function panels_page_default_panels() {
   $panels = module_invoke_all('default_panel_pages');
+  $return = array();
   if (is_array($panels)) {
     foreach ($panels as $panel_page) {
       $return[$panel_page->name] = $panel_page;
     }
   }
-  else {
-    $return = array();
-  }
-
   return $return;
 }
 
