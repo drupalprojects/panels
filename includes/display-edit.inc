@@ -264,7 +264,7 @@ function panels_show_pane($display, $pane, $skin = TRUE) {
   }
 
   // Next to it the show or hide pane link
-  if ($pane->shown) {
+  if (!empty($pane->shown)) {
     $buttons .= panels_ajax_image_button('icon-hidepane.png', "panels/ajax/hide/$display->did/$pane->pid", t('Hide "@pane"', array('@pane' => $title)), "pane-toggle-shown-link panels-no-modal");
   }
   else {
