@@ -214,7 +214,7 @@ function panels_flexible_settings_validate($values, $form, $display, $layout, $s
   }
 
   // Validate that percentages add up to the stated maximum.
-  if ($settings['width_type'] == '%') {
+  if ($values['width_type'] == '%') {
     for ($row = 1; $row <= intval($values['rows']); $row++) {
       // This takes into account whether or even had a previous setting here.
       if ($settings['rows'] >= $row) {
