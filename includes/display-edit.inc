@@ -533,7 +533,7 @@ function panels_ajax_configure_pane($did = NULL, $pid = NULL) {
     'ajax' => TRUE,
     'title' => t('Configure !subtype_title', array('!subtype_title' => $subtypes[$pane->subtype]['title'])),
     'type' => panels_get_content_type($pane->type),
-    'subtype' => $subtype[$pane->subtype],
+    'subtype' => $subtypes[$pane->subtype],
     'op' => 'edit',
   );
 
