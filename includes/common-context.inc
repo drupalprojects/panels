@@ -323,7 +323,7 @@ function theme_panels_common_context_item_form($form) {
       $output .= '<th class="position">' . t('Weight') . '</th>';
     }
     $output .= '<th class="operation">' . t('Operation') . '</th>';
-    $output .= '<tr>';
+    $output .= '</tr>';
     $output .= '</thead>';
     $output .= '<tbody>';
 
