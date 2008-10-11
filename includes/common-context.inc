@@ -513,7 +513,7 @@ function panels_ajax_context_item_edit($module = NULL, $type = NULL, $panel_name
   $contexts = panels_context_load_contexts($object);
 
   // Remove this context, because we can't really allow circular contexts.
-  unset($contexts[panels_context_context_id($ref[$position])]);
+  unset($contexts[panels_context_id($ref[$position])]);
 
   $form_state = array(
     'object' => &$object,

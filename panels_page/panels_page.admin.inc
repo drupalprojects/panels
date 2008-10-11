@@ -868,7 +868,7 @@ function panels_page_preview_page($panel_page) {
       // TODO should this 'business logic' be separated out?
       drupal_not_found();
     }
-    $panel_page->context[panels_argument_context_id($argument)] = $context;
+    $panel_page->context[panels_context_id($argument, 'argument')] = $context;
   }
   _panels_page_prepare_render($panel_page);
   */
