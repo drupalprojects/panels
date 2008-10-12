@@ -150,7 +150,8 @@ function panels_context_node_settings_form_validate($form, &$form_state) {
     form_error($form['node'], t('Invalid node selected.'));
   }
   else {
-    $form_state['values']['nid'] = $node->nid;
+    form_set_value($form['nid'], $node->nid, $form_state);
+    // $form_state['values']['nid'] = $node->nid;
   }
 }
 
