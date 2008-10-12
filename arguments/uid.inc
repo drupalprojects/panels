@@ -18,6 +18,8 @@ function panels_uid_panels_arguments() {
     'settings form submit' => 'panels_uid_settings_form_submit',
     'displays' => 'panels_uid_displays',
     'choose display' => 'panels_uid_choose_display',
+    'native path' => 'user/%user',
+    'load function' => 'user',
   );
   return $args;
 }
