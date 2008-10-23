@@ -147,7 +147,7 @@ function panels_profile_fields_configure($id, $parents, $conf = array()) {
 /**
  * 'Title' callback for the 'profile fields' content type.
  */
-function panels_profile_fields_configure_title($conf, $context) {
+function panels_profile_fields_configure_title($subtype, $conf, $context) {
   return t('"@s" profile fields', array('@s' => $conf['category']));
 }
 

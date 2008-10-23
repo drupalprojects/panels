@@ -80,7 +80,7 @@ function panels_admin_content_types_vocabulary_terms() {
   );
 }
 
-function panels_admin_title_vocabulary_terms($conf, $context) {
+function panels_admin_title_vocabulary_terms($subtype, $conf, $context) {
   return t('"@s" terms', array('@s' => $context->identifier));
 }
 
