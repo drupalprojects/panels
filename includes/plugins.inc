@@ -1132,7 +1132,7 @@ function panels_context_get_context($context, $type = 'context') {
       $context['context_settings'] = array();
     }
 
-    $return = $function($type == 'requiredcontext', $context['context_settings'], FALSE);
+    $return = $function($type == 'requiredcontext', $context['context_settings'], TRUE);
     if ($return) {
       $return->identifier = $context['identifier'];
       $return->page_title = isset($context['title']) ? $context['title'] : '';
