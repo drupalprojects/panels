@@ -39,7 +39,10 @@ function theme_panels_list_style_render_panel($display, $panel_id, $panes, $sett
   $items = array();
 
   foreach ($panes as $pane_id => $content) {
-    $items[] = panels_render_pane($content, $display->content[$pane_id], $display);
+    $item = panels_render_pane($content, $display->content[$pane_id], $display);
+    if ($item) {
+      $items[] = $item;
+    }
   }
   return theme('item_list', $items, NULL, $settings['list_type']);
 }

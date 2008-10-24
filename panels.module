@@ -1141,8 +1141,10 @@ function panels_render_pane($content, $pane, $display) {
     }
   }
 
-  // fallback
-  return theme('panels_pane', $content, $pane, $display);
+  if (!empty($content)) {
+    // fallback
+    return theme('panels_pane', $content, $pane, $display);
+  }
 }
 
 /**
