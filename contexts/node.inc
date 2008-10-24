@@ -73,6 +73,13 @@ function panels_context_create_node($empty, $data = NULL, $conf = FALSE) {
 }
 
 function panels_context_node_settings_form($conf, $external = FALSE) {
+  if (empty($conf)) {
+    $conf = array(
+      'nid' => '',
+      'set_identifier' => TRUE,
+    );
+  }
+
   if ($external) {
     $form['external'] = array(
       '#type' => 'checkbox',
