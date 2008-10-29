@@ -31,7 +31,7 @@ function panels_content_vocabulary_terms($conf, $panel_args, $context) {
     $terms = taxonomy_get_tree($vocab->vid, 0, -1, $max_depth);
     $items = array();
     foreach ($terms as $term) {
-      $items[] = l(check_plain($term->name), 'taxonomy/term/'. $term->tid);
+      $items[] = l($term->name, 'taxonomy/term/'. $term->tid);
     }
     $output = theme('item_list', $items);
   }
