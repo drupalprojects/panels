@@ -366,6 +366,9 @@ function panels_page_edit_form_validate($form, &$form_state) {
   else if (preg_match("/[^A-Za-z0-9_]/", $form_state['values']['name'])) {
     form_error($form['left']['info']['name'], t('Panel name must be alphanumeric or underscores only.'));
   }
+  else if (!preg_match("/[A-Za-z_]/", $form_state['values']['name'])) {
+    form_error($form['left']['info']['name'], t('Panel name must not consist exclusively of numbers.'));
+  }
   else {
     if (db_result(db_query("SELECT pid FROM {panels_page} WHERE name = '%s' AND pid <> %d", $form_state['values']['name'], $form_state['pid']))) {
       form_error($form['left']['info']['name'], t('Panel name must be unique.'));
