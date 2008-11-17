@@ -44,7 +44,7 @@ function panels_context_create_node($empty, $data = NULL, $conf = FALSE) {
   }
 
   if ($conf) {
-    $nid = is_array($data) ? $data['nid'] : $data->nid;
+    $nid = is_array($data) && isset($data['nid']) ? $data['nid'] : (is_object($data) ? $data->nid : 0);
 
     if (module_exists('translation')) {
        if ($translation = module_invoke('translation', 'node_nid', $nid, $GLOBALS['language']->language)) {
