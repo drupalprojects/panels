@@ -67,7 +67,9 @@ function panels_term_context($arg = NULL, $conf = NULL, $empty = FALSE) {
     return PANELS_ARG_USE_FALLBACK;
   }
 
-  return panels_context_create('term', $term);
+  $context = panels_context_create('term', $term);
+  $context->original_argument = $arg;
+  return $context;
 }
 
 /**

@@ -23,6 +23,7 @@ class panels_context {
   var $identifier = '';
   var $argument = NULL;
   var $keyword = '';
+  var $original_argument = NULL;
 
   function panels_context($type = 'none', $data = NULL) {
     $this->type  = $type;
@@ -41,6 +42,13 @@ class panels_context {
   }
 
   function get_argument() {
+    return $this->argument;
+  }
+
+  function get_original_argument() {
+    if (!is_null($this->original_argument)) {
+      return $this->original_argument;
+    }
     return $this->argument;
   }
 
