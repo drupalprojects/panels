@@ -1056,6 +1056,7 @@ function _panels_page_update(&$panel_page) {
     if (!empty($panel_page->export)) {
       $panel_page->displays[$panel_page->export]['did'] = $panel_page->display->did;
       unset($panel_page->displays[$panel_page->export]['display']);
+      $panel_page->current = $panel_page->export;
     }
   }
 
