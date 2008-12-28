@@ -139,7 +139,7 @@ function _panels_page_save_value($info, $value) {
     case 'serialize':
       return serialize($value);
     case 'implode':
-      return implode(',', (array) $value);
+      return implode(', ', (array) $value);
     default:
       return $value;
   }
