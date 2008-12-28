@@ -1034,5 +1034,6 @@ function panels_page_edit_alternate($callback, $name, $alternate = '') {
     panels_page_fetch_display($panel_page, $alternate);
     panels_cache_set('panel_object:panel_page', $name, $panel_page);
   }
+  panels_page_set_current($panel_page);
   return $callback($panel_page);
 }
