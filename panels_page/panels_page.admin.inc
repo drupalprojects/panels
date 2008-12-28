@@ -1089,7 +1089,7 @@ function _panels_page_save_value($field, $value) {
     case 'switcher_options':
       return serialize($value);
     case 'access':
-      return implode(',', (array) $value);
+      return implode(', ', (array) $value);
     default:
       return $value;
   }
