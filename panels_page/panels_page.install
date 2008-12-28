@@ -287,6 +287,23 @@ function panels_page_schema_1() {
   return $schema;
 }
 
+/**
+ * Strips out any whitespace in the access string.
+ *
+ * The ONLY time this should do anything is via some really weird upgrade paths.
+ * However, it's harmless if the string is already correct (i.e., the value
+ * separator is already ',' instead of the old ', '), so this update function is
+ * included by the "better safe than sorry" mantra.
+ */
+function panels_page_update_6001() {
+  $result = db_query('SELECT pid, access from {panels_page}');
+  while ($row = db_fetch_object($result)) {
+    $row->access = str_replace(' ', '', $row->access);
+    db_query("UPDATE {panels_page} SET access = '%s' WHERE pid = %d", $row->access, $row->pid);
+  }
+  return array();
+}
+
 function panels_page_install() {
   db_query("UPDATE {system} SET weight = 15 WHERE name = 'panels_page'");
   drupal_install_schema('panels_page');
