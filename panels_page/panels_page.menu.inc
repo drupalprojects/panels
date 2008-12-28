@@ -96,6 +96,7 @@ function panels_page_admin_dynamic_menu_items($items = array(), $path_prefix = N
   $items[$path_prefix . '%panels_page_admin/edit/context'] = array(
     'title' => 'Context',
     'page callback' => 'panels_page_edit_context',
+    'load arguments' => array('panels_page_admin_cache_load'),
     'weight' => -6,
   ) + $admin;
   $items[$path_prefix . '%panels_page_admin/edit/layout'] = array(
