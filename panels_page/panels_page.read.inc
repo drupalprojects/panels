@@ -280,8 +280,10 @@ function panels_page_access($id, $account = NULL) {
   if (is_null($access_data)) {
     $result = db_query('SELECT pid, name, access FROM {panels_page}');
     while ($row = db_fetch_object($result)) {
-      $access_data[$row->pid] = explode(', ', $row->access);
-      $access_data[$row->name] = &$access_data[$row->pid];
+      if (!empty($row->access)) {
+        $access_data[$row->pid] = explode(', ', $row->access);
+        $access_data[$row->name] = &$access_data[$row->pid];
+      }
     }
   }
 
@@ -301,13 +303,12 @@ function panels_page_access($id, $account = NULL) {
   }
 
   // Otherwise, check roles
-  static $roles = array();
-  if (!isset($roles[$account->uid])) {
-    $roles[$account->uid] = array_keys($account->roles);
-    $roles[$account->uid][] = $account->uid ? DRUPAL_AUTHENTICATED_RID : DRUPAL_ANONYMOUS_RID;
+  $roles = array_keys($account->roles);
+  if (empty($account->uid)) {
+    $roles[] = DRUPAL_ANONYMOUS_RID;
   }
 
-  return array_intersect($access_data[$id], $roles[$account->uid]);
+  return array_intersect($access_data[$id], $roles);
 }
 
 /**
