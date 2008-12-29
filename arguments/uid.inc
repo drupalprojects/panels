@@ -33,11 +33,6 @@ function panels_uid_context($arg = NULL, $conf = NULL, $empty = FALSE) {
     return panels_context_create_empty('user');
   }
 
-  // Simulate the %user_uid_optional case. Hackity hackity hack!
-  if (is_null($arg) && $_GET['q'] == 'user') {
-    $arg = $GLOBALS['user']->uid;
-  }
-
   // FIXME: The code designed to handle a numeric id for loading is probably
   // pretty much cruft by now, and SHOULD be removed pending some more thorough
   // testing & thinking.
