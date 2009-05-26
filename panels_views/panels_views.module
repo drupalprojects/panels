@@ -782,7 +782,10 @@ function panels_views_render($conf, $panel_args, &$contexts) {
           break;
 
         case 'panel':
-          $args[] = $panel_args[$data['panel']];
+          // Only fill $args if a panel arg was passed in that belongs there
+          if (array_key_exists($data['panel'], $panel_args)) {
+            $args[] = $panel_args[$data['panel']];
+          }
           break;
 
         case 'user':
