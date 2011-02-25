@@ -1,4 +1,3 @@
-// $Id$
 /**
  * @file
  * Implement the modal forms used in Panels.

@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * @file twocol_bricks.inc

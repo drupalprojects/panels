@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * @file styles/rounded_corners.inc

@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 function panels_panel_node_view_delegator_task_handlers() {
   return array(
