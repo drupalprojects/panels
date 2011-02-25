@@ -1,4 +1,3 @@
-// $Id$
 
 Drupal.flexible = Drupal.flexible || {};
 

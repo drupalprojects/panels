@@ -1,5 +1,4 @@
 <?php
-// $Id$
 ?>
 <div class="dashboard-entry clear-block">
   <div class="dashboard-text">
