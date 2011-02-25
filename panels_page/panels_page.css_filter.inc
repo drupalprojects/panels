@@ -1,5 +1,4 @@
 <?php
-/* $Id$ */
 
 /*
  * @file panels_page/panels_page.css_filter.inc

@@ -1,4 +1,3 @@
-// $Id$
 
 Drupal.Panels.Checkboxes = {};
 

@@ -1,4 +1,3 @@
-/* $Id$ */
 
 Panels 2 ships with two new modules dealing with Views: panels_views and
 panels_views_legacy.

@@ -1,4 +1,3 @@
-; $Id$
 name = Views panes
 description = Creates views as content types that can be added to displays
 package = "Panels"
