@@ -276,7 +276,11 @@ function panels_permission() {
       'title' => t("Administer Panels layouts"),
       'description' => t("Allows a user to administer exported Panels layout plugins & instances."),
     ),
-    'use panels caching features' => array(
+    'administer panels pipelines' => array(
+      'title' => t("Administer Panels pipelines"),
+      'description' => t("Allows a user to administer Panels renderer pipelines, which contain Panel meta-configuration (such as allowed content, allowed layouts, and which IPE to use)."),
+    ),
+     'use panels caching features' => array(
       'title' => t("Configure caching settings on Panels"),
       'description' => t("Allows a user to configure caching on Panels displays and panes."),
     ),
