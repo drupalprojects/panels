@@ -209,7 +209,6 @@ function panels_menu() {
     }
   }
 
-
   return $items;
 }
 
@@ -278,7 +277,7 @@ function panels_permission() {
     ),
     'administer panels pipelines' => array(
       'title' => t("Administer Panels pipelines"),
-      'description' => t("Allows a user to administer Panels renderer pipelines, which contain Panel meta-configuration (such as allowed content, allowed layouts, and which IPE to use)."),
+      'description' => t("Allows a user to administer Panels renderer pipelines, which contain Panel meta-configuration (such as allowed content, allowed layouts, and the renderer to use)."),
     ),
      'use panels caching features' => array(
       'title' => t("Configure caching settings on Panels"),
