@@ -16,6 +16,9 @@ $plugin = array(
   'title plural' => t('pipelines'),
   'title plural proper' => t('Pipelines'),
 
+  // Utilize the complex 'operations' UI for editing a pipeline.
+  'use operations' => TRUE,
+
   'handler' => array(
     'class' => 'panels_pipelines_ui',
   ),
