@@ -37,13 +37,18 @@ class panels_pipelines_ui extends ctools_export_ui {
     $operations['operations']['summary'] = array(
       '#type' => 'link',
       '#title' => t('Summary'),
-      '#description' => t('See a summary of all the variants contained within this pipeline.'),
+      '#description' => t('See a summary of all the renderers in this pipeline.'),
+      '#weight' => -99,
+      '#no-ajax' => TRUE,
+      '#operation' => array(
+        'type' => 'summary',
+      ),
     );
 
-    $operations['operations']['edit'] = array(
+    $operations['operations']['general'] = array(
       '#type' => 'link',
-      '#title' => t('Edit'),
-      '#description' => t('Edit this item'),
+      '#title' => t('General'),
+      '#description' => t('Manage general settings for this pipeline.'),
       '#operation' => array(
         'form' => 'ctools_export_ui_edit_item_form',
       ),
@@ -59,7 +64,25 @@ class panels_pipelines_ui extends ctools_export_ui {
       '#description' => t('Disable this pipeline'),
     );
 
+    // Action to add a new IPE renderer. This is hardcoded and crappy; can be
+    // made better & flexible later.
+    $operations['actions']['add-ipe'] = array(
+      '#type' => 'link',
+      '#title' => t('Add IPE renderer'),
+      '#description' => t('Add an IPE renderer to this pipeline.'),
+      '#operation' => array(
+        'form' => array('panels_pipelines_add_ipe_renderer'),
+      ),
+    );
+
     drupal_alter('ctools_export_ui_operations', $operations, $this);
     return $operations;
+  }
+
+  public function render_operation_type_summary($form_state, $info, $operation) {
+    return array(
+      'title' => t('Cool summary, bro.'),
+      'content' => t('Blah blah lotsa info about all the contained pipelines blah.'),
+    );
   }
 }
