@@ -345,6 +345,7 @@ function panels_ctools_plugin_type() {
     'cache' => array(),
     'display_renderers' => array(
       'classes' => array('renderer'),
+      'process' => 'panels_display_renderer_process',
     ),
   );
 }
@@ -356,6 +357,19 @@ function panels_layout_process(&$plugin) {
   $plugin += array(
     'category' => t('Miscellaneous'),
     'description' => '',
+  );
+}
+
+/**
+ * Populate a display_renderer plugin with default properties.
+ *
+ * @param array $plugin
+ */
+function panels_display_renderer_process(&$plugin) {
+  $plugin += array(
+    'editor' => FALSE, // the renderer provides editing capabilities
+    'frontend renderer' => TRUE, // the renderer is intended for frontend use
+    'backend renderer' => FALSE, // the renderer is intended for backend use
   );
 }
 
@@ -1151,6 +1165,30 @@ function panels_get_current_page_display($change = NULL) {
   }
 
   return $display;
+}
+
+/**
+ * Ajax access control callback for working with context on pipelines.
+ *
+ * @param array $argument
+ *   An array containing the access information for the requested renderer, and
+ *   an empty array indicating no contexts are available (as renderers never
+ *   have any).
+ */
+function panels_pipeline_ctools_access_get($argument) {
+  ctools_include('export-ui');
+  $plugin = ctools_get_export_ui('panels_pipelines');
+  $handler = ctools_export_ui_get_handler($plugin);
+
+  list($name, $renderer) = explode('*', $argument);
+  $pipeline = ctools_export_ui_load($name, 'panels_pipelines');
+
+  $cached = $handler->edit_cache_get($pipeline, 'edit');
+  if (empty($cached)) {
+    $cached = $pipeline;
+  }
+
+  return array($cached->settings['renderers'][$renderer]['access'], array());
 }
 
 /**

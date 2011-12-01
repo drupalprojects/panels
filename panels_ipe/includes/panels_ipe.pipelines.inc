@@ -20,7 +20,7 @@ function panels_ipe_default_panels_renderer_pipeline() {
   $pipeline->weight = 0;
   $pipeline->settings = array(
     'renderers' => array(
-      0 => array(
+      'ipe' => array(
         'access' => array(
           'plugins' => array(
             0 => array(
@@ -34,6 +34,7 @@ function panels_ipe_default_panels_renderer_pipeline() {
           'logic' => 'and',
         ),
         'renderer' => 'ipe',
+        'content' => array(),
         'options' => array(),
       ),
     ),

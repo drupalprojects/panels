@@ -20,7 +20,7 @@ function panels_default_panels_renderer_pipeline() {
   $pipeline->weight = -100;
   $pipeline->settings = array(
     'renderers' => array(
-      0 => array(
+      'standard' => array(
         'access' => array(),
         'renderer' => 'standard',
         'options' => array(),
