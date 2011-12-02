@@ -1191,6 +1191,19 @@ function panels_pipeline_ctools_access_get($argument) {
   return array($cached->settings['renderers'][$renderer]['access'], array());
 }
 
+function panels_pipeline_ctools_access_set($argument, $access) {
+  ctools_include('export-ui');
+  $plugin = ctools_get_export_ui('panels_pipelines');
+  $handler = ctools_export_ui_get_handler($plugin);
+
+  list($name, $renderer) = explode('*', $argument);
+  $pipeline = ctools_export_ui_load($name, 'panels_pipelines');
+
+  $cached = $handler->edit_cache_get($pipeline, 'edit');
+  $cached->settings['renderers'][$renderer]['access'] = $access;
+  $handler->edit_cache_set($cached, 'edit');
+}
+
 /**
  * Clean up the panel pane variables for the template.
  */

@@ -245,12 +245,20 @@ function panels_pipelines_content_set_form($form, &$form_state) {
   ctools_add_css('panels_page', 'panels');
 
   $renderer = &$form_state['item']->settings['renderers'][$form_state['operation']['instance name']];
-  $default_types = $renderer['content'];
+  if (empty($renderer['content'])) {
+    $renderer['content'] = array(
+      'new_type_rule' => array('other' => TRUE),
+      'allowed_types' => array(),
+    );
+  }
+
+  $default_types = $renderer['content']['new_type_rule'];
 
   $content_types = ctools_get_content_types();
   foreach ($content_types as $id => $info) {
     if (empty($info['single'])) {
       $default_options[$id] = t('New @s', array('@s' => $info['title']));
+      $default_types[$id] = TRUE;
     }
   }
 
@@ -258,10 +266,54 @@ function panels_pipelines_content_set_form($form, &$form_state) {
   $form['panels_common_default'] = array(
     '#type' => 'checkboxes',
     '#title' => t('New content behavior'),
-    '#description' => t('Select the default behavior of new content added to the system. If checked, new content will automatically be immediately available to be added to Panels pages. If not checked, new content will not be available until specifically allowed here.'),
+    '#description' => t('Select the default behavior of new content added to the system. If checked, new content will automatically be immediately available when this pipeline and renderer are selected. If unchecked, new content will not be available until specifically allowed here.'),
     '#options' => $default_options,
     '#default_value' => array_keys(array_filter($default_types)),
   );
 
+  $available_content_types = ctools_content_get_all_types();
+  $allowed_content_types = $renderer['content']['allowed_types'];
+
+  foreach ($available_content_types as $id => $types) {
+    foreach ($types as $type => $info) {
+      $key = $id . '-' . $type;
+      $checkboxes = empty($content_types[$id]['single']) ? $id : 'other';
+      $options[$checkboxes][$key] = $info['title'];
+      if (!isset($allowed_content_types[$key])) {
+        $allowed[$checkboxes][$key] = isset($default_types[$id]) ? $default_types[$id] : $default_types['other'];
+      }
+      else {
+        $allowed[$checkboxes][$key] = $allowed_content_types[$key];
+      }
+    }
+  }
+
+  $form['content_types'] = array(
+    '#tree' => TRUE,
+    '#prefix' => '<div class="clearfix">',
+    '#suffix' => '</div>',
+  );
+  // cheat a bit
+  $content_types['other'] = array('title' => t('Other'), 'weight' => 10);
+  foreach ($content_types as $id => $info) {
+    if (isset($allowed[$id])) {
+      $form['content_types'][$id] = array(
+        '#prefix' => '<div class="panels-page-type-container">',
+        '#suffix' => '</div>',
+        '#type' => 'checkboxes',
+        '#title' => t('Allowed @s content', array('@s' => $info['title'])),
+        '#options' => $options[$id],
+        '#default_value' => array_keys(array_filter($allowed[$id])),
+        '#checkall' => TRUE,
+      );
+    }
+  }
+
   return $form;
+}
+
+function panels_pipelines_content_set_form_submit($form, &$form_state) {
+  $renderer = &$form_state['item']->settings['renderers'][$form_state['operation']['instance name']];
+  $renderer['content']['allowed_types'] = $form_state['values']['content_types'];
+  $renderer['content']['new_type_rule'] = $form_state['values']['panels_common_default'];
 }
