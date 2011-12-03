@@ -359,6 +359,47 @@ function panels_common_get_allowed_types($module, $contexts = array(), $has_cont
 }
 
 /**
+ * Determine the available content set using a combination of global properties
+ * specified at the module level, and the individualized controls set on the
+ * specific pipeline/renderer being used.
+ *
+ * This logic basically ANDs all conditionals together: content must be allowed
+ * at both the module and renderer level in order to be available.
+ */
+function panels_common_get_renderer_allowed_types($renderer, $module, $contexts = array(), $has_content = FALSE, $default_defaults = array(), $default_allowed_types = array()) {
+  $module_default_types = variable_get($module . '_default', $default_defaults);
+  if (!empty($renderer->options['content']['new_type_rule'])) {
+    $renderer_default_types = $renderer->options['content']['new_type_rule'];
+    $module_restricted_defaults = array_keys($module_default_types, 0, TRUE);
+    $renderer_restricted_defaults = array_keys($renderer_default_types, 0, TRUE);
+    // basically AND all limits together here; must be allowed by all
+    $default_types = array_merge($module_default_types, $renderer_default_types, array_fill_keys($module_restricted_defaults, 0), array_fill_keys($renderer_restricted_defaults, 0));
+  }
+  else {
+    $default_types = $module_default_types;
+  }
+
+  if (!isset($default_types['other'])) {
+    $default_types['other'] = TRUE;
+  }
+
+  $module_allowed_types = variable_get($module . '_allowed_types', $default_allowed_types);
+  if (!empty($renderer->options['content']['allowed_types'])) {
+    $renderer_allowed_types = $renderer->options['content']['allowed_types'];
+    $module_restricted_types = array_keys($module_allowed_types, 0, TRUE);
+    $renderer_restricted_types = array_keys($renderer_allowed_types, 0, TRUE);
+    $allowed_types = array_merge($module_allowed_types, $renderer_allowed_types, array_fill_keys($module_restricted_types, 0), array_fill_keys($renderer_restricted_types, 0));
+  }
+  else {
+    $allowed_types = $module_allowed_types;
+  }
+
+  $content_types = ctools_content_get_available_types($contexts, $has_content, $allowed_types, $default_types);
+
+  return $content_types;
+}
+
+/**
  * The FAPI code for generating an 'allowed layouts' selection form.
  *
  * NOTE: Because the Panels API does not guarantee a particular method of storing the data on allowed layouts,

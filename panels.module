@@ -1558,9 +1558,12 @@ function panel_context_panels_cache_get($key) {
   $cache->display = &panels_panel_context_get_display($handler);
   $cache->display->context = ctools_context_handler_get_all_contexts($page->task, $page->subtask, $handler);
   $cache->display->cache_key = 'panel_context:' . $key;
-  $cache->content_types = panels_common_get_allowed_types('panels_page', $cache->display->context);
   $cache->display_title = TRUE;
   $cache->locked = $page->locked;
+
+  // Give the renderer and its conf a chance to limit the available options, too
+  $renderer = panels_get_renderer($handler->conf['pipeline'], $display);
+  $cache->content_types = panels_common_get_renderer_allowed_types($renderer, 'panels_page', $cache->display->context);
 
   return $cache;
 }

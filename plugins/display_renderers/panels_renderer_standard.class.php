@@ -182,6 +182,10 @@ class panels_renderer_standard {
     }
   }
 
+  function set_options($options) {
+    $this->options = $options;
+  }
+
   /**
    * Prepare the attached display for rendering.
    *
