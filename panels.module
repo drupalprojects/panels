@@ -1200,6 +1200,8 @@ function panels_pipeline_ctools_access_set($argument, $access) {
   $pipeline = ctools_export_ui_load($name, 'panels_pipelines');
 
   $cached = $handler->edit_cache_get($pipeline, 'edit');
+  $cached = empty($cached) ? $pipeline : $cached;
+
   $cached->settings['renderers'][$renderer]['access'] = $access;
   $handler->edit_cache_set($cached, 'edit');
 }

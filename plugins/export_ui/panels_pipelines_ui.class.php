@@ -207,7 +207,7 @@ function panels_pipelines_allowed_layouts_form($form, &$form_state) {
   }
 
   $renderer = &$form_state['item']->settings['renderers'][$form_state['operation']['instance name']];
-  $defaults = empty($renderer['layouts']) ? $options : $renderer['layouts'];
+  $defaults = empty($renderer['options']['layouts']) ? $options : $renderer['options']['layouts'];
 
   $form['layouts'] = array(
     '#type' => 'checkboxes',
@@ -235,7 +235,7 @@ function panels_pipelines_allowed_layouts_form_submit($form, &$form_state) {
   $renderer = &$form_state['item']->settings['renderers'][$name];
 
   foreach ($form_state['values']['layouts'] as $layout => $setting) {
-    $renderer['layouts'][$layout] = $setting;
+    $renderer['options']['layouts'][$layout] = $setting;
   }
 }
 
@@ -245,14 +245,14 @@ function panels_pipelines_content_set_form($form, &$form_state) {
   ctools_add_css('panels_page', 'panels');
 
   $renderer = &$form_state['item']->settings['renderers'][$form_state['operation']['instance name']];
-  if (empty($renderer['content'])) {
-    $renderer['content'] = array(
+  if (empty($renderer['options']['content'])) {
+    $renderer['options']['content'] = array(
       'new_type_rule' => array('other' => TRUE),
       'allowed_types' => array(),
     );
   }
 
-  $default_types = $renderer['content']['new_type_rule'];
+  $default_types = $renderer['options']['content']['new_type_rule'];
 
   $content_types = ctools_get_content_types();
   foreach ($content_types as $id => $info) {
@@ -272,8 +272,9 @@ function panels_pipelines_content_set_form($form, &$form_state) {
   );
 
   $available_content_types = ctools_content_get_all_types();
-  $allowed_content_types = $renderer['content']['allowed_types'];
+  $allowed_content_types = $renderer['options']['content']['allowed_types'];
 
+  $allowed = array();
   foreach ($available_content_types as $id => $types) {
     foreach ($types as $type => $info) {
       $key = $id . '-' . $type;
@@ -314,6 +315,6 @@ function panels_pipelines_content_set_form($form, &$form_state) {
 
 function panels_pipelines_content_set_form_submit($form, &$form_state) {
   $renderer = &$form_state['item']->settings['renderers'][$form_state['operation']['instance name']];
-  $renderer['content']['allowed_types'] = $form_state['values']['content_types'];
-  $renderer['content']['new_type_rule'] = $form_state['values']['panels_common_default'];
+  $renderer['options']['content']['allowed_types'] = call_user_func_array('array_merge', $form_state['values']['content_types']);
+  $renderer['options']['content']['new_type_rule'] = $form_state['values']['panels_common_default'];
 }

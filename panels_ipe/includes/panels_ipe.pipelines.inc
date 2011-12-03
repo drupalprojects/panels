@@ -34,8 +34,10 @@ function panels_ipe_default_panels_renderer_pipeline() {
           'logic' => 'and',
         ),
         'renderer' => 'ipe',
-        'content' => array(),
-        'options' => array(),
+        'options' => array(
+          'content' => array(),
+          'layouts' => array(),
+        ),
       ),
     ),
   );

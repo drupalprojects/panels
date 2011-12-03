@@ -120,6 +120,12 @@ class panels_renderer_standard {
   var $plugin = FALSE;
 
   /**
+   * Configuration that controls various aspects of the renderer's behavior,
+   * primarily edit-time behaviors.
+   */
+  var $options = array();
+
+  /**
    * TRUE if this renderer is rendering in administrative mode
    * which will allow layouts to have extra functionality.
    *
