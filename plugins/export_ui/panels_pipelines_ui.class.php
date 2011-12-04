@@ -65,20 +65,31 @@ class panels_pipelines_ui extends ctools_export_ui {
       '#type' => 'ctools_operation_group',
     );
 
-    $operations['actions']['disable'] = array(
-      '#type' => 'link',
-      '#title' => t('Disable'),
-      '#description' => t('Disable this pipeline'),
-    );
+    if (empty($item->disabled)) {
+      $operations['actions']['disable'] = array(
+        '#type' => 'link',
+        '#title' => t('Disable'),
+        '#description' => t('Disable this pipeline'),
+      );
+    }
+    else {
+      $operations['actions']['enable'] = array(
+        '#type' => 'link',
+        '#title' => t('Disable'),
+        '#description' => t('Disable this pipeline'),
+      );
+    }
+
 
     // Action to add a new IPE renderer. This is hardcoded and crappy; can be
     // made better & flexible later.
-    $operations['actions']['add-ipe'] = array(
+    $operations['actions']['add-renderer'] = array(
       '#type' => 'link',
-      '#title' => t('Add IPE renderer'),
-      '#description' => t('Add an IPE renderer to this pipeline.'),
+      '#title' => t('Add renderer'),
+      '#no-ajax' => TRUE,
+      '#description' => t('Add another renderer to this pipeline.'),
       '#operation' => array(
-        'form' => array('panels_pipelines_add_ipe_renderer'),
+        'form' => 'panels_pipelines_add_renderer',
       ),
     );
 
@@ -154,6 +165,48 @@ class panels_pipelines_ui extends ctools_export_ui {
       'content' => t('Blah blah lotsa info about all the contained pipelines blah.'),
     );
   }
+
+  public function add_renderer_form($form, &$form_state) {
+    $pipeline = $form_state['item'];
+    $renderers = panels_get_display_renderers();
+
+    $options = array();
+    foreach ($renderers as $id => $plugin) {
+      // TODO for now we're just doing frontend renderers in pipelines
+      if (!empty($plugin['frontend renderer'])) {
+        $options[$id] = $plugin['title'];
+      }
+    }
+
+    $form['title'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Title'),
+      '#description' => t('Administrative title for this renderer. If left blank, a title will be assigned automatically.'),
+    );
+
+    $form['renderer'] = array(
+      '#type' => 'select',
+      '#title' => t('Renderer'),
+      '#options' => $options,
+      '#description' => t('Select a renderer plugin to use. Different renderer plugins have different options.'),
+    );
+
+    return $form;
+  }
+
+  public function add_renderer_form_submit($form, &$form_state) {
+
+  }
+}
+
+
+
+function panels_pipelines_add_renderer($form, &$form_state) {
+  return $form_state['object']->add_renderer_form($form, $form_state);
+}
+
+function panels_pipelines_add_renderer_submit($form, &$form_state) {
+  return $form_state['object']->add_renderer_form_submit($form, $form_state);
 }
 
 function panels_pipelines_edit_selection_criteria($form, &$form_state) {

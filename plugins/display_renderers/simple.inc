@@ -5,4 +5,5 @@
  */
 $plugin = array(
   'renderer' => 'panels_renderer_simple',
+  'title' => t('Simple'),
 );

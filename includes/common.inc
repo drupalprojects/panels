@@ -394,6 +394,7 @@ function panels_common_get_renderer_allowed_types($renderer, $module, $contexts 
     $allowed_types = $module_allowed_types;
   }
 
+  ctools_include('content');
   $content_types = ctools_content_get_available_types($contexts, $has_content, $allowed_types, $default_types);
 
   return $content_types;
