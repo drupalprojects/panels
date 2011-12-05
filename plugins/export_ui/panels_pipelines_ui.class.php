@@ -21,7 +21,7 @@ class panels_pipelines_ui extends ctools_export_ui {
   }
 
   public function get_default_operation_trail($item, $operations) {
-    return array('operations', 'summary');
+    return array('operations', 'general');
   }
 
   public function get_operations($item) {
@@ -32,7 +32,7 @@ class panels_pipelines_ui extends ctools_export_ui {
       '#type' => 'ctools_operation_group',
     );
 
-    $operations['operations']['summary'] = array(
+/*     $operations['operations']['summary'] = array(
       '#type' => 'link',
       '#title' => t('Summary'),
       '#description' => t('See a summary of all the renderers in this pipeline.'),
@@ -41,11 +41,11 @@ class panels_pipelines_ui extends ctools_export_ui {
       '#operation' => array(
         'type' => 'summary',
       ),
-    );
+    ); */
 
     $operations['operations']['general'] = array(
       '#type' => 'link',
-      '#title' => t('General'),
+      '#title' => t('General settings'),
       '#description' => t('Manage general settings for this pipeline.'),
       '#weight' => 0,
       '#operation' => array(
@@ -97,6 +97,16 @@ class panels_pipelines_ui extends ctools_export_ui {
     return $operations;
   }
 
+  public function render_operation($form_state, $operations, $trail) {
+    // derive the renderer instance being acted on, if possible. kinda icky.
+    if ($trail[0] == 'operations' && $trail[1] == 'renderers' &&
+        !empty($form_state['item']->settings['renderers'][$trail[2]])) {
+      $form_state['renderer_instance'] = &$form_state['item']->settings['renderers'][$trail[2]];
+      $form_state['instance_name'] = $trail[2];
+    }
+    return parent::render_operation($form_state, $operations, $trail);
+  }
+
   public function get_renderer_operations($item) {
     ctools_include('plugins', 'panels');
     $renderers = array();
@@ -104,12 +114,12 @@ class panels_pipelines_ui extends ctools_export_ui {
     $plugins = panels_get_display_renderers();
 
     // First, load up the unique ones actually named in the settings
-    foreach ($item->settings['renderers'] as $name => $renderer) {
+    foreach ($item->settings['renderers'] as $renderer) {
       $plugin = $plugins[$renderer['renderer']];
 
       $group = array(
         '#type' => 'ctools_operation_group',
-        '#title' => $name,
+        '#title' => $renderer['title'],
         '#collapsible' => TRUE,
       );
 
@@ -124,7 +134,6 @@ class panels_pipelines_ui extends ctools_export_ui {
         '#description' => t('Manage the criteria that determine whether or not this renderer will be used.'),
         '#operation' => array(
           'form' => 'panels_pipelines_edit_selection_criteria',
-          'instance name' => $name,
         ),
       );
 
@@ -137,7 +146,6 @@ class panels_pipelines_ui extends ctools_export_ui {
           '#description' => t('Control which layouts should be allowed when using this renderer.'),
           '#operation' => array(
             'form' => 'panels_pipelines_allowed_layouts_form',
-            'instance name' => $name,
           ),
         );
         $group['content'] = array(
@@ -146,24 +154,16 @@ class panels_pipelines_ui extends ctools_export_ui {
           '#description' => t('Control the set of content (panes) that will be available for users to select when using this renderer.'),
           '#operation' => array(
             'form' => 'panels_pipelines_content_set_form',
-            'instance name' => $name,
           ),
         );
       }
 
-      $renderers[$name] = $group;
+      $renderers[] = $group;
     }
 
     // Then add the unmodifiable standard one that is always there, always last
 
     return $renderers;
-  }
-
-  public function render_operation_type_summary($form_state, $info, $operation) {
-    return array(
-      'title' => t('Cool summary, bro.'),
-      'content' => t('Blah blah lotsa info about all the contained pipelines blah.'),
-    );
   }
 
   public function add_renderer_form($form, &$form_state) {
@@ -195,7 +195,23 @@ class panels_pipelines_ui extends ctools_export_ui {
   }
 
   public function add_renderer_form_submit($form, &$form_state) {
+    // TODO fill in with instructions for the wizard. please, Earl :)
+  }
 
+  /**
+   * Override purely for the purpose of initializing values on $item->settings.
+   *
+   * @see ctools_export_ui::edit_cache_get_key()
+   */
+  public function edit_cache_get($item, $op = 'edit') {
+    if ($op !== 'add') {
+      return parent::edit_cache_get($item, $op);
+    }
+    $item = ctools_export_crud_new($this->plugin['schema']);
+    $item->settings = array(
+      'renderers' => array(),
+    );
+    return $item;
   }
 }
 
@@ -210,10 +226,8 @@ function panels_pipelines_add_renderer_submit($form, &$form_state) {
 }
 
 function panels_pipelines_edit_selection_criteria($form, &$form_state) {
-  $name = $form_state['operation']['instance name'];
-  $renderer = &$form_state['item']->settings['renderers'][$name];
-  if (!isset($renderer['access'])) {
-    $renderer['access'] = array();
+  if (!isset($form_state['renderer_instance']['access'])) {
+    $form_state['renderer_instance']['access'] = array();
   }
 
   ctools_include('context');
@@ -224,8 +238,8 @@ function panels_pipelines_edit_selection_criteria($form, &$form_state) {
 
   $form_state['module'] = 'panels_pipeline';
   // Encode a bunch of info into the argument so we can get our cache later
-  $form_state['callback argument'] = $form_state['item']->name . '*' . $name;
-  $form_state['access'] = $renderer['access'];
+  $form_state['callback argument'] = $form_state['item']->name . '*' . $form_state['instance_name'];
+  $form_state['access'] = $form_state['renderer_instance']['access'];
   $form_state['no buttons'] = TRUE;
   // only allow generic, globally-available contexts. at least for now
   // $form_state['contexts'] = ctools_context_load_contexts($form_state['item'], array());
@@ -259,8 +273,7 @@ function panels_pipelines_allowed_layouts_form($form, &$form_state) {
     $options[$id] = panels_print_layout_icon($id, $layout, check_plain($layout['title']));
   }
 
-  $renderer = &$form_state['item']->settings['renderers'][$form_state['operation']['instance name']];
-  $defaults = empty($renderer['options']['layouts']) ? $options : $renderer['options']['layouts'];
+  $defaults = empty($form_state['renderer_instance']['options']['layouts']) ? $options : $form_state['renderer_instance']['options']['layouts'];
 
   $form['layouts'] = array(
     '#type' => 'checkboxes',
@@ -284,11 +297,8 @@ function panels_pipelines_allowed_layouts_form_validate($form, &$form_state) {
 }
 
 function panels_pipelines_allowed_layouts_form_submit($form, &$form_state) {
-  $name = $form_state['operation']['instance name'];
-  $renderer = &$form_state['item']->settings['renderers'][$name];
-
   foreach ($form_state['values']['layouts'] as $layout => $setting) {
-    $renderer['options']['layouts'][$layout] = $setting;
+    $form_state['renderer_instance']['options']['layouts'][$layout] = $setting;
   }
 }
 
@@ -297,15 +307,14 @@ function panels_pipelines_content_set_form($form, &$form_state) {
   ctools_include('content');
   ctools_add_css('panels_page', 'panels');
 
-  $renderer = &$form_state['item']->settings['renderers'][$form_state['operation']['instance name']];
-  if (empty($renderer['options']['content'])) {
-    $renderer['options']['content'] = array(
+  if (empty($form_state['renderer_instance']['options']['content'])) {
+    $form_state['renderer_instance']['options']['content'] = array(
       'new_type_rule' => array('other' => TRUE),
       'allowed_types' => array(),
     );
   }
 
-  $default_types = $renderer['options']['content']['new_type_rule'];
+  $default_types = $form_state['renderer_instance']['options']['content']['new_type_rule'];
 
   $content_types = ctools_get_content_types();
   foreach ($content_types as $id => $info) {
@@ -325,7 +334,7 @@ function panels_pipelines_content_set_form($form, &$form_state) {
   );
 
   $available_content_types = ctools_content_get_all_types();
-  $allowed_content_types = $renderer['options']['content']['allowed_types'];
+  $allowed_content_types = $form_state['renderer_instance']['options']['content']['allowed_types'];
 
   $allowed = array();
   foreach ($available_content_types as $id => $types) {
@@ -367,7 +376,6 @@ function panels_pipelines_content_set_form($form, &$form_state) {
 }
 
 function panels_pipelines_content_set_form_submit($form, &$form_state) {
-  $renderer = &$form_state['item']->settings['renderers'][$form_state['operation']['instance name']];
-  $renderer['options']['content']['allowed_types'] = call_user_func_array('array_merge', $form_state['values']['content_types']);
-  $renderer['options']['content']['new_type_rule'] = $form_state['values']['panels_common_default'];
+  $form_state['renderer_instance']['options']['content']['allowed_types'] = call_user_func_array('array_merge', $form_state['values']['content_types']);
+  $form_state['renderer_instance']['options']['content']['new_type_rule'] = $form_state['values']['panels_common_default'];
 }

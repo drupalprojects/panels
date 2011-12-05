@@ -6,4 +6,15 @@
 $plugin = array(
   'renderer' => 'panels_renderer_simple',
   'title' => t('Simple'),
+
+  'pipeline defaults' => array(
+    'title' => '',
+    'access' => array(),
+    'renderer' => 'simple',
+    'options' => array(
+      'content' => array(),
+      'layouts' => array(),
+      'general' => array(),
+    ),
+  ),
 );

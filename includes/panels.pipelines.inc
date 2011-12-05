@@ -20,9 +20,28 @@ function panels_default_panels_renderer_pipeline() {
   $pipeline->weight = -100;
   $pipeline->settings = array(
     'renderers' => array(
-      'standard' => array(
+      0 => array(
+        'title' => 'Standard',
         'access' => array(),
         'renderer' => 'standard',
+        'options' => array(),
+      ),
+    ),
+  );
+
+  $pipeline = new stdClass;
+  $pipeline->disabled = FALSE; /* Edit this to true to make a default pipeline disabled initially */
+  $pipeline->api_version = 1;
+  $pipeline->name = 'editor';
+  $pipeline->admin_title = t('Editor');
+  $pipeline->admin_description = t('Renders a panel for editing in the backend interface. Changing this pipeline can break all of your Panels editing interfaces.');
+  $pipeline->weight = -100;
+  $pipeline->settings = array(
+    'renderers' => array(
+      0 => array(
+        'title' => 'Editor',
+        'access' => array(),
+        'editor' => 'editor',
         'options' => array(),
       ),
     ),

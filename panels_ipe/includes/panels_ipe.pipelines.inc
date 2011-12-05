@@ -20,7 +20,7 @@ function panels_ipe_default_panels_renderer_pipeline() {
   $pipeline->weight = 0;
   $pipeline->settings = array(
     'renderers' => array(
-      'ipe' => array(
+      0 => array(
         'access' => array(
           'plugins' => array(
             0 => array(
@@ -33,10 +33,19 @@ function panels_ipe_default_panels_renderer_pipeline() {
           ),
           'logic' => 'and',
         ),
+        'title' => 'Default IPE',
         'renderer' => 'ipe',
         'options' => array(
           'content' => array(),
           'layouts' => array(),
+          'general' => array(
+            'manage_styles' => TRUE,
+            'manage_caching' => TRUE,
+            'manage_locking' => TRUE,
+            'manage_layouts' => TRUE,
+            'add_panes' => TRUE,
+            'remove_panes' => TRUE,
+          ),
         ),
       ),
     ),

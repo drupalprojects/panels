@@ -6,4 +6,15 @@ $plugin = array(
   'frontend renderer' => FALSE,
   'backend renderer' => TRUE,
   'editor' => TRUE,
+
+  'pipeline defaults' => array(
+    'title' => '',
+    'access' => array(),
+    'renderer' => 'editor',
+    'options' => array(
+      'content' => array(),
+      'layouts' => array(),
+      'general' => array(),
+    ),
+  ),
 );

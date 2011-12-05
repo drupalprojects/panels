@@ -5,8 +5,13 @@ $plugin = array(
   'title' => t('Standard'),
 
   'pipeline defaults' => array(
+    'title' => '',
     'access' => array(),
     'renderer' => 'standard',
-    'options' => array(),
+    'options' => array(
+      'content' => array(),
+      'layouts' => array(),
+      'general' => array(),
+    ),
   ),
 );
