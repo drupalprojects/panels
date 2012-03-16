@@ -264,6 +264,7 @@ function panels_perm() {
     'administer pane access',
     'administer advanced pane settings',
     'administer panels layouts',
+    'administer panels styles',
     'use panels caching features',
     'use panels dashboard',
     'use panels in place editing',
