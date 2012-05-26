@@ -28,6 +28,7 @@ function panels_default_panels_renderer_pipeline() {
       ),
     ),
   );
+  $pipelines[$pipeline->name] = $pipeline;
 
   $pipeline = new stdClass;
   $pipeline->disabled = FALSE; /* Edit this to true to make a default pipeline disabled initially */
@@ -41,7 +42,7 @@ function panels_default_panels_renderer_pipeline() {
       0 => array(
         'title' => 'Editor',
         'access' => array(),
-        'editor' => 'editor',
+        'renderer' => 'editor',
         'options' => array(),
       ),
     ),
