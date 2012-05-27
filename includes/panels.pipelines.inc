@@ -14,9 +14,9 @@ function panels_default_panels_renderer_pipeline() {
   $pipeline = new stdClass;
   $pipeline->disabled = FALSE; /* Edit this to true to make a default pipeline disabled initially */
   $pipeline->api_version = 1;
-  $pipeline->name = 'standard';
-  $pipeline->admin_title = t('Standard');
-  $pipeline->admin_description = t('Renders a panel normally. This is the most common option.');
+  $pipeline->name = 'frontend_standard';
+  $pipeline->admin_title = t('Standard frontend pipeline');
+  $pipeline->admin_description = t('The default frontend rendering pipeline. This is the base logic Panels has historically used for frontend rendering.');
   $pipeline->weight = -100;
   $pipeline->settings = array(
     'renderers' => array(
@@ -33,8 +33,8 @@ function panels_default_panels_renderer_pipeline() {
   $pipeline = new stdClass;
   $pipeline->disabled = FALSE; /* Edit this to true to make a default pipeline disabled initially */
   $pipeline->api_version = 1;
-  $pipeline->name = 'editor';
-  $pipeline->admin_title = t('Editor');
+  $pipeline->name = 'backend_editing';
+  $pipeline->admin_title = t('Administrative editing pipeline');
   $pipeline->admin_description = t('Renders a panel for editing in the backend interface. Changing this pipeline can break all of your Panels editing interfaces.');
   $pipeline->weight = -100;
   $pipeline->settings = array(

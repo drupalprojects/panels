@@ -14,8 +14,8 @@ function panels_ipe_default_panels_renderer_pipeline() {
   $pipeline = new stdClass;
   $pipeline->disabled = FALSE; /* Edit this to true to make a default pipeline disabled initially */
   $pipeline->api_version = 1;
-  $pipeline->name = 'ipe';
-  $pipeline->admin_title = t('In-Place Editor');
+  $pipeline->name = 'ipe_default';
+  $pipeline->admin_title = t('Base in-place editor');
   $pipeline->admin_description = t('Allows privileged users to update and rearrange the content while viewing this panel.');
   $pipeline->weight = 0;
   $pipeline->settings = array(
