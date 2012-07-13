@@ -59,7 +59,7 @@ class panels_pipelines_ui extends ctools_export_ui {
       '#weight' => 10,
     );
 
-    $operations['operations']['renderers'] += $this->get_renderer_operations($item);
+    $operations['operations']['renderers'] += $this->get_all_renderer_operations($item);
 
     $operations['actions'] = array(
       '#type' => 'ctools_operation_group',
@@ -81,8 +81,7 @@ class panels_pipelines_ui extends ctools_export_ui {
     }
 
 
-    // Action to add a new IPE renderer. This is hardcoded and crappy; can be
-    // made better & flexible later.
+    // Action to add a new renderer.
     $operations['actions']['add-renderer'] = array(
       '#type' => 'link',
       '#title' => t('Add renderer'),
@@ -90,8 +89,35 @@ class panels_pipelines_ui extends ctools_export_ui {
       '#description' => t('Add another renderer to this pipeline.'),
       '#operation' => array(
         'form' => 'panels_pipelines_add_renderer',
+        'no update and save' => TRUE,
+        'silent' => TRUE,
+
+        'form info' => array(
+          'finish text' => t('Create renderer'),
+        ),
       ),
     );
+
+    // Special operation used for configuring a new renderer before saving it.
+    if (isset($item->new_renderer)) {
+      $plugin = panels_get_display_renderer($item->new_renderer['renderer']);
+      $operations['actions']['configure'] = array(
+        '#type' => 'hidden',
+        '#title' => t('Configure'),
+        '#description' => t('Configure the new renderer prior to adding it to the pipeline.'),
+        '#no-ajax' => FALSE,
+        '#operation' => array(
+          'no update and save' => TRUE,
+          'form info' => array(
+            'show trail' => TRUE,
+            'show back' => TRUE,
+            'finish text' => t('Create renderer'),
+            'finish callback' => 'panels_pipelines_add_renderer_finish',
+          ),
+          'form' => $this->get_renderer_operations_form_info($plugin['name']),
+        ),
+      );
+    }
 
     drupal_alter('ctools_export_ui_operations', $operations, $this);
     return $operations;
@@ -104,66 +130,111 @@ class panels_pipelines_ui extends ctools_export_ui {
       $form_state['renderer_instance'] = &$form_state['item']->settings['renderers'][$trail[2]];
       $form_state['instance_name'] = $trail[2];
     }
+    // Adding a new renderer, grab it from the special spot.
+    else if ($trail[0] == 'actions' && $trail[1] == 'configure') {
+      $form_state['renderer_instance'] = &$form_state['item']->new_renderer;
+      $form_state['instance_name'] = 'new';
+    }
     return parent::render_operation($form_state, $operations, $trail);
   }
 
-  public function get_renderer_operations($item) {
+  public function get_all_renderer_operations($item) {
     ctools_include('plugins', 'panels');
     $renderers = array();
 
-    $plugins = panels_get_display_renderers();
-
     // First, load up the unique ones actually named in the settings
     foreach ($item->settings['renderers'] as $renderer) {
-      $plugin = $plugins[$renderer['renderer']];
-
-      $group = array(
-        '#type' => 'ctools_operation_group',
+      $group = $this->get_renderer_operations($renderer['renderer']);
+      $group += array(
         '#title' => $renderer['title'],
+        '#type' => 'ctools_operation_group',
         '#collapsible' => TRUE,
       );
-
-      // Pull in any operations dictated by the plugin, first.
-      if (!empty($plugin['operations'])) {
-        $group += $plugin['operations'];
-      }
-
-      $group['criteria'] = array(
-        '#type' => 'link',
-        '#title' => t('Selection rules'),
-        '#description' => t('Manage the criteria that determine whether or not this renderer will be used.'),
-        '#operation' => array(
-          'form' => 'panels_pipelines_edit_selection_criteria',
-        ),
-      );
-
-      // Only add the content & layout selector forms if the renderer indicates
-      // it provides an editing interface.
-      if (!empty($plugin['editor'])) {
-        $group['layouts'] = array(
-          '#type' => 'link',
-          '#title' => t('Layouts'),
-          '#description' => t('Control which layouts should be allowed when using this renderer.'),
-          '#operation' => array(
-            'form' => 'panels_pipelines_allowed_layouts_form',
-          ),
-        );
-        $group['content'] = array(
-          '#type' => 'link',
-          '#title' => t('Content'),
-          '#description' => t('Control the set of content (panes) that will be available for users to select when using this renderer.'),
-          '#operation' => array(
-            'form' => 'panels_pipelines_content_set_form',
-          ),
-        );
-      }
-
       $renderers[] = $group;
     }
 
-    // Then add the unmodifiable standard one that is always there, always last
-
     return $renderers;
+  }
+
+  /**
+   * Given the string name of a renderer plugin, return a renderable array of
+   * operations info suitable for use in constructing the operations nav.
+   *
+   * @param string $renderer_name
+   * 	The name of the renderer plugin from which to extract operations info.
+   */
+  public function get_renderer_operations($renderer_name) {
+    $plugin = panels_get_display_renderer($renderer_name);
+
+    $group = array();
+
+    // Pull in any operations dictated by the plugin, first.
+    if (!empty($plugin['operations'])) {
+      $group += $plugin['operations'];
+    }
+
+    $group['criteria'] = array(
+      '#type' => 'link',
+      '#title' => t('Selection rules'),
+      '#description' => t('Manage the criteria that determine whether or not this renderer will be used.'),
+      '#operation' => array(
+        'form' => 'panels_pipelines_edit_selection_criteria',
+      ),
+      '#weight' => -3,
+    );
+
+    // Only add the content & layout selector forms if the renderer indicates
+    // it provides an editing interface.
+    if (!empty($plugin['editor'])) {
+      $group['layouts'] = array(
+        '#type' => 'link',
+        '#title' => t('Layouts'),
+        '#description' => t('Control which layouts should be allowed when using this renderer.'),
+        '#operation' => array(
+          'form' => 'panels_pipelines_allowed_layouts_form',
+        ),
+        '#weight' => -2,
+      );
+      $group['content'] = array(
+        '#type' => 'link',
+        '#title' => t('Content'),
+        '#description' => t('Control the set of content (panes) that will be available for users to select when using this renderer.'),
+        '#operation' => array(
+          'form' => 'panels_pipelines_content_set_form',
+        ),
+        '#weight' => -1,
+      );
+    }
+
+    uasort($group, 'element_sort');
+
+    return $group;
+  }
+
+  /**
+   * Returns an array of forms info suitable for creating a form wizard on
+   * behalf a named renderer plugin.
+   *
+   * @param string $renderer_name
+   *   The name of the renderer plugin from which to extract form info.
+   */
+  public function get_renderer_operations_form_info($renderer_name) {
+    // Let the other method to the bulk of the compiling work.
+    $group = $this->get_renderer_operations($renderer_name);
+
+    $forms = $order = array();
+    foreach ($group as $name => $operation) {
+      $order[$name] = $operation['#title'];
+      $forms[$name] = array(
+        // TODO this will break if some renderer wants a complex form and has a
+        // non-string here
+        'form id' => $operation['#operation']['form'],
+      );
+    }
+    return array(
+      'forms' => $forms,
+      'order' => $order,
+    );
   }
 
   public function add_renderer_form($form, &$form_state) {
@@ -194,8 +265,58 @@ class panels_pipelines_ui extends ctools_export_ui {
     return $form;
   }
 
+  public function add_renderer_form_validate($form, &$form_state) {
+    // TODO input validation on the title field
+  }
+
   public function add_renderer_form_submit($form, &$form_state) {
-    // TODO fill in with instructions for the wizard. please, Earl :)
+    $form_state['no_rerender'] = TRUE;
+
+    $plugin = panels_get_display_renderer($form_state['values']['renderer']);
+
+    // Assign a default title if none was provided.
+    if (empty($form_state['values']['title'])) {
+      $form_state['values']['title'] = empty($plugin['title']) ? t('New renderer') : $plugin['title'];
+    }
+
+    $form_state['item']->new_renderer = $plugin['pipeline defaults'];
+    $form_state['item']->new_renderer['title'] = $form_state['values']['title'];
+
+    $form_state['new trail'] = array('actions', 'configure');
+  }
+
+  /**
+   * Performs final cleanup after completing a form wizard for adding a new
+   * renderer.
+   *
+   * Sets appropriate redirects and moves the new renderer config into its
+   * permanent storage location.
+   */
+  public function add_renderer_finish(&$form_state) {
+    $item = &$form_state['item'];
+
+    // Attach the new renderer to its permanent location.
+    $item->settings['renderers'][] = $item->new_renderer;
+    end($item->settings['renderers']);
+    $name = key($item->settings['renderers']);
+
+    // Figure out the first form for this renderer and use that, else go back
+    // to the overview page.
+
+    $ops = $this->get_renderer_operations_form_info($item->new_renderer['renderer']);
+    $trails = array_keys($ops['order']);
+    $final = reset($trails);
+
+    unset($item->new_renderer);
+
+    if (!empty($final)) {
+      $form_state['new trail'] = array('operations', 'renderers', $name, $final);
+    }
+    else {
+      $form_state['new trail'] = array('operations', 'general');
+    }
+
+    $this->edit_operation_finish($form_state);
   }
 
   /**
@@ -215,14 +336,25 @@ class panels_pipelines_ui extends ctools_export_ui {
   }
 }
 
-
-
 function panels_pipelines_add_renderer($form, &$form_state) {
   return $form_state['object']->add_renderer_form($form, $form_state);
 }
 
+function panels_pipelines_add_renderer_validate($form, &$form_state) {
+  return $form_state['object']->add_renderer_form_validate($form, $form_state);
+}
+
 function panels_pipelines_add_renderer_submit($form, &$form_state) {
   return $form_state['object']->add_renderer_form_submit($form, $form_state);
+}
+
+/**
+ * Finish callback for the form wizard for creating a new renderer instance on
+ * a pipeline.
+ *
+ */
+function panels_pipelines_add_renderer_finish(&$form_state) {
+  return $form_state['object']->add_renderer_finish($form_state);
 }
 
 function panels_pipelines_edit_selection_criteria($form, &$form_state) {

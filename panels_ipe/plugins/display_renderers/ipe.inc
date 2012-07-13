@@ -29,6 +29,7 @@ $plugin = array(
       '#type' => 'link',
       '#title' => t('General'),
       '#description' => t('Manage general settings for this renderer.'),
+      '#weight' => -5,
       '#operation' => array(
         'form' => 'panels_ipe_renderer_settings_form',
       ),
