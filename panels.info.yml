@@ -6,4 +6,4 @@ package: Panels
 core: 8.x
 configure: panels.admin
 dependencies:
-  - ctools
+  - page_manager
