@@ -261,60 +261,6 @@ function panels_init() {
 }
 
 /**
- * Implementation of hook_permission().
- *
- * @todo Almost all of these need to be moved into pipelines.
- */
-function panels_permission() {
-  return array(
-    'use panels dashboard' => array(
-      'title' => t("Use Panels Dashboard"),
-      'description' => t("Allows a user to access the !link.", array('!link' => l('Panels Dashboard', 'admin/structure/panels'))),
-    ),
-    'view pane admin links' => array( // @todo
-      'title' => t("View administrative links on Panel panes"),
-      'description' => t(""),
-    ),
-    'administer pane access' => array( // @todo should we really have a global perm for this, or should it be moved into a pipeline question?
-      'title' => t("Configure access settings on Panel panes"),
-      'description' => t("Access rules (often also called visibility rules) can be configured on a per-pane basis. This permission allows users to configure those settings."),
-    ),
-    'use panels in place editing' => array(
-      'title' => t("Use the Panels In-Place Editor"),
-      'description' => t("Allows a user to utilize Panels' In-Place Editor."),
-    ),
-    'change layouts in place editing' => array(
-      'title' => t("Change layouts with the Panels In-Place Editor"),
-      'description' => t("Allows a user to change layouts with the IPE."),
-    ),
-    'administer advanced pane settings' => array(
-      'title' => t("Configure advanced settings on Panel panes"),
-      'description' => t(""),
-    ),
-    'administer panels layouts' => array(
-      'title' => t("Administer Panels layouts"),
-      'description' => t("Allows a user to administer exported Panels layout plugins & instances."),
-    ),
-    'administer panels styles' => array(
-      'title' => t("Administer Panels styles"),
-      'description' => t("Allows a user to administer the styles of Panel panes."),
-    ),
-    'use panels caching features' => array(
-      'title' => t("Configure caching settings on Panels"),
-      'description' => t("Allows a user to configure caching on Panels displays and panes."),
-    ),
-    'use panels locks' => array(
-      'title' => t('Use panel locks'),
-      'description' => t('Allows a user to lock and unlock panes in a panel display.'),
-    ),
-    'use ipe with page manager' => array(
-      'title' => t("Use the Panels In-Place Editor with Page Manager"),
-      'description' => t('Allows users with access to the In-Place editor to administer page manager pages. This permission is only needed for users without "use page manager" access.'),
-    ),
-  );
-}
-
-/**
  * Implementation of hook_flush_caches().
  *
  * We implement this so that we can be sure our legacy rendering state setting
