@@ -1,0 +1,27 @@
+onecol:
+  label: Single column
+  category: Columns: 1
+  type: page
+  path: plugins/layouts/onecol
+  # @todo Add support for icon: https://www.drupal.org/node/2326595
+  icon: onecol.png
+  css: onecol.css
+  theme: panels_onecol
+  regions:
+    middle:
+      label: Middle column
+
+twocol:
+  label: Two column
+  category: Columns: 2
+  type: page
+  path: plugins/layouts/twocol
+  # @todo Add support for icon: https://www.drupal.org/node/2326595
+  icon: twocol.png
+  css: twocol.css
+  theme: panels_twocol
+  regions:
+    left:
+      label: Left side
+    right:
+      label: Right side

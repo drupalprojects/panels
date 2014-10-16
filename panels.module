@@ -30,12 +30,45 @@ function panels_api_version() {
  * Implementation of hook_theme()
  */
 function panels_theme() {
-  // Safety: go away if CTools is not at an appropriate version.
-  if (!module_invoke('ctools', 'api_version', PANELS_REQUIRED_CTOOLS_API)) {
-    return array();
-  }
-
   $theme = array();
+
+  // For now, we register these theme functions manually.
+  // @todo: Reimplement the code below to auto register the theme functions
+  //        with current layout plugins.
+  $theme['panels_onecol'] = array(
+    'render element' => 'content',
+    'path' => drupal_get_path('module', 'panels') . '/plugins/layouts/onecol',
+    'template' => 'panels-onecol',
+  );
+  $theme['panels_twocol'] = array(
+    'render element' => 'content',
+    'path' => drupal_get_path('module', 'panels') . '/plugins/layouts/twocol',
+    'template' => 'panels-twocol',
+  );
+
+  /*
+  $layouts = panels_get_layouts();
+  foreach ($layouts as $name => $data) {
+    foreach (array('theme', 'admin theme') as $callback) {
+      if (!empty($data[$callback])) {
+        $theme[$data[$callback]] = array(
+          'variables' => array('css_id' => NULL, 'content' => NULL, 'settings' => NULL, 'display' => NULL, 'layout' => NULL, 'renderer' => NULL),
+          'path' => $data['path'],
+          'file' => $data['file'],
+        );
+
+        // if no theme function exists, assume template.
+        if (!function_exists("theme_$data[theme]")) {
+          $theme[$data[$callback]]['template'] = str_replace('_', '-', $data[$callback]);
+          $theme[$data[$callback]]['file'] = $data['file']; // for preprocess.
+        }
+      }
+    }
+  }
+  */
+
+  // @todo: Port the follow to Drupal 8!
+  /*
   $theme['panels_layout_link'] = array(
     'variables' => array('title' => NULL, 'id' => NULL, 'image' => NULL, 'link' => NULL, 'class' => NULL),
   );
@@ -99,27 +132,6 @@ function panels_theme() {
   // Register layout and style themes on behalf of all of these items.
   ctools_include('plugins', 'panels');
 
-  // No need to worry about files; the plugin has to already be loaded for us
-  // to even know what the theme function is, so files will be auto included.
-  $layouts = panels_get_layouts();
-  foreach ($layouts as $name => $data) {
-    foreach (array('theme', 'admin theme') as $callback) {
-      if (!empty($data[$callback])) {
-        $theme[$data[$callback]] = array(
-          'variables' => array('css_id' => NULL, 'content' => NULL, 'settings' => NULL, 'display' => NULL, 'layout' => NULL, 'renderer' => NULL),
-          'path' => $data['path'],
-          'file' => $data['file'],
-        );
-
-        // if no theme function exists, assume template.
-        if (!function_exists("theme_$data[theme]")) {
-          $theme[$data[$callback]]['template'] = str_replace('_', '-', $data[$callback]);
-          $theme[$data[$callback]]['file'] = $data['file']; // for preprocess.
-        }
-      }
-    }
-  }
-
   $styles = panels_get_styles();
   foreach ($styles as $name => $data) {
     if (!empty($data['render pane'])) {
@@ -146,6 +158,7 @@ function panels_theme() {
       }
     }
   }
+  */
 
   return $theme;
 }

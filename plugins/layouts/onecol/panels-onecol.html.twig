@@ -1,4 +1,4 @@
-<?php
+{#
 /**
  * @file
  * Template for a 3 column panel layout.
@@ -11,9 +11,9 @@
  *   panel of the layout. This layout supports the following sections:
  *   $content['middle']: The only panel in the layout.
  */
-?>
-<div class="panel-display panel-1col clearfix" <?php if (!empty($css_id)) { print "id=\"$css_id\""; } ?>>
+#}
+<div class="panel-display panel-1col clearfix" {% if css_id %}{{ css_id }}{% endif %}>
   <div class="panel-panel panel-col">
-    <div><?php print $content['middle']; ?></div>
+    <div>{{ content.middle }}</div>
   </div>
 </div>

@@ -7,3 +7,4 @@ core: 8.x
 configure: panels.admin
 dependencies:
   - page_manager
+  - layout_plugin

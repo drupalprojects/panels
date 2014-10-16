@@ -25,6 +25,8 @@ use Drupal\page_manager\Plugin\ConditionVariantTrait;
 use Drupal\page_manager\Plugin\ContextAwareVariantInterface;
 use Drupal\page_manager\Plugin\ContextAwareVariantTrait;
 use Drupal\page_manager\Plugin\PageAwareVariantInterface;
+use Drupal\layout_plugin\Layout;
+use Drupal\layout_plugin\Plugin\Layout\LayoutInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -40,6 +42,13 @@ class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInt
   use BlockVariantTrait;
   use ContextAwareVariantTrait;
   use ConditionVariantTrait;
+
+  /**
+   * The layout handler.
+   *
+   * @var \Drupal\layout_plugin\Plugin\Layout\LayoutInterface
+   */
+  protected $layout;
 
   /**
    * The context handler.
@@ -108,9 +117,33 @@ class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInt
   }
 
   /**
+   * Returns instance of the layout plugin used by this page variant.
+   *
+   * @return \Drupal\layout_plugin\Plugin\Layout\LayoutInterface
+   *   Layout plugin instance.
+   */
+  public function getLayout() {
+    if (!isset($this->layout)) {
+      $this->layout = Layout::layoutPluginManager()->createInstance($this->configuration['layout'], array());
+    }
+    return $this->layout;
+  }
+
+  /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function getRegionNames() {
+    return $this->getLayout()->getRegionNames();
+  }
+
+  /**
+   * Build render arrays for each of the regions.
+   *
+   * @return
+   *   An associative array keyed by region id, containing the render array
+   *   representing the content of each region.
+   */
+  protected function buildRegions() {
     $build = array();
     $contexts = $this->getContexts();
     foreach ($this->getRegionAssignments() as $region => $blocks) {
@@ -151,11 +184,29 @@ class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInt
   /**
    * {@inheritdoc}
    */
+  public function build() {
+    $regions = $this->buildRegions();
+    if ($layout = $this->getLayout()) {
+      return $layout->build($regions);
+    }
+    return $regions;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildConfigurationForm($form, $form_state);
 
     // Do not allow blocks to be added until the display variant has been saved.
     if (!$this->id()) {
+      $form['layout'] = array(
+        '#title' => $this->t('Layout'),
+        '#type' => 'select',
+        '#options' => Layout::getLayoutOptions(array('group_by_category' => TRUE)),
+        '#default_value' => NULL
+      );
+
       return $form;
     }
 
@@ -329,9 +380,13 @@ class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInt
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     parent::submitConfigurationForm($form, $form_state);
 
+    if ($form_state->hasValue('layout')) {
+      $this->configuration['layout'] = $form_state->getValue('layout');
+    }
+
     // If the blocks were rearranged, update their values.
-    if (!empty($form_state['values']['blocks'])) {
-      foreach ($form_state['values']['blocks'] as $block_id => $block_values) {
+    if ($form_state->hasValue('blocks')) {
+      foreach ($form_state->getValue('blocks') as $block_id => $block_values) {
         $this->updateBlock($block_id, $block_values);
       }
     }
