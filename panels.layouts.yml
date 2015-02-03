@@ -5,7 +5,7 @@ onecol:
   path: plugins/layouts/onecol
   # @todo Add support for icon: https://www.drupal.org/node/2326595
   icon: onecol.png
-  css: onecol.css
+  library: panels/onecol
   theme: panels_onecol
   regions:
     middle:
@@ -18,7 +18,7 @@ twocol:
   path: plugins/layouts/twocol
   # @todo Add support for icon: https://www.drupal.org/node/2326595
   icon: twocol.png
-  css: twocol.css
+  library: panels/twocol
   theme: panels_twocol
   regions:
     left:

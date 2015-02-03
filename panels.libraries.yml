@@ -1,0 +1,10 @@
+onecol:
+  version: VERSION
+  css:
+    theme:
+      plugins/layouts/onecol/onecol.css: {}
+twocol:
+  version: VERSION
+  css:
+    theme:
+      plugins/layouts/twocol/twocol.css: {}
