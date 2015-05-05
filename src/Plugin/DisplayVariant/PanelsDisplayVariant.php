@@ -10,7 +10,7 @@ namespace Drupal\panels\Plugin\DisplayVariant;
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\NestedArray;
-use Drupal\Component\Utility\String;
+use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Display\VariantBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -186,7 +186,7 @@ class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInt
             '#derivative_plugin_id' => $block->getDerivativeId(),
           ];
           if (!empty($block_render_array['#configuration']['label'])) {
-            $block_render_array['#configuration']['label'] = String::checkPlain($block_render_array['#configuration']['label']);
+            $block_render_array['#configuration']['label'] = SafeMarkup::checkPlain($block_render_array['#configuration']['label']);
           }
           $block_render_array['content'] = $block->build();
 
