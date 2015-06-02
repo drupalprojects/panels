@@ -3,7 +3,7 @@ onecol:
   category: Columns: 1
   path: plugins/layouts/onecol
   icon: onecol.png
-  library: panels/onecol
+  css: onecol.css
   template: panels-onecol
   regions:
     middle:
@@ -14,7 +14,7 @@ twocol:
   category: Columns: 2
   path: plugins/layouts/twocol
   icon: twocol.png
-  library: panels/twocol
+  css: twocol.css
   template: panels-twocol
   regions:
     left:
