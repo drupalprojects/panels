@@ -32,20 +32,6 @@ function panels_api_version() {
 function panels_theme() {
   $theme = array();
 
-  // For now, we register these theme functions manually.
-  // @todo: Reimplement the code below to auto register the theme functions
-  //        with current layout plugins.
-  $theme['panels_onecol'] = array(
-    'render element' => 'content',
-    'path' => drupal_get_path('module', 'panels') . '/plugins/layouts/onecol',
-    'template' => 'panels-onecol',
-  );
-  $theme['panels_twocol'] = array(
-    'render element' => 'content',
-    'path' => drupal_get_path('module', 'panels') . '/plugins/layouts/twocol',
-    'template' => 'panels-twocol',
-  );
-
   /*
   $layouts = panels_get_layouts();
   foreach ($layouts as $name => $data) {
