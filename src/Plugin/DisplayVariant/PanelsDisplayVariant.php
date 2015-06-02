@@ -242,7 +242,7 @@ class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInt
     // Set up the attributes used by a modal to prevent duplication later.
     $attributes = [
       'class' => ['use-ajax'],
-      'data-accepts' => 'application/vnd.drupal-modal',
+      'data-dialog-type' => 'modal',
       'data-dialog-options' => Json::encode([
         'width' => 'auto',
       ]),
