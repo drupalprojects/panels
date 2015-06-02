@@ -147,7 +147,7 @@ class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInt
    * {@inheritdoc}
    */
   public function getRegionNames() {
-    return $this->getLayout()->getRegionNames();
+    return $this->getLayout()->getPluginDefinition()['region_names'];
   }
 
   /**
