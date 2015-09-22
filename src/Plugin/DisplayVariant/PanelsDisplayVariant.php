@@ -19,7 +19,6 @@ use Drupal\Component\Plugin\ContextAwarePluginInterface;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
-use Drupal\page_manager\PageExecutableInterface;
 use Drupal\Core\Utility\Token;
 use Drupal\page_manager\Plugin\BlockVariantInterface;
 use Drupal\page_manager\Plugin\BlockVariantTrait;
@@ -27,7 +26,6 @@ use Drupal\page_manager\Plugin\ConditionVariantInterface;
 use Drupal\page_manager\Plugin\ConditionVariantTrait;
 use Drupal\page_manager\Plugin\ContextAwareVariantInterface;
 use Drupal\page_manager\Plugin\ContextAwareVariantTrait;
-use Drupal\page_manager\Plugin\PageAwareVariantInterface;
 use Drupal\layout_plugin\Layout;
 use Drupal\layout_plugin\Plugin\Layout\LayoutInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -40,7 +38,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   admin_label = @Translation("Panels")
  * )
  */
-class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInterface, ConditionVariantInterface, ContainerFactoryPluginInterface, PageAwareVariantInterface, BlockVariantInterface {
+class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInterface, ConditionVariantInterface, ContainerFactoryPluginInterface, BlockVariantInterface {
 
   use BlockVariantTrait;
   use ContextAwareVariantTrait;
@@ -73,13 +71,6 @@ class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInt
    * @var \Drupal\Core\Session\AccountInterface
    */
   protected $account;
-
-  /**
-   * The page executable.
-   *
-   * @var \Drupal\page_manager\PageExecutable
-   */
-  protected $executable;
 
   /**
    * The token service.
@@ -217,14 +208,13 @@ class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInt
 
     // Allow to configure the page title, even when adding a new display.
     // Default to the page label in that case.
-    $form['page_title'] = array(
+    $form['page_title'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Page title'),
       '#description' => $this->t('Configure the page title that will be used for this display.'),
-      '#default_value' => !$this->id() ? $this->executable->getPage()->label() : $this->configuration['page_title'],
-    );
+      '#default_value' => $this->configuration['page_title'] ?: '',
+    ];
 
-    // Do not allow blocks to be added until the display variant has been saved.
     if (!$this->id()) {
       $form['layout'] = [
         '#title' => $this->t('Layout'),
@@ -235,166 +225,6 @@ class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInt
 
       return $form;
     }
-
-    // Determine the page ID, used for links below.
-    $page_id = $this->executable->getPage()->id();
-
-    // Set up the attributes used by a modal to prevent duplication later.
-    $attributes = [
-      'class' => ['use-ajax'],
-      'data-dialog-type' => 'modal',
-      'data-dialog-options' => Json::encode([
-        'width' => 'auto',
-      ]),
-    ];
-    $add_button_attributes = NestedArray::mergeDeep($attributes, [
-      'class' => [
-        'button',
-        'button--small',
-        'button-action',
-      ],
-    ]);
-
-    if ($block_assignments = $this->getRegionAssignments()) {
-      // Build a table of all blocks used by this display variant.
-      $form['block_section'] = [
-        '#type' => 'details',
-        '#title' => $this->t('Blocks'),
-        '#open' => TRUE,
-      ];
-      $form['block_section']['add'] = [
-        '#type' => 'link',
-        '#title' => $this->t('Add new block'),
-        '#url' => Url::fromRoute('page_manager.display_variant_select_block', [
-          'page' => $page_id,
-          'display_variant_id' => $this->id(),
-        ]),
-        '#attributes' => $add_button_attributes,
-        '#attached' => [
-          'library' => [
-            'core/drupal.ajax',
-          ],
-        ],
-      ];
-      $form['block_section']['blocks'] = [
-        '#type' => 'table',
-        '#header' => [
-          $this->t('Label'),
-          $this->t('Plugin ID'),
-          $this->t('Region'),
-          $this->t('Weight'),
-          $this->t('Operations'),
-        ],
-        '#empty' => $this->t('There are no regions for blocks.'),
-        // @todo This should utilize https://drupal.org/node/2065485.
-        '#parents' => ['display_variant', 'blocks'],
-      ];
-      // Loop through the blocks per region.
-      foreach ($block_assignments as $region => $blocks) {
-        // Add a section for each region and allow blocks to be dragged between
-        // them.
-        $form['block_section']['blocks']['#tabledrag'][] = [
-          'action' => 'match',
-          'relationship' => 'sibling',
-          'group' => 'block-region-select',
-          'subgroup' => 'block-region-' . $region,
-          'hidden' => FALSE,
-        ];
-        $form['block_section']['blocks']['#tabledrag'][] = [
-          'action' => 'order',
-          'relationship' => 'sibling',
-          'group' => 'block-weight',
-          'subgroup' => 'block-weight-' . $region,
-        ];
-        $form['block_section']['blocks'][$region] = [
-          '#attributes' => [
-            'class' => ['region-title', 'region-title-' . $region],
-            'no_striping' => TRUE,
-          ],
-        ];
-        $form['block_section']['blocks'][$region]['title'] = [
-          '#markup' => $this->getRegionName($region),
-          '#wrapper_attributes' => [
-            'colspan' => 5,
-          ],
-        ];
-        $form['block_section']['blocks'][$region . '-message'] = [
-          '#attributes' => [
-            'class' => [
-              'region-message',
-              'region-' . $region . '-message',
-              empty($blocks) ? 'region-empty' : 'region-populated',
-            ],
-          ],
-        ];
-        $form['block_section']['blocks'][$region . '-message']['message'] = [
-          '#markup' => '<em>' . t('No blocks in this region') . '</em>',
-          '#wrapper_attributes' => [
-            'colspan' => 5,
-          ],
-        ];
-
-        /** @var $blocks \Drupal\block\BlockPluginInterface[] */
-        foreach ($blocks as $block_id => $block) {
-          $row = [
-            '#attributes' => [
-              'class' => ['draggable'],
-            ],
-          ];
-          $row['label']['#markup'] = $block->label();
-          $row['id']['#markup'] = $block->getPluginId();
-          // Allow the region to be changed for each block.
-          $row['region'] = [
-            '#title' => $this->t('Region'),
-            '#title_display' => 'invisible',
-            '#type' => 'select',
-            '#options' => $this->getRegionNames(),
-            '#default_value' => $this->getRegionAssignment($block_id),
-            '#attributes' => [
-              'class' => ['block-region-select', 'block-region-' . $region],
-            ],
-          ];
-          // Allow the weight to be changed for each block.
-          $configuration = $block->getConfiguration();
-          $row['weight'] = [
-            '#type' => 'weight',
-            '#default_value' => isset($configuration['weight']) ? $configuration['weight'] : 0,
-            '#title' => t('Weight for @block block', ['@block' => $block->label()]),
-            '#title_display' => 'invisible',
-            '#attributes' => [
-              'class' => ['block-weight', 'block-weight-' . $region],
-            ],
-          ];
-          // Add the operation links.
-          $operations = [];
-          $operations['edit'] = [
-            'title' => $this->t('Edit'),
-            'url' => Url::fromRoute('page_manager.display_variant_edit_block', [
-              'page' => $page_id,
-              'display_variant_id' => $this->id(),
-              'block_id' => $block_id,
-            ]),
-            'attributes' => $attributes,
-          ];
-          $operations['delete'] = [
-            'title' => $this->t('Delete'),
-            'url' => Url::fromRoute('page_manager.display_variant_delete_block', [
-              'page' => $page_id,
-              'display_variant_id' => $this->id(),
-              'block_id' => $block_id,
-            ]),
-            'attributes' => $attributes,
-          ];
-
-          $row['operations'] = [
-            '#type' => 'operations',
-            '#links' => $operations,
-          ];
-          $form['block_section']['blocks'][$block_id] = $row;
-        }
-      }
-    }
-    return $form;
   }
 
   /**
@@ -500,7 +330,7 @@ class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInt
    */
   protected function getContextAsTokenData() {
     $data = array();
-    foreach ($this->executable->getContexts() as $context) {
+    foreach ($this->getContexts() as $context) {
       // @todo Simplify this when token and typed data types are unified in
       //   https://drupal.org/node/2163027.
       if (strpos($context->getContextDefinition()->getDataType(), 'entity:') === 0) {
@@ -535,14 +365,6 @@ class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInt
    */
   protected function getSelectionConfiguration() {
     return $this->configuration['selection_conditions'];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setExecutable(PageExecutableInterface $executable) {
-    $this->executable = $executable;
-    return $this;
   }
 
   /**
