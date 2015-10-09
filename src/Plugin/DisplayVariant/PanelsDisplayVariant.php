@@ -2,33 +2,17 @@
 
 /**
  * @file
- * Contains \Drupal\page_manager\Plugin\DisplayVariant\PanelsDisplayVariant.
+ * Contains \Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant.
  */
 
 namespace Drupal\panels\Plugin\DisplayVariant;
 
-use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\NestedArray;
-use Drupal\Component\Utility\SafeMarkup;
-use Drupal\Component\Uuid\UuidInterface;
-use Drupal\Core\Display\VariantBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Component\Plugin\ContextAwarePluginInterface;
-use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Url;
-use Drupal\Core\Utility\Token;
-use Drupal\page_manager\Plugin\BlockVariantInterface;
-use Drupal\page_manager\Plugin\BlockVariantTrait;
-use Drupal\page_manager\Plugin\ConditionVariantInterface;
-use Drupal\page_manager\Plugin\ConditionVariantTrait;
-use Drupal\page_manager\Plugin\ContextAwareVariantInterface;
-use Drupal\page_manager\Plugin\ContextAwareVariantTrait;
+use Drupal\ctools\Plugin\DisplayVariant\BlockDisplayVariant;
 use Drupal\layout_plugin\Layout;
-use Drupal\layout_plugin\Plugin\Layout\LayoutInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a display variant that simply contains blocks.
@@ -38,11 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   admin_label = @Translation("Panels")
  * )
  */
-class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInterface, ConditionVariantInterface, ContainerFactoryPluginInterface, BlockVariantInterface {
-
-  use BlockVariantTrait;
-  use ContextAwareVariantTrait;
-  use ConditionVariantTrait;
+class PanelsDisplayVariant extends BlockDisplayVariant {
 
   /**
    * The layout handler.
@@ -50,76 +30,6 @@ class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInt
    * @var \Drupal\layout_plugin\Plugin\Layout\LayoutInterface
    */
   protected $layout;
-
-  /**
-   * The context handler.
-   *
-   * @var \Drupal\Core\Plugin\Context\ContextHandlerInterface
-   */
-  protected $contextHandler;
-
-  /**
-   * The UUID generator.
-   *
-   * @var \Drupal\Component\Uuid\UuidInterface
-   */
-  protected $uuidGenerator;
-
-  /**
-   * The current user.
-   *
-   * @var \Drupal\Core\Session\AccountInterface
-   */
-  protected $account;
-
-  /**
-   * The token service.
-   *
-   * @var \Drupal\Core\Utility\Token
-   */
-  protected $token;
-
-  /**
-   * Constructs a new PanelsDisplayVariant.
-   *
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin ID for the plugin instance.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
-   * @param \Drupal\Core\Plugin\Context\ContextHandlerInterface $context_handler
-   *   The context handler.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The current user.
-   * @param \Drupal\Component\Uuid\UuidInterface $uuid_generator
-   *   The UUID generator.
-   * @param \Drupal\Core\Utility\Token $token
-   *   The token service.
-   */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ContextHandlerInterface $context_handler, AccountInterface $account, UuidInterface $uuid_generator, Token $token) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-
-    $this->contextHandler = $context_handler;
-    $this->account = $account;
-    $this->uuidGenerator = $uuid_generator;
-    $this->token = $token;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('context.handler'),
-      $container->get('current_user'),
-      $container->get('uuid'),
-      $container->get('token')
-    );
-  }
 
   /**
    * Returns instance of the layout plugin used by this page variant.
@@ -144,7 +54,7 @@ class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInt
   /**
    * Build render arrays for each of the regions.
    *
-   * @return
+   * @return array
    *   An associative array keyed by region id, containing the render array
    *   representing the content of each region.
    */
@@ -160,7 +70,7 @@ class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInt
       $build[$region]['#prefix'] = '<div class="' . $region_name . '">';
       $build[$region]['#suffix'] = '</div>';
 
-      /** @var $blocks \Drupal\block\BlockPluginInterface[] */
+      /** @var \Drupal\Core\Block\BlockPluginInterface[] $blocks */
       $weight = 0;
       foreach ($blocks as $block_id => $block) {
         if ($block instanceof ContextAwarePluginInterface) {
@@ -176,9 +86,6 @@ class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInt
             '#base_plugin_id' => $block->getBaseId(),
             '#derivative_plugin_id' => $block->getDerivativeId(),
           ];
-          if (!empty($block_render_array['#configuration']['label'])) {
-            $block_render_array['#configuration']['label'] = SafeMarkup::checkPlain($block_render_array['#configuration']['label']);
-          }
           $block_render_array['content'] = $block->build();
 
           $build[$region][$block_id] = $block_render_array;
@@ -222,9 +129,9 @@ class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInt
         '#options' => Layout::getLayoutOptions(['group_by_category' => TRUE]),
         '#default_value' => NULL
       ];
-
-      return $form;
     }
+
+    return $form;
   }
 
   /**
@@ -240,13 +147,6 @@ class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInt
     if ($form_state->hasValue('page_title')) {
       $this->configuration['page_title'] = $form_state->getValue('page_title');
     }
-
-    // If the blocks were rearranged, update their values.
-    if ($form_state->hasValue('blocks')) {
-      foreach ($form_state->getValue('blocks') as $block_id => $block_values) {
-        $this->updateBlock($block_id, $block_values);
-      }
-    }
   }
 
   /**
@@ -258,11 +158,6 @@ class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInt
       return FALSE;
     }
 
-    // Delegate to the conditions.
-    if ($this->determineSelectionAccess($this->getContexts()) === FALSE) {
-      return FALSE;
-    }
-
     return parent::access($account);
   }
 
@@ -271,41 +166,9 @@ class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInt
    */
   public function defaultConfiguration() {
     return parent::defaultConfiguration() + [
-      'blocks' => [],
-      'selection_conditions' => [],
-      'selection_logic' => 'and',
+      'layout' => '',
       'page_title' => '',
     ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function calculateDependencies() {
-    foreach ($this->getBlockCollection() as $instance) {
-      $this->calculatePluginDependencies($instance);
-    }
-    foreach ($this->getSelectionConditions() as $instance) {
-      $this->calculatePluginDependencies($instance);
-    }
-    return $this->dependencies;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getConfiguration() {
-    return [
-      'selection_conditions' => $this->getSelectionConditions()->getConfiguration(),
-      'blocks' => $this->getBlockCollection()->getConfiguration(),
-    ] + parent::getConfiguration();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getSelectionLogic() {
-    return $this->configuration['selection_logic'];
   }
 
   /**
@@ -342,43 +205,6 @@ class PanelsDisplayVariant extends VariantBase implements ContextAwareVariantInt
       }
     }
     return $data;
-  }
-
-  /**
-   * Wraps drupal_html_class().
-   *
-   * @return string
-   */
-  protected function drupalHtmlClass($class) {
-    return drupal_html_class($class);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function contextHandler() {
-    return $this->contextHandler;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function getSelectionConfiguration() {
-    return $this->configuration['selection_conditions'];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function getBlockConfig() {
-    return $this->configuration['blocks'];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function uuidGenerator() {
-    return $this->uuidGenerator;
   }
 
 }
