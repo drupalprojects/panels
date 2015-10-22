@@ -13,8 +13,10 @@ use Drupal\Core\Form\FormState;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Utility\Token;
+use Drupal\layout_plugin\Plugin\Layout\LayoutInterface;
 use Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant;
 use Drupal\Tests\UnitTestCase;
+use Prophecy\Argument;
 
 /**
  * @coversDefaultClass \Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant
@@ -23,26 +25,102 @@ use Drupal\Tests\UnitTestCase;
 class PanelsDisplayVariantTest extends UnitTestCase {
 
   /**
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $account;
+
+  /**
+   * @var \Drupal\Core\Plugin\Context\ContextHandlerInterface
+   */
+  protected $contextHandler;
+
+  /**
+   * @var \Drupal\Component\Uuid\UuidInterface
+   */
+  protected $uuidGenerator;
+
+  /**
+   * @var \Drupal\Core\Utility\Token
+   */
+  protected $token;
+
+  /**
+   * @var \Drupal\Component\Plugin\PluginManagerInterface
+   */
+  protected $layoutManager;
+
+  /**
+   * @var \Drupal\layout_plugin\Plugin\Layout\LayoutInterface
+   */
+  protected $layout;
+
+  /**
+   * @var \Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant
+   */
+  protected $variant;
+
+  public function setUp() {
+    $this->account = $this->prophesize(AccountInterface::class);
+    $this->contextHandler = $this->prophesize(ContextHandlerInterface::class);
+    $this->uuidGenerator = $this->prophesize(UuidInterface::class);
+    $this->token = $this->prophesize(Token::class);
+    $this->layoutManager = $this->prophesize(PluginManagerInterface::class);
+    $this->layout = $this->prophesize(LayoutInterface::class);
+
+    $this->layoutManager
+      ->createInstance(Argument::type('string'), Argument::type('array'))
+      ->willReturn($this->layout->reveal());
+
+    $this->variant = new PanelsDisplayVariant([], '', [], $this->contextHandler->reveal(), $this->account->reveal(), $this->uuidGenerator->reveal(), $this->token->reveal(), $this->layoutManager->reveal());
+  }
+
+  /**
    * @covers ::submitConfigurationForm
    */
   public function testSubmitConfigurationForm() {
-    $account = $this->prophesize(AccountInterface::class);
-    $context_handler = $this->prophesize(ContextHandlerInterface::class);
-    $uuid_generator = $this->prophesize(UuidInterface::class);
-    $token = $this->prophesize(Token::class);
-    $layout_manager = $this->prophesize(PluginManagerInterface::class);
-
-    $display_variant = new PanelsDisplayVariant([], '', [], $context_handler->reveal(), $account->reveal(), $uuid_generator->reveal(), $token->reveal(), $layout_manager->reveal());
-
     $values = ['page_title' => "Go hang a salami, I'm a lasagna hog!"];
 
     $form = [];
     $form_state = (new FormState())->setValues($values);
-    $display_variant->submitConfigurationForm($form, $form_state);
+    $this->variant->submitConfigurationForm($form, $form_state);
 
-    $property = new \ReflectionProperty($display_variant, 'configuration');
+    $property = new \ReflectionProperty($this->variant, 'configuration');
     $property->setAccessible(TRUE);
-    $this->assertSame($values['page_title'], $property->getValue($display_variant)['page_title']);
+    $this->assertSame($values['page_title'], $property->getValue($this->variant)['page_title']);
+  }
+
+  /**
+   * @covers ::getLayout
+   */
+  public function testGetLayout() {
+    $this->assertSame($this->layout->reveal(), $this->variant->getLayout());
+  }
+
+  /**
+   * @covers ::getRegionNames
+   */
+  public function testGetRegionNames() {
+    $region_names = ['Foo', 'Bar', 'Baz'];
+    $this->layout->getPluginDefinition()->willReturn([
+      'region_names' => $region_names,
+    ]);
+    $this->assertSame($region_names, $this->variant->getRegionNames());
+  }
+
+  /**
+   * @covers ::access
+   */
+  public function testAccessNoBlocksConfigured() {
+    $this->assertFalse($this->variant->access());
+  }
+
+  /**
+   * @covers ::defaultConfiguration
+   */
+  public function testDefaultConfiguration() {
+    $defaults = $this->variant->defaultConfiguration();
+    $this->assertSame('', $defaults['layout']);
+    $this->assertSame('', $defaults['page_title']);
   }
 
 }
