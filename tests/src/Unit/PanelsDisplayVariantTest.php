@@ -7,6 +7,7 @@
 
 namespace Drupal\Tests\panels\Unit;
 
+use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
@@ -29,8 +30,9 @@ class PanelsDisplayVariantTest extends UnitTestCase {
     $context_handler = $this->prophesize(ContextHandlerInterface::class);
     $uuid_generator = $this->prophesize(UuidInterface::class);
     $token = $this->prophesize(Token::class);
+    $layout_manager = $this->prophesize(PluginManagerInterface::class);
 
-    $display_variant = new PanelsDisplayVariant([], '', [], $context_handler->reveal(), $account->reveal(), $uuid_generator->reveal(), $token->reveal());
+    $display_variant = new PanelsDisplayVariant([], '', [], $context_handler->reveal(), $account->reveal(), $uuid_generator->reveal(), $token->reveal(), $layout_manager->reveal());
 
     $values = ['page_title' => "Go hang a salami, I'm a lasagna hog!"];
 

@@ -7,12 +7,17 @@
 
 namespace Drupal\panels\Plugin\DisplayVariant;
 
+use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Component\Utility\Html;
+use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Plugin\ContextAwarePluginInterface;
+use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Utility\Token;
 use Drupal\ctools\Plugin\DisplayVariant\BlockDisplayVariant;
 use Drupal\layout_plugin\Layout;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a display variant that simply contains blocks.
@@ -25,11 +30,42 @@ use Drupal\layout_plugin\Layout;
 class PanelsDisplayVariant extends BlockDisplayVariant {
 
   /**
+   * The layout plugin manager.
+   *
+   * @var \Drupal\Component\Plugin\PluginManagerInterface
+   */
+  protected $layoutManager;
+
+  /**
    * The layout handler.
    *
    * @var \Drupal\layout_plugin\Plugin\Layout\LayoutInterface
    */
   protected $layout;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ContextHandlerInterface $context_handler, AccountInterface $account, UuidInterface $uuid_generator, Token $token, PluginManagerInterface $layout_manager) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $context_handler, $account, $uuid_generator, $token);
+    $this->layoutManager = $layout_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('context.handler'),
+      $container->get('current_user'),
+      $container->get('uuid'),
+      $container->get('token'),
+      $container->get('plugin.manager.layout_plugin')
+    );
+  }
 
   /**
    * Returns instance of the layout plugin used by this page variant.
@@ -39,7 +75,7 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
    */
   public function getLayout() {
     if (!isset($this->layout)) {
-      $this->layout = Layout::layoutPluginManager()->createInstance($this->configuration['layout'], []);
+      $this->layout = $this->layoutManager->createInstance($this->configuration['layout'], []);
     }
     return $this->layout;
   }
