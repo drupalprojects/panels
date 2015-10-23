@@ -7,13 +7,14 @@
 
 namespace Drupal\Tests\panels\Unit;
 
-use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Utility\Token;
 use Drupal\layout_plugin\Plugin\Layout\LayoutInterface;
+use Drupal\layout_plugin\Plugin\Layout\LayoutPluginManagerInterface;
+use Drupal\panels\Plugin\DisplayBuilder\DisplayBuilderManagerInterface;
 use Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
@@ -45,7 +46,12 @@ class PanelsDisplayVariantTest extends UnitTestCase {
   protected $token;
 
   /**
-   * @var \Drupal\Component\Plugin\PluginManagerInterface
+   * @var \Drupal\panels\Plugin\DisplayBuilder\DisplayBuilderManagerInterface
+   */
+  protected $builderManager;
+
+  /**
+   * @var \Drupal\layout_plugin\Plugin\Layout\LayoutPluginManagerInterface
    */
   protected $layoutManager;
 
@@ -64,14 +70,15 @@ class PanelsDisplayVariantTest extends UnitTestCase {
     $this->contextHandler = $this->prophesize(ContextHandlerInterface::class);
     $this->uuidGenerator = $this->prophesize(UuidInterface::class);
     $this->token = $this->prophesize(Token::class);
-    $this->layoutManager = $this->prophesize(PluginManagerInterface::class);
+    $this->builderManager = $this->prophesize(DisplayBuilderManagerInterface::class);
+    $this->layoutManager = $this->prophesize(LayoutPluginManagerInterface::class);
     $this->layout = $this->prophesize(LayoutInterface::class);
 
     $this->layoutManager
       ->createInstance(Argument::type('string'), Argument::type('array'))
       ->willReturn($this->layout->reveal());
 
-    $this->variant = new PanelsDisplayVariant([], '', [], $this->contextHandler->reveal(), $this->account->reveal(), $this->uuidGenerator->reveal(), $this->token->reveal(), $this->layoutManager->reveal());
+    $this->variant = new PanelsDisplayVariant([], '', [], $this->contextHandler->reveal(), $this->account->reveal(), $this->uuidGenerator->reveal(), $this->token->reveal(), $this->builderManager->reveal(), $this->layoutManager->reveal());
   }
 
   /**

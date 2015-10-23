@@ -7,16 +7,15 @@
 
 namespace Drupal\panels\Plugin\DisplayVariant;
 
-use Drupal\Component\Plugin\PluginManagerInterface;
-use Drupal\Component\Utility\Html;
 use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Component\Plugin\ContextAwarePluginInterface;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Utility\Token;
 use Drupal\ctools\Plugin\DisplayVariant\BlockDisplayVariant;
 use Drupal\layout_plugin\Layout;
+use Drupal\layout_plugin\Plugin\Layout\LayoutPluginManagerInterface;
+use Drupal\panels\Plugin\DisplayBuilder\DisplayBuilderManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -30,24 +29,63 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class PanelsDisplayVariant extends BlockDisplayVariant {
 
   /**
+   * The display builder plugin manager.
+   *
+   * @var \Drupal\panels\Plugin\DisplayBuilder\DisplayBuilderManagerInterface
+   */
+  protected $builderManager;
+
+  /**
+   * The display builder plugin.
+   *
+   * @var \Drupal\panels\Plugin\DisplayBuilder\DisplayBuilderInterface
+   */
+  protected $builder;
+
+  /**
    * The layout plugin manager.
    *
-   * @var \Drupal\Component\Plugin\PluginManagerInterface
+   * @var \Drupal\layout_plugin\Plugin\Layout\LayoutPluginManagerInterface;
    */
   protected $layoutManager;
 
   /**
-   * The layout handler.
+   * The layout plugin.
    *
    * @var \Drupal\layout_plugin\Plugin\Layout\LayoutInterface
    */
   protected $layout;
 
   /**
-   * {@inheritdoc}
+   * Constructs a new PanelsDisplayVariant.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin ID for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Plugin\Context\ContextHandlerInterface $context_handler
+   *   The context handler.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The current user.
+   * @param \Drupal\Component\Uuid\UuidInterface $uuid_generator
+   *   The UUID generator.
+   * @param \Drupal\Core\Utility\Token $token
+   *   The token service.
+   * @param \Drupal\Component\Uuid\UuidInterface $uuid_generator
+   *   The UUID generator.
+   * @param \Drupal\Core\Utility\Token $token
+   *   The token service.
+   * @param \Drupal\panels\Plugin\DisplayBuilder\DisplayBuilderManagerInterface $builder_manager
+   *   The display builder plugin manager.
+   * @param \Drupal\layout_plugin\Plugin\Layout\LayoutPluginManagerInterface $layout_manager
+   *   The layout plugin manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ContextHandlerInterface $context_handler, AccountInterface $account, UuidInterface $uuid_generator, Token $token, PluginManagerInterface $layout_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ContextHandlerInterface $context_handler, AccountInterface $account, UuidInterface $uuid_generator, Token $token, DisplayBuilderManagerInterface $builder_manager, LayoutPluginManagerInterface $layout_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $context_handler, $account, $uuid_generator, $token);
+
+    $this->builderManager = $builder_manager;
     $this->layoutManager = $layout_manager;
   }
 
@@ -63,15 +101,29 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
       $container->get('current_user'),
       $container->get('uuid'),
       $container->get('token'),
+      $container->get('plugin.manager.panels.display_builder'),
       $container->get('plugin.manager.layout_plugin')
     );
+  }
+
+  /**
+   * Returns the builder assigned to this display variant.
+   *
+   * @return \Drupal\panels\Plugin\DisplayBuilder\DisplayBuilderInterface
+   *   A display builder plugin instance.
+   */
+  public function getBuilder() {
+    if (!isset($this->builder)) {
+      $this->builder = $this->builderManager->createInstance($this->configuration['builder'], []);
+    }
+    return $this->builder;
   }
 
   /**
    * Returns instance of the layout plugin used by this page variant.
    *
    * @return \Drupal\layout_plugin\Plugin\Layout\LayoutInterface
-   *   Layout plugin instance.
+   *   A layout plugin instance.
    */
   public function getLayout() {
     if (!isset($this->layout)) {
@@ -88,59 +140,15 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
   }
 
   /**
-   * Build render arrays for each of the regions.
-   *
-   * @return array
-   *   An associative array keyed by region id, containing the render array
-   *   representing the content of each region.
-   */
-  protected function buildRegions() {
-    $build = [];
-    $contexts = $this->getContexts();
-    foreach ($this->getRegionAssignments() as $region => $blocks) {
-      if (!$blocks) {
-        continue;
-      }
-
-      $region_name = Html::getClass("block-region-$region");
-      $build[$region]['#prefix'] = '<div class="' . $region_name . '">';
-      $build[$region]['#suffix'] = '</div>';
-
-      /** @var \Drupal\Core\Block\BlockPluginInterface[] $blocks */
-      $weight = 0;
-      foreach ($blocks as $block_id => $block) {
-        if ($block instanceof ContextAwarePluginInterface) {
-          $this->contextHandler()->applyContextMapping($block, $contexts);
-        }
-        if ($block->access($this->account)) {
-          $block_render_array = [
-            '#theme' => 'block',
-            '#attributes' => [],
-            '#weight' => $weight++,
-            '#configuration' => $block->getConfiguration(),
-            '#plugin_id' => $block->getPluginId(),
-            '#base_plugin_id' => $block->getBaseId(),
-            '#derivative_plugin_id' => $block->getDerivativeId(),
-          ];
-          $block_render_array['content'] = $block->build();
-
-          $build[$region][$block_id] = $block_render_array;
-        }
-      }
-    }
-    $build['#title'] = $this->renderPageTitle($this->configuration['page_title']);
-    return $build;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function build() {
-    $regions = $this->buildRegions();
-    if ($layout = $this->getLayout()) {
-      return $layout->build($regions);
-    }
-    return $regions;
+    $regions = $this->getRegionAssignments();
+    $contexts = $this->getContexts();
+    $layout = $this->getLayout();
+    $build = $this->getBuilder()->build($regions, $contexts, $layout);
+    $build['#title'] = $this->renderPageTitle($this->configuration['page_title']);
+    return $build;
   }
 
   /**
@@ -159,6 +167,18 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
     ];
 
     if (!$this->id()) {
+      $plugins = $this->builderManager->getDefinitions();
+      $options = array();
+      foreach ($plugins as $id => $plugin) {
+        $options[$id] = $plugin['label'];
+      }
+      $form['builder'] = [
+        '#title' => $this->t('Builder'),
+        '#type' => 'select',
+        '#options' => $options,
+        '#default_value' => 'standard',
+      ];
+
       $form['layout'] = [
         '#title' => $this->t('Layout'),
         '#type' => 'select',
@@ -178,6 +198,10 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
 
     if ($form_state->hasValue('layout')) {
       $this->configuration['layout'] = $form_state->getValue('layout');
+    }
+
+    if ($form_state->hasValue('builder')) {
+      $this->configuration['builder'] = $form_state->getValue('builder');
     }
 
     if ($form_state->hasValue('page_title')) {
