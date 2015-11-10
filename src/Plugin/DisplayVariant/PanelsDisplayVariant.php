@@ -7,7 +7,9 @@
 
 namespace Drupal\panels\Plugin\DisplayVariant;
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Uuid\UuidInterface;
+use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -127,7 +129,7 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
    */
   public function getLayout() {
     if (!isset($this->layout)) {
-      $this->layout = $this->layoutManager->createInstance($this->configuration['layout'], []);
+      $this->layout = $this->layoutManager->createInstance($this->configuration['layout'], $this->configuration['layout_settings']);
     }
     return $this->layout;
   }
@@ -166,7 +168,7 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
       '#default_value' => $this->configuration['page_title'] ?: '',
     ];
 
-    if (!$this->id()) {
+    if (empty($this->configuration['builder'])) {
       $plugins = $this->builderManager->getDefinitions();
       $options = array();
       foreach ($plugins as $id => $plugin) {
@@ -178,6 +180,9 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
         '#options' => $options,
         '#default_value' => 'standard',
       ];
+    }
+
+    if (empty($this->configuration['layout'])) {
 
       $form['layout'] = [
         '#title' => $this->t('Layout'),
@@ -186,8 +191,83 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
         '#default_value' => NULL
       ];
     }
+    else {
+      $form['layout'] = [
+        '#type' => 'value',
+        '#value' => $this->configuration['layout'],
+      ];
+
+      // If a layout is already selected, show the layout settings.
+      $form['layout_settings_wrapper'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('Layout settings'),
+      ];
+      $form['layout_settings_wrapper']['layout_settings'] = [];
+
+      // Get settings form from layout plugin.
+      $layout = $this->layoutManager->createInstance($this->configuration['layout'], $this->configuration['layout_settings'] ?: []);
+      $form['layout_settings_wrapper']['layout_settings'] = $layout->buildConfigurationForm($form['layout_settings_wrapper']['layout_settings'], $form_state);
+
+      // Process callback to configure #parents correctly on settings, since
+      // we don't know where in the form hierarchy our settings appear.
+      $form['#process'][] = [$this, 'layoutSettingsProcessCallback'];
+    }
 
     return $form;
+  }
+
+  /**
+   * Form API #process callback: expands form with hierarchy information.
+   */
+  public function layoutSettingsProcessCallback(array &$element, FormStateInterface $form_state, array &$complete_form) {
+    $settings_element =& $element['layout_settings_wrapper']['layout_settings'];
+
+    // Set the #parents on the layout_settings so they end up as a sibling of
+    // layout.
+    $layout_settings_parents = array_merge($element['#parents'], ['layout_settings']);
+    $settings_element['#parents'] = $layout_settings_parents;
+    $settings_element['#tree'] = TRUE;
+
+    // Store the array parents for our element so that we can use it to pull out
+    // the layout settings in the validate and submit functions.
+    $complete_form['#variant_array_parents'] = $element['#array_parents'];
+
+    return $element;
+  }
+
+  /**
+   * Extracts the layout settings form and form state from the full form.
+   *
+   * @param array $form
+   *   Full form array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   Full form state.
+   *
+   * @return array
+   *   An array with two values: the new form array and form state object.
+   */
+  protected function getLayoutSettingsForm(array &$form, FormStateInterface $form_state) {
+    $layout_settings_form = NestedArray::getValue($form, array_merge($form['#variant_array_parents'], ['layout_settings_wrapper', 'layout_settings']));
+    $layout_settings_form_state = (new FormState())->setValues($form_state->getValue('layout_settings'));
+    return [$layout_settings_form, $layout_settings_form_state];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
+    parent::validateConfigurationForm($form, $form_state);
+
+    // Validate layout settings.
+    if ($form_state->hasValue('layout_settings')) {
+      $layout = $this->layoutManager->createInstance($form_state->getValue('layout'), $this->configuration['layout_settings']);
+      list ($layout_settings_form, $layout_settings_form_state) = $this->getLayoutSettingsForm($form, $form_state);
+      $layout->validateConfigurationForm($layout_settings_form, $layout_settings_form_state);
+
+      // Save the layout plugin for later (so we don't have to instantiate again
+      // on submit.
+      $form_state->set('layout_plugin', $layout);
+    }
   }
 
   /**
@@ -198,6 +278,14 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
 
     if ($form_state->hasValue('layout')) {
       $this->configuration['layout'] = $form_state->getValue('layout');
+    }
+
+    // Submit layout settings.
+    if ($form_state->hasValue('layout_settings')) {
+      $layout = $form_state->has('layout_plugin') ? $form_state->get('layout_plugin') : $this->getLayout();
+      list ($layout_settings_form, $layout_settings_form_state) = $this->getLayoutSettingsForm($form, $form_state);
+      $layout->submitConfigurationForm($layout_settings_form, $layout_settings_form_state);
+      $this->configuration['layout_settings'] = $layout->getConfiguration();
     }
 
     if ($form_state->hasValue('builder')) {
@@ -227,6 +315,7 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
   public function defaultConfiguration() {
     return parent::defaultConfiguration() + [
       'layout' => '',
+      'layout_settings' => [],
       'page_title' => '',
     ];
   }
