@@ -157,7 +157,10 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $form = parent::buildConfigurationForm($form, $form_state);
+    // Don't call VariantBase::buildConfigurationForm() on purpose, because it
+    // adds a 'Label' field that we don't actually want to use - we store the
+    // label on the page variant entity.
+    //$form = parent::buildConfigurationForm($form, $form_state);
 
     // Allow to configure the page title, even when adding a new display.
     // Default to the page label in that case.
