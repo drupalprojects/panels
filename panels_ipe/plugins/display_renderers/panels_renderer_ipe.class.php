@@ -73,6 +73,9 @@ class panels_renderer_ipe extends panels_renderer_editor {
 
   function render_pane_content(&$pane) {
     $content = parent::render_pane_content($pane);
+    if (!is_object($content)) {
+      $content = new StdClass();
+    }
     // Ensure that empty panes have some content.
     if (empty($content->content)) {
       // Get the administrative title.
