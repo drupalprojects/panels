@@ -3,4 +3,5 @@ description = Provide a UI for managing some Panels directly on the frontend, in
 package = "Panels"
 dependencies[] = panels
 dependencies[] = jquery_ui
+dependencies[] = jquery_update
 core = 6.x
