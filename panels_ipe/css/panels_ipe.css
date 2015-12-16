@@ -1,0 +1,530 @@
+/**
+ * @file
+ * Contains all CSS for the Panels In-Place Editor.
+ */
+
+/* Define our icon font, which is generated from the SVGs in /images. */
+@font-face {
+  font-family: PanelsIPEIcon;
+  src: url(../fonts/ipeicons.woff);
+}
+
+.ipe-icon {
+  display:inline-block;
+  vertical-align: middle;
+  font-family: PanelsIPEIcon;
+  font-size: 24px;
+}
+
+.ipe-action-list .ipe-icon {
+  height: 24px;
+  margin-top: -10px;
+  display: block;
+}
+
+.ipe-icon.ipe-icon-up:before {
+  content: "\e900";
+}
+
+.ipe-icon.ipe-icon-down:before {
+  content: "\e901";
+}
+
+.ipe-icon.ipe-icon-warning:before {
+  content: "\e902";
+}
+
+.ipe-icon.ipe-icon-change_layout:before {
+  content: "\e903";
+}
+
+.ipe-icon.ipe-icon-edit:before {
+  content: "\e904";
+}
+
+.ipe-icon.ipe-icon-manage_content:before {
+  content: "\e905";
+}
+
+.ipe-icon.ipe-icon-save:before {
+  content: "\e906";
+}
+
+.ipe-icon.ipe-icon-loading:before {
+  content: "\e907";
+  animation: ipe-spin 1s infinite linear;
+}
+
+.ipe-icon.ipe-icon-remove:before {
+  content: "\e908";
+}
+
+.ipe-icon.ipe-icon-configure:before {
+  content: "\e909";
+}
+
+.ipe-icon.ipe-icon-cancel:before {
+  content: "\e90a";
+}
+
+.ipe-icon.ipe-icon-configure {
+  font-size: 20px;
+}
+
+@keyframes ipe-spin {
+  from {transform:rotate(360deg);}
+  to {transform:rotate(0deg);}
+}
+
+/* Fix the output of the AppView to the bottom of the screen. */
+#panels-ipe-tray {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+}
+
+/* Force text to render as a sans-serif web-safe font. */
+#panels-ipe-tray, #panels-ipe-tray a, #panels-ipe-tray p {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+/* Remove list styling from the output of the TabsView. */
+.ipe-tabs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Display tabs inline and slightly on top of .ipe-tabs-content. */
+.ipe-tab {
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+  vertical-align: bottom;
+  padding: 10px 5px 12px 5px;
+  margin-bottom: -1px;
+  background-color: white;
+  border-top: 1px solid darkgray;
+  border-bottom: 1px solid darkgray;
+  transition: border-color .2s;
+}
+
+.ipe-tab:hover, .ipe-tab.active {
+  border-bottom: 3px solid rgb(67, 125, 33);
+  padding-bottom: 10px;
+}
+
+/* Indicate the cancel button. */
+[data-tab-id="cancel"]:hover, [data-tab-id="cancel"].active {
+  border-bottom: 3px solid #7D0000;
+  padding-bottom: 10px;
+}
+
+/* Indicate unsaved changes. */
+#panels-ipe-tray.unsaved [data-tab-id="save"]:after {
+  content: "*";
+  font-size: 20px;
+  color: #7D0000;
+  position: absolute;
+  top: 5px;
+  right: 0;
+}
+
+.ipe-tab:first-child {
+  border-left: 1px solid darkgray;
+  border-top-left-radius: 5px;
+}
+
+.ipe-tab:last-child {
+  border-right: 1px solid darkgray;
+  border-top-right-radius: 5px;
+}
+
+.ipe-tab a {
+  color: black;
+  height: 30px;
+  display: block;
+  text-transform: uppercase;
+  vertical-align: top;
+  border: none;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.ipe-tab.active a, .ipe-tab a:hover {
+  color: rgb(67, 125, 33);
+  border: none;
+}
+
+
+/* Indicate the cancel button. */
+[data-tab-id="cancel"] a:hover, [data-tab-id="cancel"].active a {
+  color: #7D0000;
+  border: none;
+}
+
+.ipe-tab a::selection {
+  background: none;
+}
+
+/* Provide default styles and a minimum height for tab content. */
+.ipe-tab-content {
+  display: none;
+  min-height: 100px;
+  padding: 20px 5px 10px 5px;
+  background-color: white;
+  border-top: 1px solid darkgray;
+}
+
+.ipe-tab-content.active {
+  display: block;
+}
+
+/* Don't show text for these tabs */
+[data-tab-id="save"] .ipe-tab-title,
+[data-tab-id="edit"] .ipe-tab-title,
+[data-tab-id="cancel"] .ipe-tab-title {
+  display: none;
+}
+
+/* Styles for the Layout selector. */
+.ipe-current-layout, .ipe-all-layouts {
+  display: inline-block;
+}
+
+.ipe-current-layout {
+  vertical-align: top;
+  padding-right: 10px;
+}
+
+/* Remove <ul> list styling and make list scrollable. */
+.ipe-layouts {
+  vertical-align: top;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+/* Show layouts as clickable things. */
+.ipe-layout {
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.ipe-layout-title {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Hide the tray for the edit and save tabs. */
+[data-tab-content-id="edit"].active,
+[data-tab-content-id="save"].active,
+[data-tab-content-id="cancel"].active {
+  display: none;
+}
+
+/* Style the block/region headers. */
+div.ipe-actions {
+  display: flex;
+  justify-content: space-between;
+  min-height: 20px;
+  border-radius: 5px 5px 0 0;
+  background-color: rgb(222, 222, 222);
+  padding: 5px;
+  margin-top: 1px;
+  clear: both;
+}
+
+/* Indicate that blocks are draggable */
+div.ipe-actions-block {
+  cursor: move;
+  background-color: rgb(243, 243, 243);
+}
+
+.ipe-actions ul.ipe-action-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ipe-actions h5, .ipe-actions li {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin: 0;
+}
+
+.ipe-actions a {
+  color: black;
+  display: block;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.ipe-actions a:hover {
+  color: #bebebe;
+  border: none;
+}
+
+.ipe-actions *::selection {
+  background: none;
+}
+
+.ipe-action-list li {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.ipe-action-list [data-action-id="move"] select {
+  background: transparent;
+  border: none;
+  text-transform: uppercase;
+}
+
+/* This is used for highlighting new content on screen. */
+.ipe-highlight {
+  animation: ipe-blink .4s ease-in-out 2;
+}
+
+@keyframes ipe-blink {
+  from, to {
+    box-shadow: 0 0 0 1px transparent;
+  }
+  50% {
+    box-shadow: 0 0 0 2px rgba(88, 160, 44, 0.70);
+  }
+}
+
+/* Drag/drop styles for blocks. */
+.ipe-droppable {
+  display: none;
+  width: 100%;
+  height: 30px;
+  margin: 5px 0 5px;
+  background-color: transparent;
+  border: 1px dashed #3c3c3c;
+  transition: .2s;
+}
+
+.ipe-droppable.active {
+  display: block;
+}
+
+.ipe-droppable.hover {
+  background-color: rgba(88, 160, 44, 0.70);
+  border-color: rgb(67, 125, 33);
+}
+
+/* Style the BlockPicker. */
+.ipe-block-picker-bottom {
+  overflow-x: scroll;
+  white-space: nowrap;
+  margin: auto;
+  padding: 20px 20px 0 20px;
+  min-height: 70px;
+}
+
+.ipe-block-picker-top {
+  display: none;
+}
+
+.ipe-block-picker-top.active {
+  display: block;
+  padding: 0 20px 20px 20px;
+  max-height: 100%;
+  border-bottom: 1px solid darkgray;
+}
+
+#panels-ipe-tray .ipe-block-category {
+  margin-right: 5px;
+}
+
+.ipe-block-category {
+  position: relative;
+  color: black;
+  display: inline-block;
+  padding: 10px;
+  text-transform: uppercase;
+  font-size: 15px;
+  font-weight: bold;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  transition: .2s;
+  cursor: pointer;
+}
+
+.ipe-block-category:hover,.ipe-block-category.active {
+  border-color: rgb(67, 125, 33);
+  color: inherit;
+}
+
+/* Indicate an active block category with an arrow. */
+.ipe-block-category.active:after {
+  bottom: 100%;
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.ipe-block-category.active:after {
+  border-color: transparent;
+  border-bottom-color: rgb(67, 125, 33);
+  border-width: 10px;
+  margin-left: -10px;
+}
+
+.ipe-block-category-count {
+  color: white;
+  background: black;
+  border-radius: 50%;
+  margin-left: 5px;
+  font-size: 10px;
+  height: 20px;
+  width: 20px;
+  line-height: 20px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.ipe-block-plugin {
+  text-transform: uppercase;
+  display: inline-block;
+  margin: 5px 20px 0 0;
+  text-align: left;
+  position: relative;
+}
+
+.ipe-block-plugin-info {
+  display: inline-block;
+}
+
+.ipe-block-plugin h5 {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.ipe-block-plugin p {
+  font-size: 12px;
+}
+
+/* The "Add" button for Block Plugins. */
+.ipe-block-plugin a {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 12px;
+  padding: 0 5px 0 5px;
+  border: 1px solid darkgray;
+  border-radius: 5px;
+  transition: .2s;
+  color: inherit;
+  cursor: pointer;
+}
+
+.ipe-block-plugin a:hover {
+  border-color: rgb(67, 125, 33);
+  color: inherit;
+}
+
+/* Theme the block plugin form */
+
+.ipe-block-picker-top h4 {
+  font-size: 16px;
+  text-transform: uppercase;
+  border-bottom: 1px solid darkgray;
+  padding: 5px;
+  margin: 0 0 10px 0;
+}
+
+.ipe-block-plugin-form {
+  text-align: left;
+  margin: 0 auto;
+  display: inline-block;
+}
+
+#panels-ipe-block-plugin-form-wrapper label {
+  display: inline-block;
+  text-transform: uppercase;
+  margin-right: 5px;
+}
+
+#panels-ipe-block-plugin-form-wrapper summary {
+  text-transform: uppercase;
+  background: transparent;
+}
+
+#panels-ipe-block-plugin-form-wrapper .ipe-icon-loading {
+  text-align: center;
+  width: 100%;
+}
+
+#panels-ipe-block-plugin-form-wrapper input[type="submit"] {
+  text-transform: uppercase;
+  margin: 0;
+  background: white;
+  color: black;
+  border-radius: 5px;
+  display: inline-block;
+  transition: .2s;
+}
+
+#panels-ipe-block-plugin-form-wrapper input[type="submit"]:hover {
+  border-color: rgb(67, 125, 33);
+  color: black;
+  background: white;
+}
+
+#panels-ipe-block-plugin-form-wrapper {
+  max-width: 650px;
+  padding-right: 10px;
+}
+
+/* Styles required to do the card-flip affect. */
+/* Credit to https://davidwalsh.name/css-flip for the original CSS. */
+.ipe-block-plugin-form .flip-container {
+  perspective: 1000;
+}
+/* flip the pane when hovered */
+.ipe-block-plugin-form.flipped .flipper, .ipe-block-plugin-form.flipped .flipper {
+  transform: rotateY(180deg);
+}
+
+/* flip speed goes here */
+.ipe-block-plugin-form .flipper {
+  transition: 0.6s;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+/* hide back of pane during swap */
+.ipe-block-plugin-form .front, .ipe-block-plugin-form .back {
+  backface-visibility: hidden;
+}
+
+/* front pane, placed above back */
+.ipe-block-plugin-form .front {
+  z-index: 2;
+  /* for firefox 31 */
+  transform: rotateY(0deg);
+}
+
+/* back, initially hidden pane */
+.ipe-block-plugin-form .back {
+  transform: rotateY(180deg);
+  position: absolute;
+  top: 0;
+  right: 0;
+}
