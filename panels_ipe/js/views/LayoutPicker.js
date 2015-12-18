@@ -14,12 +14,12 @@
     /**
      * @type {function}
      */
-    template_layout: _.template('<li class="ipe-layout" data-layout-id="<%- id %>"><h5 class="ipe-layout-title"><a><%- label %></a></h5></li>'),
+    template_layout: _.template('<li class="ipe-layout" data-layout-id="<%- id %>"><img class="ipe-layout-image" src="<%- icon %>" title="<%- label %>" alt="<%- label %>" /></li>'),
 
     /**
      * @type {function}
      */
-    template_current: _.template('<p>Current Layout: </p><h5 class="ipe-layout-title"><%- label %></h5>'),
+    template_current: _.template('<p>Current Layout</p><img class="ipe-layout-image" src="<%- icon %>" title="<%- label %>" alt="<%- label %>" />'),
 
     /**
      * @type {function}
@@ -32,7 +32,7 @@
      * @type {function}
      */
     template: _.template(
-      '<div class="ipe-current-layout"></div><div class="ipe-all-layouts"><p>Available Layouts:</p><ul class="ipe-layouts"></ul></div>'
+      '<div class="layout-wrapper"><div class="ipe-current-layout"></div><div class="ipe-all-layouts"><p>Available Layouts</p><ul class="ipe-layouts"></ul></div></div>'
     ),
 
     /**

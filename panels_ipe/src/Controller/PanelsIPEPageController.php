@@ -165,16 +165,17 @@ class PanelsIPEPageController extends ControllerBase {
     $variant_plugin = $page_variant->getVariantPlugin();
 
     // Get the current layout.
-    $layout = $variant_plugin->getLayout()->getPluginId();
+    $current_layout_id = $variant_plugin->getLayout()->getPluginId();
 
     // Get a list of all available layouts.
-    $layouts = $this->layoutPluginManager->getLayoutOptions();
+    $layouts = $this->layoutPluginManager->getDefinitions();
     $data = [];
-    foreach ($layouts as $id => $label) {
+    foreach ($layouts as $id => $layout) {
       $data[] = [
         'id' => $id,
-        'label' => $label,
-        'current' => $layout == $id,
+        'label' => $layout['label'],
+        'icon' => !empty($layout['icon']) ? $layout['icon'] : drupal_get_path('module', 'panels') . '/images/no-layout-preview.png',
+        'current' => $id == $current_layout_id,
       ];
     }
 

@@ -36,6 +36,13 @@
       label: null,
 
       /**
+       * The layout icon.
+       *
+       * @type {string}
+       */
+      icon: null,
+
+      /**
        * Whether or not this is the current layout.
        *
        * @type {bool}
