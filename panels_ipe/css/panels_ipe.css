@@ -104,23 +104,9 @@
   position: relative;
   display: inline-block;
   vertical-align: bottom;
-  padding: 10px 5px 12px 5px;
   margin-bottom: -1px;
   background-color: white;
   border-top: 1px solid darkgray;
-  border-bottom: 1px solid darkgray;
-  transition: border-color .2s;
-}
-
-.ipe-tab:hover, .ipe-tab.active {
-  border-bottom: 3px solid rgb(67, 125, 33);
-  padding-bottom: 10px;
-}
-
-/* Indicate the cancel button. */
-[data-tab-id="cancel"]:hover, [data-tab-id="cancel"].active {
-  border-bottom: 3px solid #7D0000;
-  padding-bottom: 10px;
 }
 
 /* Indicate unsaved changes. */
@@ -146,24 +132,28 @@
 .ipe-tab a {
   color: black;
   height: 30px;
+  padding: 10px 5px 12px 5px;
   display: block;
   text-transform: uppercase;
   vertical-align: top;
   border: none;
   cursor: pointer;
   transition: .2s;
+  transition-property: color, border-color;
+  border-bottom: 1px solid darkgray;
 }
 
 .ipe-tab.active a, .ipe-tab a:hover {
+  padding-bottom: 10px;
   color: rgb(67, 125, 33);
   border: none;
+  border-bottom: 3px solid rgb(67, 125, 33);
 }
-
 
 /* Indicate the cancel button. */
 [data-tab-id="cancel"] a:hover, [data-tab-id="cancel"].active a {
   color: #7D0000;
-  border: none;
+  border-color: #7D0000;
 }
 
 .ipe-tab a::selection {
