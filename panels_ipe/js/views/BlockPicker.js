@@ -285,22 +285,22 @@
       this.$('.ipe-block-picker-top').fadeOut('fast', function () {
         self.$('.ipe-block-picker-top').html(self.template_plugin_form(plugin.toJSON()));
         self.$('.ipe-block-picker-top').fadeIn('fast');
+
+        // Setup the Drupal.Ajax instance.
+        var ajax = Drupal.ajax({
+          url: url,
+          submit: { js: true }
+        });
+
+        // Remove our throbber on load.
+        ajax.options.complete = function () {
+          self.$('.ipe-block-picker-top .ipe-icon-loading').remove();
+          self.$('#panels-ipe-block-plugin-form-wrapper').hide().fadeIn();
+        };
+
+        // Make the Drupal AJAX request.
+        ajax.execute();
       });
-
-      // Setup the Drupal.Ajax instance.
-      var ajax = Drupal.ajax({
-        url: url,
-        submit: { js: true }
-      });
-
-      // Remove our throbber on load.
-      ajax.options.complete = function () {
-        self.$('.ipe-block-picker-top .ipe-icon-loading').remove();
-        self.$('#panels-ipe-block-plugin-form-wrapper').hide().fadeIn();
-      };
-
-      // Make the Drupal AJAX request.
-      ajax.execute();
     }
 
   });
