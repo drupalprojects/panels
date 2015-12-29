@@ -53,6 +53,9 @@
         tabViews: options.tabContentViews
       });
 
+      // Display the cancel tab based on whether or not we have unsaved changes.
+      this.model.get('cancelTab').set('hidden', !this.model.get('unsaved'));
+
       // Listen to important global events throughout the app.
       this.listenTo(this.model, 'changeLayout', this.changeLayout);
       this.listenTo(this.model, 'addBlockPlugin', this.addBlockPlugin);
@@ -62,6 +65,9 @@
       this.listenTo(this.model.get('editTab'), 'change:active', this.clickEditTab);
       this.listenTo(this.model.get('saveTab'), 'change:active', this.clickSaveTab);
       this.listenTo(this.model.get('cancelTab'), 'change:active', this.clickCancelTab);
+
+      // Change the look/feel of the App if we have unsaved changes.
+      this.listenTo(this.model, 'change:unsaved', this.unsavedChange);
     },
 
     /**
@@ -75,6 +81,10 @@
       this.$el.html(this.template(this.model.toJSON()));
       // Add our tab collection to the App.
       this.tabsView.setElement(this.$('.ipe-tab-wrapper')).render();
+
+      // If we have unsaved changes, add a special class.
+      this.$el.toggleClass('unsaved', this.model.get('unsaved'));
+
       // Re-render our layout.
       if (this.layoutView) {
         this.layoutView.render();
@@ -154,6 +164,9 @@
         // Re-render the app.
         self.render();
       });
+
+      // Indicate that there are unsaved changes in the app.
+      this.model.set('unsaved', true);
     },
 
     /**
@@ -179,8 +192,8 @@
         self.model.get('saveTab').set({loading: true});
         this.model.get('layout').save().done(function () {
           self.model.get('saveTab').set({loading: false, active: false});
+          self.model.set('unsaved', false);
           self.tabsView.render();
-          self.$el.removeClass('unsaved');
         });
       }
     },
@@ -216,6 +229,9 @@
         tab.set('active', false);
       });
 
+      // Indicate that there are unsaved changes in the app.
+      this.model.set('unsaved', true);
+
       this.tabsView.closeTabContent();
     },
 
@@ -229,6 +245,17 @@
       this.tabsView.tabViews['manage_content'].activeCategory = 'On Screen';
       this.tabsView.tabViews['manage_content'].autoClick = '[data-existing-block-id=' + block.get('uuid') + ']';
       this.tabsView.switchTab('manage_content');
+    },
+
+    /**
+     * Hides/shows certain elements if our unsaved state changes.
+     */
+    unsavedChange: function() {
+      // Show/hide the cancel tab based on our saved status.
+      this.model.get('cancelTab').set('hidden', !this.model.get('unsaved'));
+
+      // Re-render ourselves.
+      this.render();
     }
 
   });

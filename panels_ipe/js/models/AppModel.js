@@ -66,7 +66,14 @@
        *
        * @type {Drupal.panels_ipe.TabModel}
        */
-      cancelTab: null
+      cancelTab: null,
+
+      /**
+       * Whether or not there are unsaved changes.
+       *
+       * @type {bool}
+       */
+      unsaved: false
     }
 
   });

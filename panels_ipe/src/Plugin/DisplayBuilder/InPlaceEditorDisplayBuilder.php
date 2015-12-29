@@ -79,12 +79,14 @@ class InPlaceEditorDisplayBuilder extends StandardDisplayBuilder {
    *   The current layout.
    * @param \Drupal\page_manager\PageVariantInterface $page_variant
    *   The current path's page variant.
+   * @param bool $unsaved
+   *   Whether or not there are unsaved changes.
    *
    * @return array|bool
    *   An associative array representing the contents of drupalSettings, or
    *   FALSE if there was an error.
    */
-  protected function getDrupalSettings(array $regions, LayoutInterface $layout, PageVariantInterface $page_variant) {
+  protected function getDrupalSettings(array $regions, LayoutInterface $layout, PageVariantInterface $page_variant, $unsaved) {
     $settings = [
       'regions' => [],
     ];
@@ -127,6 +129,9 @@ class InPlaceEditorDisplayBuilder extends StandardDisplayBuilder {
       'id' => $page_variant->id(),
       'uuid' => $page_variant->uuid(),
     ];
+
+    // Inform the App of our saved state.
+    $settings['unsaved'] = $unsaved;
 
     return $settings;
   }
@@ -183,15 +188,12 @@ class InPlaceEditorDisplayBuilder extends StandardDisplayBuilder {
 
       // Attach the required settings and IPE.
       $build['#attached']['library'][] = 'panels_ipe/panels_ipe';
-      $build['#attached']['drupalSettings']['panels_ipe'] = $this->getDrupalSettings($regions, $layout, $page_variant);
+      $build['#attached']['drupalSettings']['panels_ipe'] = $this->getDrupalSettings($regions, $layout, $page_variant, $unsaved);
 
       // Add our custom elements to the build.
       $build['#prefix'] = '<div id="panels-ipe-content">';
 
-      // Indicate if the current user is viewing temp store.
-      $tray_classes = $unsaved ? 'unsaved' : '';
-
-      $build['#suffix'] = '</div><div id="panels-ipe-tray" class="' . $tray_classes . '"></div>';
+      $build['#suffix'] = '</div><div id="panels-ipe-tray"></div>';
     }
     // Use a standard build if the user can't use IPE.
     else {

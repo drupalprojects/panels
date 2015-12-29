@@ -77,6 +77,11 @@
 
       // Append each of our tabs and their tab content view.
       this.collection.each(function (tab) {
+        // Return early if this tab is hidden.
+        if (tab.get('hidden')) {
+          return;
+        }
+
         // Append the tab.
         var id = tab.get('id');
 

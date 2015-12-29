@@ -39,6 +39,13 @@
       active: false,
 
       /**
+       * Whether or not the tab is hidden.
+       *
+       * @type {bool}
+       */
+      hidden: false,
+
+      /**
        * Whether or not the tab is loading.
        *
        * @type {bool}

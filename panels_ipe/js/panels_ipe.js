@@ -71,7 +71,8 @@
       tabCollection: tab_collection,
       editTab: edit_tab,
       saveTab: save_tab,
-      cancelTab: cancel_tab
+      cancelTab: cancel_tab,
+      unsaved: settings.panels_ipe.unsaved
     });
 
     // Set up our initial tab views.
