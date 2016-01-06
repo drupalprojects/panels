@@ -8,6 +8,8 @@
 namespace Drupal\Tests\panels\Unit;
 
 use Drupal\Component\Uuid\UuidInterface;
+use Drupal\Core\Block\BlockManager;
+use Drupal\Core\Condition\ConditionManager;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -46,6 +48,16 @@ class PanelsDisplayVariantTest extends UnitTestCase {
   protected $token;
 
   /**
+   * @var \Drupal\Core\Condition\ConditionManager
+   */
+  protected $conditionManager;
+
+  /**
+   * @var \Drupal\Core\Block\BlockManager
+   */
+  protected $blockManager;
+
+  /**
    * @var \Drupal\panels\Plugin\DisplayBuilder\DisplayBuilderManagerInterface
    */
   protected $builderManager;
@@ -70,6 +82,8 @@ class PanelsDisplayVariantTest extends UnitTestCase {
     $this->contextHandler = $this->prophesize(ContextHandlerInterface::class);
     $this->uuidGenerator = $this->prophesize(UuidInterface::class);
     $this->token = $this->prophesize(Token::class);
+    $this->blockManager = $this->prophesize(BlockManager::class);
+    $this->conditionManager = $this->prophesize(ConditionManager::class);
     $this->builderManager = $this->prophesize(DisplayBuilderManagerInterface::class);
     $this->layoutManager = $this->prophesize(LayoutPluginManagerInterface::class);
     $this->layout = $this->prophesize(LayoutInterface::class);
@@ -78,7 +92,7 @@ class PanelsDisplayVariantTest extends UnitTestCase {
       ->createInstance(Argument::type('string'), Argument::type('array'))
       ->willReturn($this->layout->reveal());
 
-    $this->variant = new PanelsDisplayVariant([], '', [], $this->contextHandler->reveal(), $this->account->reveal(), $this->uuidGenerator->reveal(), $this->token->reveal(), $this->builderManager->reveal(), $this->layoutManager->reveal());
+    $this->variant = new PanelsDisplayVariant([], '', [], $this->contextHandler->reveal(), $this->account->reveal(), $this->uuidGenerator->reveal(), $this->token->reveal(), $this->blockManager->reveal(), $this->conditionManager->reveal(), $this->builderManager->reveal(), $this->layoutManager->reveal());
   }
 
   /**

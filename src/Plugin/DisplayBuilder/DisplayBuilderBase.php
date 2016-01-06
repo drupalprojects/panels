@@ -21,7 +21,8 @@ abstract class DisplayBuilderBase extends PluginBase implements DisplayBuilderIn
   /**
    * {@inheritdoc}
    */
-  public function build(array $regions, array $context, LayoutInterface $layout = NULL) {
+  public function build(PanelsDisplayVariant $panels_display) {
+    $regions = $panels_display->getRegionAssignments();
     return $regions;
   }
 

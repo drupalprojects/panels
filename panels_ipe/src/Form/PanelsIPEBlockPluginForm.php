@@ -13,8 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Component\Plugin\ContextAwarePluginInterface;
 use Drupal\Core\Render\RendererInterface;
-use Drupal\page_manager\Entity\PageVariant;
-use Drupal\page_manager\PageVariantInterface;
+use Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant;
 use Drupal\user\SharedTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -45,6 +44,13 @@ class PanelsIPEBlockPluginForm extends FormBase {
    * @var \Drupal\user\SharedTempStore
    */
   protected $tempStore;
+
+  /**
+   * The Panels storage manager.
+   *
+   * @var \Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant
+   */
+  protected $panelsDisplay;
 
   /**
    * Constructs a new PanelsIPEBlockPluginForm.
@@ -89,7 +95,7 @@ class PanelsIPEBlockPluginForm extends FormBase {
    *   The current state of the form.
    * @param string $plugin_id
    *   The requested Block Plugin ID.
-   * @param \Drupal\page_manager\PageVariantInterface $page_variant
+   * @param \Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant $panels_display
    *   The current PageVariant ID.
    * @param string $uuid
    *   An optional Block UUID, if this is an existing Block.
@@ -97,22 +103,22 @@ class PanelsIPEBlockPluginForm extends FormBase {
    * @return array
    *   The form structure.
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $plugin_id = NULL, PageVariantInterface $page_variant = NULL, $uuid = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $plugin_id = NULL, PanelsDisplayVariant $panels_display = NULL, $uuid = NULL) {
     // We require these default arguments.
-    if (!$plugin_id || !$page_variant) {
+    if (!$plugin_id || !$panels_display) {
       return FALSE;
     }
 
-    /** @var \Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant $variant_plugin */
-    $variant_plugin = $page_variant->getVariantPlugin();
+    // Save the panels display for later.
+    $this->panelsDisplay = $panels_display;
 
     // Grab the current layout's regions.
-    $regions = $variant_plugin->getRegionNames();
+    $regions = $panels_display->getRegionNames();
 
     // If $uuid is present, a block should exist.
     if ($uuid) {
       /** @var \Drupal\Core\Block\BlockBase $block_instance */
-      $block_instance = $variant_plugin->getBlock($uuid);
+      $block_instance = $panels_display->getBlock($uuid);
     }
     else {
       // Create an instance of this Block plugin.
@@ -162,7 +168,7 @@ class PanelsIPEBlockPluginForm extends FormBase {
 
     // Add the block ID, variant ID to the form as values.
     $form['plugin_id'] = ['#type' => 'value', '#value' => $plugin_id];
-    $form['variant_id'] = ['#type' => 'value', '#value' => $page_variant->id()];
+    $form['variant_id'] = ['#type' => 'value', '#value' => $panels_display->id()];
     $form['uuid'] = ['#type' => 'value', '#value' => $uuid];
 
     // Add a select list for region assignment.
@@ -225,16 +231,10 @@ class PanelsIPEBlockPluginForm extends FormBase {
     // Submit the block form.
     $block_instance->submitConfigurationForm($form, $form_state);
 
-    // Save the block instance to our temporary configuration.
-    /** @var \Drupal\page_manager\PageVariantInterface $page_variant */
-    $page_variant = PageVariant::load($form_state->getValue('variant_id'));
-    /** @var \Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant $variant_plugin */
-    $variant_plugin = $page_variant->getVariantPlugin();
-
     // If a temporary configuration for this variant exists, use it.
-    $temp_store_key = 'variant.' . $page_variant->id();
+    $temp_store_key = $this->panelsDisplay->id();
     if ($variant_config = $this->tempStore->get($temp_store_key)) {
-      $variant_plugin->setConfiguration($variant_config);
+      $this->panelsDisplay->setConfiguration($variant_config);
     }
 
     // Set the block region appropriately.
@@ -243,15 +243,14 @@ class PanelsIPEBlockPluginForm extends FormBase {
 
     // Determine if we need to update or add this block.
     if ($uuid = $form_state->getValue('uuid')) {
-      $variant_plugin->updateBlock($uuid, $block_config);
+      $this->panelsDisplay->updateBlock($uuid, $block_config);
     }
     else {
-      $uuid = $variant_plugin->addBlock($block_config);
+      $uuid = $this->panelsDisplay->addBlock($block_config);
     }
 
     // Set the tempstore value.
-    $variant_config = $variant_plugin->getConfiguration();
-    $this->tempStore->set('variant.' . $page_variant->id(), $variant_config);
+    $this->tempStore->set($this->panelsDisplay->id(), $this->panelsDisplay->getConfiguration());
 
     // Assemble data required for our App.
     $build = $this->buildBlockInstance($block_instance);
@@ -310,23 +309,17 @@ class PanelsIPEBlockPluginForm extends FormBase {
    * @return \Drupal\Core\Block\BlockBase
    *   The Block Plugin instance.
    */
-  protected function getBlockInstance($form_state) {
-    /** @var \Drupal\page_manager\PageVariantInterface $page_variant */
-    $page_variant = PageVariant::load($form_state->getValue('variant_id'));
-
+  protected function getBlockInstance(FormStateInterface $form_state) {
     // If a UUID is provided, the Block should already exist.
     if ($uuid = $form_state->getValue('uuid')) {
-      /** @var \Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant $variant_plugin */
-      $variant_plugin = $page_variant->getVariantPlugin();
-
       // If a temporary configuration for this variant exists, use it.
-      $temp_store_key = 'variant.' . $page_variant->id();
+      $temp_store_key = $this->panelsDisplay->id();
       if ($variant_config = $this->tempStore->get($temp_store_key)) {
-        $variant_plugin->setConfiguration($variant_config);
+        $this->panelsDisplay->setConfiguration($variant_config);
       }
 
       // Load the existing Block instance.
-      $block_instance = $variant_plugin->getBlock($uuid);
+      $block_instance = $this->panelsDisplay->getBlock($uuid);
     }
     else {
       // Create an instance of this Block plugin.
@@ -336,7 +329,7 @@ class PanelsIPEBlockPluginForm extends FormBase {
 
     // Add context to the block.
     if ($block_instance instanceof ContextAwarePluginInterface) {
-      $this->contextHandler->applyContextMapping($block_instance, $page_variant->getContexts());
+      $this->contextHandler->applyContextMapping($block_instance, $this->panelsDisplay->getContexts());
     }
 
     return $block_instance;

@@ -2,3 +2,13 @@ services:
   plugin.manager.panels.display_builder:
     class: Drupal\panels\Plugin\DisplayBuilder\DisplayBuilderManager
     arguments: ['@container.namespaces', '@cache.discovery', '@module_handler']
+  panels.storage_manager:
+    class: Drupal\panels\Storage\PanelsStorageManager
+    arguments: ['@current_user']
+    tags:
+      - { name: service_collector, tag: panels_storage, call: addStorage }
+  panels.storage_access:
+    class: Drupal\panels\Storage\PanelsStorageAccess
+    arguments: ['@panels.storage_manager']
+    tags:
+      - { name: access_check, applies_to: _panels_storage_access }

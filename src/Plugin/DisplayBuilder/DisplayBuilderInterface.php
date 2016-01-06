@@ -8,6 +8,7 @@
 namespace Drupal\panels\Plugin\DisplayBuilder;
 
 use Drupal\layout_plugin\Plugin\Layout\LayoutInterface;
+use Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant;
 
 /**
  * Defines the DisplayBuilder plugin type.
@@ -21,15 +22,11 @@ interface DisplayBuilderInterface {
    * inner methods, which return a content array, which is in turn passed to the
    * theme function specified in the layout plugin.
    *
-   * @param array $regions
-   *   The render array representing regions.
-   * @param array $contexts
-   *   The array of context objects.
-   * @param \Drupal\layout_plugin\Plugin\Layout\LayoutInterface
-   *   (optional) The layout plugin.
+   * @param Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant
+   *   The Panels display variant to render.
    * @return array
    *   Render array modified by the display builder.
    */
-  public function build(array $regions, array $contexts, LayoutInterface $layout = NULL);
+  public function build(PanelsDisplayVariant $panels_display);
 
 }

@@ -14,6 +14,7 @@ use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Core\Plugin\ContextAwarePluginInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\layout_plugin\Plugin\Layout\LayoutInterface;
+use Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -125,7 +126,11 @@ class StandardDisplayBuilder extends DisplayBuilderBase implements ContainerFact
   /**
    * {@inheritdoc}
    */
-  public function build(array $regions, array $contexts, LayoutInterface $layout = NULL) {
+  public function build(PanelsDisplayVariant $panels_display) {
+    $regions = $panels_display->getRegionAssignments();
+    $contexts = $panels_display->getContexts();
+    $layout = $panels_display->getLayout();
+
     $regions = $this->buildRegions($regions, $contexts);
     if ($layout) {
       $regions = $layout->build($regions);

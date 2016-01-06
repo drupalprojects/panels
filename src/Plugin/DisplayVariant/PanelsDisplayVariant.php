@@ -9,11 +9,15 @@ namespace Drupal\panels\Plugin\DisplayVariant;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Uuid\UuidInterface;
+use Drupal\Core\Block\BlockManager;
+use Drupal\Core\Condition\ConditionManager;
+use Drupal\Core\Condition\ConditionPluginCollection;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Utility\Token;
+use Drupal\ctools\Plugin\BlockPluginCollection;
 use Drupal\ctools\Plugin\DisplayVariant\BlockDisplayVariant;
 use Drupal\layout_plugin\Layout;
 use Drupal\layout_plugin\Plugin\Layout\LayoutPluginManagerInterface;
@@ -29,6 +33,20 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class PanelsDisplayVariant extends BlockDisplayVariant {
+
+  /**
+   * @var \Drupal\Core\Condition\ConditionManager
+   *
+   * @todo Remove when fixed in CTools: https://www.drupal.org/node/2642786
+   */
+  protected $conditionManager;
+
+  /**
+   * @var \Drupal\Core\Block\BlockManager
+   *
+   * @todo Remove when fixed in CTools: https://www.drupal.org/node/2642786
+   */
+  protected $blockManager;
 
   /**
    * The display builder plugin manager.
@@ -75,20 +93,26 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
    *   The UUID generator.
    * @param \Drupal\Core\Utility\Token $token
    *   The token service.
-   * @param \Drupal\Component\Uuid\UuidInterface $uuid_generator
-   *   The UUID generator.
-   * @param \Drupal\Core\Utility\Token $token
-   *   The token service.
+   * @param \Drupal\Core\Block\BlockManager $block_manager
+   *   The block manager.
+   * @param \Drupal\Core\Condition\ConditionManager $condition_manager
+   *   The condition manager.
    * @param \Drupal\panels\Plugin\DisplayBuilder\DisplayBuilderManagerInterface $builder_manager
    *   The display builder plugin manager.
    * @param \Drupal\layout_plugin\Plugin\Layout\LayoutPluginManagerInterface $layout_manager
    *   The layout plugin manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ContextHandlerInterface $context_handler, AccountInterface $account, UuidInterface $uuid_generator, Token $token, DisplayBuilderManagerInterface $builder_manager, LayoutPluginManagerInterface $layout_manager) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $context_handler, $account, $uuid_generator, $token);
-
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ContextHandlerInterface $context_handler, AccountInterface $account, UuidInterface $uuid_generator, Token $token, BlockManager $block_manager, ConditionManager $condition_manager, DisplayBuilderManagerInterface $builder_manager, LayoutPluginManagerInterface $layout_manager) {
+    // Inject dependencies as early as possible, so they can be used in
+    // configuration.
+    // @todo Remove when fixed in CTools: https://www.drupal.org/node/2642786
+    $this->uuidGenerator = $uuid_generator;
+    $this->blockManager = $block_manager;
+    $this->conditionManager = $condition_manager;
     $this->builderManager = $builder_manager;
     $this->layoutManager = $layout_manager;
+
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $context_handler, $account, $uuid_generator, $token);
   }
 
   /**
@@ -103,6 +127,8 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
       $container->get('current_user'),
       $container->get('uuid'),
       $container->get('token'),
+      $container->get('plugin.manager.block'),
+      $container->get('plugin.manager.condition'),
       $container->get('plugin.manager.panels.display_builder'),
       $container->get('plugin.manager.layout_plugin')
     );
@@ -135,6 +161,40 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
   }
 
   /**
+   * Configures how this Panel is being stored.
+   *
+   * @param string $type
+   *   The storage type used by the storage service.
+   * @param string $id
+   *   The id within the storage service for this Panels display.
+   *
+   * @return $this
+   */
+  public function setStorage($type, $id) {
+    $this->configuration['storage_type'] = $type;
+    $this->configuration['storage_id'] = $id;
+    return $this;
+  }
+
+  /**
+   * Gets the id of the storage service which can save this.
+   *
+   * @return string|NULL
+   */
+  public function getStorageType() {
+    return $this->configuration['storage_type'] ?: NULL;
+  }
+
+  /**
+   * Gets id within the storage service for this Panels display.
+   *
+   * @return string|NULL
+   */
+  public function getStorageId() {
+    return $this->configuration['storage_id'] ?: NULL;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getRegionNames() {
@@ -145,10 +205,7 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
    * {@inheritdoc}
    */
   public function build() {
-    $regions = $this->getRegionAssignments();
-    $contexts = $this->getContexts();
-    $layout = $this->getLayout();
-    $build = $this->getBuilder()->build($regions, $contexts, $layout);
+    $build = $this->getBuilder()->build($this);
     $build['#title'] = $this->renderPageTitle($this->configuration['page_title']);
     return $build;
   }
@@ -176,6 +233,10 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
       $options = array();
       foreach ($plugins as $id => $plugin) {
         $options[$id] = $plugin['label'];
+      }
+      // Only allow the IPE if the storage information is set.
+      if (!$this->getStorageType()) {
+        unset($options['ipe']);
       }
       $form['builder'] = [
         '#title' => $this->t('Builder'),
@@ -317,10 +378,23 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
    */
   public function defaultConfiguration() {
     return parent::defaultConfiguration() + [
+      'uuid' => $this->uuidGenerator()->generate(),
       'layout' => '',
       'layout_settings' => [],
       'page_title' => '',
+      'storage_type' => '',
+      'storage_id' => '',
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setConfiguration(array $configuration) {
+    if (empty($configuration['uuid'])) {
+      $configuration['uuid'] = $this->uuidGenerator()->generate();
+    }
+    return parent::setConfiguration($configuration);
   }
 
   /**
@@ -357,6 +431,30 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
       }
     }
     return $data;
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @todo Remove when fixed in CTools: https://www.drupal.org/node/2642786
+   */
+  public function getSelectionConditions() {
+    if (!$this->selectionConditionCollection) {
+      $this->selectionConditionCollection = new ConditionPluginCollection($this->conditionManager, $this->getSelectionConfiguration());
+    }
+    return $this->selectionConditionCollection;
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @todo Remove when fixed in CTools: https://www.drupal.org/node/2642786
+   */
+  protected function getBlockCollection() {
+    if (!$this->blockPluginCollection) {
+      $this->blockPluginCollection = new BlockPluginCollection($this->blockManager, $this->getBlockConfig());
+    }
+    return $this->blockPluginCollection;
   }
 
 }

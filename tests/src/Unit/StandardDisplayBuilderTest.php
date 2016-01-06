@@ -11,6 +11,7 @@ use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\panels\Plugin\DisplayBuilder\StandardDisplayBuilder;
+use Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
 
@@ -69,7 +70,12 @@ class StandardDisplayBuilderTest extends UnitTestCase {
 
     $regions['footer'] = array();
 
-    $build = $this->builder->build($regions, array());
+    $panels_display = $this->prophesize(PanelsDisplayVariant::class);
+    $panels_display->getRegionAssignments()->willReturn($regions);
+    $panels_display->getContexts()->willReturn([]);
+    $panels_display->getLayout()->willReturn(NULL);
+
+    $build = $this->builder->build($panels_display->reveal());
     // Ensure that regions get the proper prefix and suffix.
     $this->assertEquals('<div class="block-region-content">', $build['content']['#prefix']);
     $this->assertEquals('</div>', $build['content']['#suffix']);

@@ -9,12 +9,11 @@ namespace Drupal\panels_ipe\Plugin\DisplayBuilder;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\NestedArray;
-use Drupal\page_manager\Entity\PageVariant;
-use Drupal\page_manager\PageVariantInterface;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\layout_plugin\Plugin\Layout\LayoutInterface;
 use Drupal\panels\Plugin\DisplayBuilder\StandardDisplayBuilder;
+use Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant;
 use Drupal\user\SharedTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -52,7 +51,6 @@ class InPlaceEditorDisplayBuilder extends StandardDisplayBuilder {
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, ContextHandlerInterface $context_handler, AccountInterface $account, SharedTempStoreFactory $temp_store_factory) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $context_handler, $account);
-
     $this->tempStore = $temp_store_factory->get('panels_ipe');
   }
 
@@ -77,8 +75,8 @@ class InPlaceEditorDisplayBuilder extends StandardDisplayBuilder {
    *   The render array representing regions.
    * @param \Drupal\layout_plugin\Plugin\Layout\LayoutInterface $layout
    *   The current layout.
-   * @param \Drupal\page_manager\PageVariantInterface $page_variant
-   *   The current path's page variant.
+   * @param \Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant $panels_display
+   *   The Panels display we are editing.
    * @param bool $unsaved
    *   Whether or not there are unsaved changes.
    *
@@ -86,7 +84,7 @@ class InPlaceEditorDisplayBuilder extends StandardDisplayBuilder {
    *   An associative array representing the contents of drupalSettings, or
    *   FALSE if there was an error.
    */
-  protected function getDrupalSettings(array $regions, LayoutInterface $layout, PageVariantInterface $page_variant, $unsaved) {
+  protected function getDrupalSettings(array $regions, LayoutInterface $layout, PanelsDisplayVariant $panels_display, $unsaved) {
     $settings = [
       'regions' => [],
     ];
@@ -124,10 +122,10 @@ class InPlaceEditorDisplayBuilder extends StandardDisplayBuilder {
     ];
 
     // Add the display variant's config.
-    $settings['display_variant'] = [
-      'label' => $page_variant->label(),
-      'id' => $page_variant->id(),
-      'uuid' => $page_variant->uuid(),
+    $settings['panels_display'] = [
+      'storage_type' => $panels_display->getStorageType(),
+      'storage_id' => $panels_display->getStorageId(),
+      'id' => $panels_display->id(),
     ];
 
     // Inform the App of our saved state.
@@ -139,39 +137,30 @@ class InPlaceEditorDisplayBuilder extends StandardDisplayBuilder {
   /**
    * {@inheritdoc}
    */
-  public function build(array $regions, array $contexts, LayoutInterface $layout = NULL) {
-    // Load our PageVariant.
-    /** @var \Drupal\page_manager\PageVariantInterface $page_variant */
-    $page_variant = \Drupal::request()->attributes->get('page_manager_page_variant');
-
+  public function build(PanelsDisplayVariant $panels_display) {
     // Check to see if the current user has permissions to use the IPE.
     $has_permission = $this->account->hasPermission('access panels in-place editing');
 
     // Attach the Panels In-place editor library based on permissions.
-    if ($page_variant && $has_permission) {
+    if ($has_permission) {
       // This flag tracks whether or not there are unsaved changes.
       $unsaved = FALSE;
 
       // If a temporary configuration for this variant exists, use it.
-      $temp_store_key = 'variant.' . $page_variant->id();
+      $temp_store_key = $panels_display->id();
       if ($variant_config = $this->tempStore->get($temp_store_key)) {
-        // Reload the PageVariant. This is required to set variant plugin
-        // configuration correctly.
-        $page_variant = PageVariant::load($page_variant->id());
-
-        /** @var \Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant $variant_plugin */
-        $variant_plugin = $page_variant->getVariantPlugin();
-        $variant_plugin->setConfiguration($variant_config);
-
-        // Override our initial values with what's in TempStore.
-        $layout = $variant_plugin->getLayout();
-        $regions = $variant_plugin->getRegionAssignments();
+        unset($variant_config['id']);
+        $panels_display->setConfiguration($variant_config);
 
         // Indicate that the user is viewing un-saved changes.
         $unsaved = TRUE;
       }
 
-      $build = parent::build($regions, $contexts, $layout);
+      $build = parent::build($panels_display);
+
+      $regions = $panels_display->getRegionAssignments();
+      $layout = $panels_display->getLayout();
+
 
       foreach ($regions as $region => $blocks) {
         // Wrap each region with a unique class and data attribute.
@@ -188,7 +177,7 @@ class InPlaceEditorDisplayBuilder extends StandardDisplayBuilder {
 
       // Attach the required settings and IPE.
       $build['#attached']['library'][] = 'panels_ipe/panels_ipe';
-      $build['#attached']['drupalSettings']['panels_ipe'] = $this->getDrupalSettings($regions, $layout, $page_variant, $unsaved);
+      $build['#attached']['drupalSettings']['panels_ipe'] = $this->getDrupalSettings($regions, $layout, $panels_display, $unsaved);
 
       // Add our custom elements to the build.
       $build['#prefix'] = '<div id="panels-ipe-content">';
@@ -197,7 +186,7 @@ class InPlaceEditorDisplayBuilder extends StandardDisplayBuilder {
     }
     // Use a standard build if the user can't use IPE.
     else {
-      $build = parent::build($regions, $contexts, $layout);
+      $build = parent::build($panels_display);
     }
 
     return $build;
