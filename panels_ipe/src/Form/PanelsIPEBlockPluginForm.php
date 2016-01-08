@@ -9,6 +9,7 @@ namespace Drupal\panels_ipe\Form;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Form\FormBase;
+use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Component\Plugin\ContextAwarePluginInterface;
@@ -165,6 +166,7 @@ class PanelsIPEBlockPluginForm extends FormBase {
 
     // Get the base configuration form for this block.
     $form['flipper']['front']['settings'] = $block_instance->buildConfigurationForm([], $form_state);
+    $form['flipper']['front']['settings']['#tree'] = TRUE;
 
     // Add the block ID, variant ID to the form as values.
     $form['plugin_id'] = ['#type' => 'value', '#value' => $plugin_id];
@@ -219,7 +221,11 @@ class PanelsIPEBlockPluginForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $block_instance = $this->getBlockInstance($form_state);
 
-    $block_instance->validateConfigurationForm($form, $form_state);
+    // Validate the block configuration form.
+    $block_form_state = (new FormState())->setValues($form_state->getValue('settings'));
+    $block_instance->validateConfigurationForm($form, $block_form_state);
+    // Update the original form values.
+    $form_state->setValue('settings', $block_form_state->getValues());
   }
 
   /**
@@ -228,8 +234,11 @@ class PanelsIPEBlockPluginForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $block_instance = $this->getBlockInstance($form_state);
 
-    // Submit the block form.
-    $block_instance->submitConfigurationForm($form, $form_state);
+    // Submit the block configuration form.
+    $block_form_state = (new FormState())->setValues($form_state->getValue('settings'));
+    $block_instance->submitConfigurationForm($form, $block_form_state);
+    // Update the original form values.
+    $form_state->setValue('settings', $block_form_state->getValues());
 
     // If a temporary configuration for this variant exists, use it.
     $temp_store_key = $this->panelsDisplay->id();
@@ -239,7 +248,7 @@ class PanelsIPEBlockPluginForm extends FormBase {
 
     // Set the block region appropriately.
     $block_config = $block_instance->getConfiguration();
-    $block_config['region'] = $form_state->getValue('region');
+    $block_config['region'] = $form_state->getValue(array('settings', 'region'));
 
     // Determine if we need to update or add this block.
     if ($uuid = $form_state->getValue('uuid')) {
@@ -259,16 +268,16 @@ class PanelsIPEBlockPluginForm extends FormBase {
     // Add our data attribute for the Backbone app.
     $build['#attributes']['data-block-id'] = $uuid;
 
-    $settings = [
+    $block_model = [
       'uuid' => $uuid,
       'label' => $block_instance->label(),
       'id' => $block_instance->getPluginId(),
-      'region' => $form_state->getValue('region'),
+      'region' => $block_config['region'],
       'html' => $this->renderer->render($build)
     ];
 
     // Add Block metadata and HTML as a drupalSetting.
-    $form['#attached']['drupalSettings']['panels_ipe']['updated_block'] = $settings;
+    $form['#attached']['drupalSettings']['panels_ipe']['updated_block'] = $block_model;
 
     return $form;
   }
@@ -287,7 +296,10 @@ class PanelsIPEBlockPluginForm extends FormBase {
   public function submitPreview(array &$form, FormStateInterface $form_state) {
     // Get the Block instance.
     $block_instance = $this->getBlockInstance($form_state);
-    $block_instance->submitConfigurationForm($form, $form_state);
+
+    // Submit the block configuration form.
+    $block_form_state = (new FormState())->setValues($form_state->getValue('settings'));
+    $block_instance->submitConfigurationForm($form, $block_form_state);
 
     // Gather a render array for the block.
     $build = $this->buildBlockInstance($block_instance);
