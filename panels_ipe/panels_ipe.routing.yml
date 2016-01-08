@@ -40,14 +40,13 @@ panels_ipe.layouts:
     _permission: 'access panels in-place editing'
     _method: 'GET'
 
-panels_ipe.layout:
-  path: '/admin/panels_ipe/variant/{panels_storage_type}/{panels_storage_id}/layouts/{layout_id}'
+panels_ipe.layout.form:
+  path: '/admin/panels_ipe/variant/{panels_storage_type}/{panels_storage_id}/layouts/{layout_id}/form'
   defaults:
-    _controller: '\Drupal\panels_ipe\Controller\PanelsIPEPageController::getLayout'
+    _controller: '\Drupal\panels_ipe\Controller\PanelsIPEPageController::getLayoutForm'
   requirements:
     _panels_storage_access: read
     _permission: 'access panels in-place editing'
-    _method: 'GET'
 
 panels_ipe.layout.update:
   path: '/admin/panels_ipe/variant/{panels_storage_type}/{panels_storage_id}/layouts/{layout_id}'

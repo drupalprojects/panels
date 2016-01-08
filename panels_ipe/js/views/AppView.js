@@ -131,39 +131,51 @@
     /**
      * Event callback for when a new layout has been selected.
      *
-     * @param {Array} args
-     *   An array of event arguments.
+     * @param {Drupal.panels_ipe.LayoutModel} layout
+     *   The new layout model.
      */
-    changeLayout: function (args) {
-      // Grab the layout from the argument list.
-      var layout = args[0];
+    changeLayout: function (layout) {
+      // Grab all the blocks from the current layout.
+      var regions = this.model.get('layout').get('regionCollection');
+      var block_collection = new Drupal.panels_ipe.BlockCollection();
 
-      // Sync the layout from Drupal.
-      var self = this;
-      layout.fetch().done(function () {
-        // Grab all the blocks from the current layout.
-        var regions = self.model.get('layout').get('regionCollection');
-        var block_collection = new Drupal.panels_ipe.BlockCollection();
-        regions.each(function (region) {
+      // @todo Our backend should inform us of region suggestions.
+      regions.each(function (region) {
+        // If a layout with the same name exists, copy our block collection.
+        var new_region = layout.get('regionCollection').get(region.get('name'));
+        if (new_region) {
+          new_region.set('blockCollection', region.get('blockCollection'));
+        }
+        // Otherwise add these blocks to our generic pool.
+        else {
           block_collection.add(region.get('blockCollection').toJSON());
-        });
-
-        // Get the first region in the layout.
-        // @todo Be smarter about re-adding blocks.
-        var first_region = layout.get('regionCollection').at(0);
-
-        // Append all blocks from previous layout.
-        first_region.set({blockCollection: block_collection});
-
-        // Change the default layout in our AppModel.
-        self.model.set({layout: layout});
-
-        // Change the LayoutView's layout.
-        self.layoutView.changeLayout(layout);
-
-        // Re-render the app.
-        self.render();
+        }
       });
+
+      // Get the first region in the layout.
+      var first_region = layout.get('regionCollection').at(0);
+
+      // Merge our block collection with the existing block collection.
+      block_collection.each(function(block) {
+        first_region.get('blockCollection').add(block);
+      });
+
+      // Change the default layout in our AppModel.
+      this.model.set({layout: layout});
+
+      // Change the LayoutView's layout.
+      this.layoutView.changeLayout(layout);
+
+      // Mark all tabs as inactive.
+      this.tabsView.collection.each(function (tab) {
+        tab.set('active', false);
+      });
+
+      // Re-render the app.
+      this.render();
+
+      // Close the TabsView.
+      this.tabsView.closeTabContent();
 
       // Indicate that there are unsaved changes in the app.
       this.model.set('unsaved', true);

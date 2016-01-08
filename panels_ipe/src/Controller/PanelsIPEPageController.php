@@ -192,6 +192,7 @@ class PanelsIPEPageController extends ControllerBase {
         'label' => $layout['label'],
         'icon' => !empty($layout['icon']) ? $layout['icon'] : drupal_get_path('module', 'panels') . '/images/no-layout-preview.png',
         'current' => $id == $current_layout_id,
+        'category' => $layout['category']
       ];
     }
 
@@ -200,7 +201,7 @@ class PanelsIPEPageController extends ControllerBase {
   }
 
   /**
-   * Gets a given layout with empty regions and relevant metadata.
+   * Gets a layout configuration form for the requested layout.
    *
    * @param string $panels_storage_type
    *   The id of the storage service.
@@ -209,56 +210,21 @@ class PanelsIPEPageController extends ControllerBase {
    * @param string $layout_id
    *   The machine name of the requested layout.
    *
-   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   * @return AjaxResponse
    */
-  public function getLayout($panels_storage_type, $panels_storage_id, $layout_id) {
+  public function getLayoutForm($panels_storage_type, $panels_storage_id, $layout_id) {
     $panels_display = $this->loadPanelsDisplay($panels_storage_type, $panels_storage_id);
 
-    // Build the requested layout.
-    $configuration = $panels_display->getConfiguration();
-    $configuration['layout'] = $layout_id;
-    $panels_display->setConfiguration($configuration);
+    // Build a Block Plugin configuration form.
+    $form = $this->formBuilder()->getForm('Drupal\panels_ipe\Form\PanelsIPELayoutForm', $layout_id, $panels_display);
 
-    $regions = $panels_display->getRegionNames();
-    $region_data = [];
-    $region_content = [];
-
-    // Compile region content and metadata.
-    foreach ($regions as $id => $label) {
-      // Wrap the region with a class/data attribute that our app can use.
-      $region_name = Html::getClass("block-region-$id");
-      $region_content[$id] = [
-        '#prefix' =>'<div class="' . $region_name . '" data-region-name="' . $id . '">',
-        '#suffix' => '</div>',
-      ];
-
-      // Format region metadata.
-      $region_data[] = [
-        'name' => $id,
-        'label' => $label,
-      ];
-    }
-    $build = $panels_display->getLayout()->build($region_content);
-
-    // Get the current layout.
-    $current_layout = $panels_display->getLayout()->getPluginId();
-
-    // Get a list of all available layouts.
-    $layouts = $this->layoutPluginManager->getLayoutOptions();
-
-    $data = [
-      'id' => $layout_id,
-      'label' => $layouts[$layout_id],
-      'current' => $current_layout == $layout_id,
-      'html' => $this->renderer->render($build),
-      'regions' => $region_data,
-    ];
-
-    // Update temp store.
-    $this->savePanelsDisplay($panels_display);
-
-    // Return a structured JSON response for our Backbone App.
-    return new JsonResponse($data);
+    // Return the rendered form as a proper Drupal AJAX response.
+    // This is needed as forms often have custom JS and CSS that need added,
+    // and it isn't worth replicating things that work in Drupal with Backbone.
+    $response = new AjaxResponse();
+    $command = new AppendCommand('.ipe-layout-form', $form);
+    $response->addCommand($command);
+    return $response;
   }
 
   /**

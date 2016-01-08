@@ -9,7 +9,15 @@
 
   'use strict';
 
-  Drupal.panels_ipe.LayoutPicker = Backbone.View.extend(/** @lends Drupal.panels_ipe.LayoutPicker# */{
+  Drupal.panels_ipe.LayoutPicker = Drupal.panels_ipe.CategoryView.extend(/** @lends Drupal.panels_ipe.LayoutPicker# */{
+
+    /**
+     * @type {function}
+     */
+    template_form: _.template(
+      '<h4>Configure <strong><%- label %></strong> layout</h4>' +
+      '<div class="ipe-layout-form ipe-form"><div class="ipe-icon ipe-icon-loading"></div></div>'
+    ),
 
     /**
      * @type {function}
@@ -19,20 +27,8 @@
     /**
      * @type {function}
      */
-    template_current: _.template('<p>Current Layout</p><img class="ipe-layout-image" src="<%- icon %>" title="<%- label %>" alt="<%- label %>" />'),
-
-    /**
-     * @type {function}
-     */
     template_loading: _.template(
       '<span class="ipe-icon ipe-icon-loading"></span>'
-    ),
-
-    /**
-     * @type {function}
-     */
-    template: _.template(
-      '<div class="layout-wrapper"><div class="ipe-current-layout"></div><div class="ipe-all-layouts"><p>Available Layouts</p><ul class="ipe-layouts"></ul></div></div>'
     ),
 
     /**
@@ -44,11 +40,32 @@
      * @type {object}
      */
     events: {
-      'click .ipe-layout': 'selectLayout'
+      'click [data-layout-id]': 'displayForm'
+    },
+
+    /**
+     * @constructs
+     *
+     * @augments Backbone.View
+     *
+     * @param {Object} options
+     *   An object containing the following keys:
+     * @param {Drupal.panels_ipe.LayoutCollection} options.collection
+     *   An optional initial collection.
+     */
+    initialize: function (options) {
+      if (options && options.collection) {
+        this.collection = options.collection;
+      }
+      // Extend our parent's events.
+      _.extend(this.events, Drupal.panels_ipe.CategoryView.prototype.events);
     },
 
     /**
      * Renders the selection menu for picking Layouts.
+     *
+     * @return {Drupal.panels_ipe.LayoutPicker}
+     *   Return this, for chaining.
      */
     render: function () {
       // If we don't have layouts yet, pull some from the server.
@@ -63,51 +80,62 @@
           // We have a collection now, re-render ourselves.
           self.render();
         });
+
+        return this;
       }
-      // Render our LayoutCollection.
-      else {
-        this.$el.empty();
 
-        // Setup the empty list.
-        this.$el.html(this.template());
+      // Render our categories.
+      this.renderCategories();
 
-        // Append each layout option.
+      // Prepend the current layout as its own category.
+      this.$('.ipe-categories').prepend(this.template_category({
+        name: 'Current Layout',
+        count: 1,
+        active: this.activeCategory === 'Current Layout'
+      }));
+
+      // If we're viewing the current layout tab, show a custom item.
+      if (this.activeCategory && this.activeCategory == 'Current Layout') {
         this.collection.each(function (layout) {
-          if (!layout.get('current')) {
-            this.$('.ipe-layouts').append(this.template_layout(layout.toJSON()));
-          }
-          else {
-            this.$('.ipe-current-layout').append(this.template_current(layout.toJSON()));
+          if (Drupal.panels_ipe.app.get('layout').get('id') == layout.get('id')) {
+            this.$('.ipe-category-picker-top').append(this.template_item(layout));
           }
         }, this);
       }
+
+      return this;
     },
 
     /**
-     * Fires a global Backbone event that the App watches to switch layouts.
+     * Callback for our CategoryView, which renders an individual item.
+     *
+     * @param {Drupal.panels_ipe.LayoutModel} layout
+     *   The Layout that needs rendering.
+     *
+     * @return {string}
+     *   The rendered block plugin.
+     */
+    template_item: function(layout) {
+      return this.template_layout(layout.toJSON());
+    },
+
+    /**
+     * Informs the CategoryView of our form's callback URL.
      *
      * @param {Object} e
      *   The event object.
+     *
+     * @return {Object}
+     *   An object containing the properties "url" and "model".
      */
-    selectLayout: function (e) {
-      e.preventDefault();
-      var id = $(e.currentTarget).data('layout-id');
+    getFormInfo: function(e) {
+      // Get the current layout_id.
+      var layout_id = $(e.currentTarget).data('layout-id');
 
-      // Unset the current tab.
-      this.collection.each(function (layout) {
-        if (id === layout.id) {
-          layout.set('current', true);
-          // Indicate an AJAX request.
-          this.$el.html(this.template_loading());
+      var layout = this.collection.get(layout_id);
+      var url = Drupal.panels_ipe.urlRoot(drupalSettings) + '/layouts/' + layout_id + '/form';
 
-          // Only the AppView is aware of the rendered Layout.
-          // @todo Investigate using non-global events.
-          Drupal.panels_ipe.app.trigger('changeLayout', [layout]);
-        }
-        else {
-          layout.set('current', false);
-        }
-      }, this);
+      return {url: url, model: layout};
     }
 
   });

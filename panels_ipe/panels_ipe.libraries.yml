@@ -13,6 +13,7 @@ panels_ipe:
     # Views.
     js/views/AppView.js: {}
     js/views/BlockView.js: {}
+    js/views/CategoryView.js: {}
     js/views/BlockPicker.js: {}
     js/views/LayoutPicker.js: {}
     js/views/LayoutView.js: {}

@@ -22,12 +22,25 @@
       // BlockModel somewhere. Inform the App that this has occurred.
       if (settings['panels_ipe']['updated_block']) {
         var data = settings['panels_ipe']['updated_block'];
+        // Remove the setting.
+        delete settings['panels_ipe']['updated_block'];
         // Create a BlockModel.
         var block = new Drupal.panels_ipe.BlockModel(data);
         // Trigger the event.
         Drupal.panels_ipe.app.trigger('addBlockPlugin', block, data.region);
+      }
+
+      // If this setting is present, it means we need to add/update our Layout
+      // Inform the App that this has occurred.
+      if (settings['panels_ipe']['updated_layout']) {
+        var data = settings['panels_ipe']['updated_layout'];
         // Remove the setting.
-        delete settings['panels_ipe']['updated_block'];
+        delete settings['panels_ipe']['updated_layout'];
+        // Create a LayoutModel.
+        data = Drupal.panels_ipe.LayoutModel.prototype.parse(data);
+        var layout = new Drupal.panels_ipe.LayoutModel(data);
+        // Trigger the event.
+        Drupal.panels_ipe.app.trigger('changeLayout', layout);
       }
 
       // If this setting is present, it means we need to toggle the preview.

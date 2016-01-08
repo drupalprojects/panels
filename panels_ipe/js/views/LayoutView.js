@@ -154,6 +154,9 @@
         }, this);
       }, this);
 
+      // Attach any Drupal behaviors.
+      Drupal.attachBehaviors(this.el);
+
       return this;
     },
 

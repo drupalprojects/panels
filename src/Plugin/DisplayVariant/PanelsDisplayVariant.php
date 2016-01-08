@@ -20,6 +20,7 @@ use Drupal\Core\Utility\Token;
 use Drupal\ctools\Plugin\BlockPluginCollection;
 use Drupal\ctools\Plugin\DisplayVariant\BlockDisplayVariant;
 use Drupal\layout_plugin\Layout;
+use Drupal\layout_plugin\Plugin\Layout\LayoutInterface;
 use Drupal\layout_plugin\Plugin\Layout\LayoutPluginManagerInterface;
 use Drupal\panels\Plugin\DisplayBuilder\DisplayBuilderManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -158,6 +159,37 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
       $this->layout = $this->layoutManager->createInstance($this->configuration['layout'], $this->configuration['layout_settings']);
     }
     return $this->layout;
+  }
+
+  /**
+   * Assigns the layout plugin to this variant.
+   *
+   * @param string|\Drupal\layout_plugin\Plugin\Layout\LayoutInterface $layout
+   *   The layout plugin object or plugin id.
+   * @param array $layout_settings
+   *   The layout configuration.
+   *
+   * @return $this
+   *
+   * @throws \Exception
+   *   If $layout isn't a string or LayoutInterface object.
+   */
+  public function setLayout($layout, array $layout_settings = []) {
+    if ($layout instanceof LayoutInterface) {
+      $this->layout = $layout;
+      $this->configuration['layout'] = $layout->getPluginId();
+      $this->configuration['layout_settings'] = $layout_settings;
+    }
+    elseif (is_string($layout)) {
+      $this->layout = NULL;
+      $this->configuration['layout'] = $layout;
+      $this->configuration['layout_settings'] = $layout_settings;
+    }
+    else {
+      throw new \Exception("Layout must be a string or LayoutInterface object");
+    }
+
+    return $this;
   }
 
   /**

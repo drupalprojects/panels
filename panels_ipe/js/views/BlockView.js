@@ -76,6 +76,9 @@
       this.$el.replaceWith(this.model.get('html'));
       this.setElement("[data-block-id='" + this.model.get('uuid') + "']");
 
+      // Attach any Drupal behaviors.
+      Drupal.attachBehaviors(this.el);
+
       // We modify our content if the IPE is active.
       if (this.model.get('active')) {
         // Prepend the ipe-actions header.

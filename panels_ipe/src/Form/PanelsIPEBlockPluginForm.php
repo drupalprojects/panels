@@ -254,6 +254,7 @@ class PanelsIPEBlockPluginForm extends FormBase {
 
     // Assemble data required for our App.
     $build = $this->buildBlockInstance($block_instance);
+    $form['build'] = $build;
 
     // Add our data attribute for the Backbone app.
     $build['#attributes']['data-block-id'] = $uuid;
@@ -267,7 +268,6 @@ class PanelsIPEBlockPluginForm extends FormBase {
     ];
 
     // Add Block metadata and HTML as a drupalSetting.
-    // @todo How do we handle #attachments in the $build this way?
     $form['#attached']['drupalSettings']['panels_ipe']['updated_block'] = $settings;
 
     return $form;
