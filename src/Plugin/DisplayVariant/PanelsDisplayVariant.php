@@ -278,31 +278,28 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
       ];
     }
 
-    if (empty($this->configuration['layout'])) {
+    $form['layout'] = [
+      '#title' => $this->t('Layout'),
+      '#type' => 'select',
+      '#options' => Layout::getLayoutOptions(['group_by_category' => TRUE]),
+      '#default_value' => $this->configuration['layout'] ?: NULL,
+    ];
 
-      $form['layout'] = [
-        '#title' => $this->t('Layout'),
-        '#type' => 'select',
-        '#options' => Layout::getLayoutOptions(['group_by_category' => TRUE]),
-        '#default_value' => NULL
-      ];
-    }
-    else {
-      $form['layout'] = [
-        '#type' => 'value',
-        '#value' => $this->configuration['layout'],
+    if (!empty($this->configuration['layout'])) {
+      $form['layout']['#ajax'] = [
+        'callback' => [$this, 'layoutSettingsAjaxCallback'],
+        'wrapper' => 'layout-settings-wrapper',
+        'effect' => 'fade',
       ];
 
       // If a layout is already selected, show the layout settings.
       $form['layout_settings_wrapper'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Layout settings'),
+        '#prefix' => '<div id="layout-settings-wrapper">',
+        '#suffix' => '</div>',
       ];
       $form['layout_settings_wrapper']['layout_settings'] = [];
-
-      // Get settings form from layout plugin.
-      $layout = $this->layoutManager->createInstance($this->configuration['layout'], $this->configuration['layout_settings'] ?: []);
-      $form['layout_settings_wrapper']['layout_settings'] = $layout->buildConfigurationForm($form['layout_settings_wrapper']['layout_settings'], $form_state);
 
       // Process callback to configure #parents correctly on settings, since
       // we don't know where in the form hierarchy our settings appear.
@@ -313,9 +310,13 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
   }
 
   /**
-   * Form API #process callback: expands form with hierarchy information.
+   * Render API callback: builds the layout settings elements.
    */
   public function layoutSettingsProcessCallback(array &$element, FormStateInterface $form_state, array &$complete_form) {
+    $parents_base = $element['#parents'];
+    $layout_parent = array_merge($parents_base, ['layout']);
+    $layout_settings_parent = array_merge($parents_base, ['layout_settings']);
+
     $settings_element =& $element['layout_settings_wrapper']['layout_settings'];
 
     // Set the #parents on the layout_settings so they end up as a sibling of
@@ -324,11 +325,29 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
     $settings_element['#parents'] = $layout_settings_parents;
     $settings_element['#tree'] = TRUE;
 
+    // Get the layout name in a way that works regardless of whether we're
+    // getting the value via AJAX or not.
+    $layout_name = NestedArray::getValue($form_state->getUserInput(), $layout_parent) ?: $element['layout']['#default_value'];
+
+    // Place the layout settings on the form if a layout is selected.
+    if ($layout_name) {
+      $layout = Layout::layoutPluginManager()->createInstance($layout_name, $form_state->getValue($layout_settings_parent, $this->configuration['layout_settings'] ?: []));
+      $settings_element = $layout->buildConfigurationForm($settings_element, $form_state);
+    }
+
     // Store the array parents for our element so that we can use it to pull out
     // the layout settings in the validate and submit functions.
     $complete_form['#variant_array_parents'] = $element['#array_parents'];
 
     return $element;
+  }
+
+  /**
+   * Render API callback: gets the layout settings elements.
+   */
+  public function layoutSettingsAjaxCallback(array $form, FormStateInterface $form_state) {
+    $variant_array_parents = $form['#variant_array_parents'];
+    return NestedArray::getValue($form, array_merge($variant_array_parents, ['layout_settings_wrapper']));
   }
 
   /**
@@ -356,7 +375,8 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
 
     // Validate layout settings.
     if ($form_state->hasValue('layout_settings')) {
-      $layout = $this->layoutManager->createInstance($form_state->getValue('layout'), $this->configuration['layout_settings']);
+      $layout_settings = $this->configuration['layout'] == $form_state->getValue('layout') ? $this->configuration['layout_settings'] : [];
+      $layout = $this->layoutManager->createInstance($form_state->getValue('layout'), $layout_settings);
       list ($layout_settings_form, $layout_settings_form_state) = $this->getLayoutSettingsForm($form, $form_state);
       $layout->validateConfigurationForm($layout_settings_form, $layout_settings_form_state);
 
@@ -378,7 +398,8 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
 
     // Submit layout settings.
     if ($form_state->hasValue('layout_settings')) {
-      $layout = $form_state->has('layout_plugin') ? $form_state->get('layout_plugin') : $this->getLayout();
+      $layout_settings = $this->configuration['layout'] == $form_state->getValue('layout') ? $this->configuration['layout_settings'] : [];
+      $layout = $form_state->has('layout_plugin') ? $form_state->get('layout_plugin') : $this->layoutManager->createInstance($form_state->getValue('layout'), $layout_settings);
       list ($layout_settings_form, $layout_settings_form_state) = $this->getLayoutSettingsForm($form, $form_state);
       $layout->submitConfigurationForm($layout_settings_form, $layout_settings_form_state);
       $this->configuration['layout_settings'] = $layout->getConfiguration();
@@ -426,6 +447,22 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
     if (empty($configuration['uuid'])) {
       $configuration['uuid'] = $this->uuidGenerator()->generate();
     }
+
+    // Make sure blocks are mapped to valid regions, and if not, map them to the
+    // first available region. This is a work-around the fact that we're not
+    // totally in control of the block placement UI from page_manager.
+    // @todo Replace after https://www.drupal.org/node/2550879
+    if (!empty($configuration['layout']) && !empty($configuration['blocks'])) {
+      $layout_definition = $this->layoutManager->getDefinition($configuration['layout']);
+      $valid_regions = $layout_definition['regions'];
+      $first_region = array_keys($valid_regions)[0];
+      foreach ($configuration['blocks'] as &$block) {
+        if (!isset($valid_regions[$block['region']])) {
+          $block['region'] = $first_region;
+        }
+      }
+    }
+
     return parent::setConfiguration($configuration);
   }
 
