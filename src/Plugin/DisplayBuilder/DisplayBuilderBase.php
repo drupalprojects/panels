@@ -8,8 +8,6 @@
 namespace Drupal\panels\Plugin\DisplayBuilder;
 
 use Drupal\Component\Plugin\PluginBase;
-use Drupal\Core\Plugin\Context\ContextHandlerInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\layout_plugin\Plugin\Layout\LayoutInterface;
 use Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant;
 
