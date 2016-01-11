@@ -2,6 +2,9 @@ services:
   plugin.manager.panels.display_builder:
     class: Drupal\panels\Plugin\DisplayBuilder\DisplayBuilderManager
     arguments: ['@container.namespaces', '@cache.discovery', '@module_handler']
+  panels.display_manager:
+    class: Drupal\panels\PanelsDisplayManager
+    arguments: ['@plugin.manager.display_variant', '@config.typed']
   panels.storage_manager:
     class: Drupal\panels\Storage\PanelsStorageManager
     arguments: ['@current_user']

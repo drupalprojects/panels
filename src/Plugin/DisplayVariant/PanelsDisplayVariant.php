@@ -21,6 +21,7 @@ use Drupal\ctools\Plugin\DisplayVariant\BlockDisplayVariant;
 use Drupal\layout_plugin\Layout;
 use Drupal\layout_plugin\Plugin\Layout\LayoutInterface;
 use Drupal\layout_plugin\Plugin\Layout\LayoutPluginManagerInterface;
+use Drupal\panels\Plugin\DisplayBuilder\DisplayBuilderInterface;
 use Drupal\panels\Plugin\DisplayBuilder\DisplayBuilderManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -125,6 +126,33 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
       $this->builder = $this->builderManager->createInstance($this->configuration['builder'], []);
     }
     return $this->builder;
+  }
+
+  /**
+   * Assigns a builder to this display variant.
+   *
+   * @param string|\Drupal\panels\Plugin\DisplayBuilder\DisplayBuilderInterface $builder
+   *   The builder object or plugin id.
+   *
+   * @return $this
+   *
+   * @throws \Exception
+   *   If $build isn't a string or DisplayBuilderInterface object.
+   */
+  public function setBuilder($builder) {
+    if ($builder instanceof DisplayBuilderInterface) {
+      $this->builder = $builder;
+      $this->configuration['builder'] = $builder->getPluginId();
+    }
+    elseif (is_string($builder)) {
+      $this->builder = NULL;
+      $this->configuration['builder'] = $builder;
+    }
+    else {
+      throw new \Exception("Builder must be a string or DisplayBuilderInterface object");
+    }
+
+    return $this;
   }
 
   /**
