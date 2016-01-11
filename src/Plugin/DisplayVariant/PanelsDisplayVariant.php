@@ -11,7 +11,6 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Block\BlockManager;
 use Drupal\Core\Condition\ConditionManager;
-use Drupal\Core\Condition\ConditionPluginCollection;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
@@ -34,20 +33,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class PanelsDisplayVariant extends BlockDisplayVariant {
-
-  /**
-   * @var \Drupal\Core\Condition\ConditionManager
-   *
-   * @todo Remove when fixed in CTools: https://www.drupal.org/node/2642786
-   */
-  protected $conditionManager;
-
-  /**
-   * @var \Drupal\Core\Block\BlockManager
-   *
-   * @todo Remove when fixed in CTools: https://www.drupal.org/node/2642786
-   */
-  protected $blockManager;
 
   /**
    * The display builder plugin manager.
@@ -104,16 +89,10 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
    *   The layout plugin manager.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, ContextHandlerInterface $context_handler, AccountInterface $account, UuidInterface $uuid_generator, Token $token, BlockManager $block_manager, ConditionManager $condition_manager, DisplayBuilderManagerInterface $builder_manager, LayoutPluginManagerInterface $layout_manager) {
-    // Inject dependencies as early as possible, so they can be used in
-    // configuration.
-    // @todo Remove when fixed in CTools: https://www.drupal.org/node/2642786
-    $this->uuidGenerator = $uuid_generator;
-    $this->blockManager = $block_manager;
-    $this->conditionManager = $condition_manager;
     $this->builderManager = $builder_manager;
     $this->layoutManager = $layout_manager;
 
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $context_handler, $account, $uuid_generator, $token);
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $context_handler, $account, $uuid_generator, $token, $block_manager, $condition_manager);
   }
 
   /**
@@ -500,30 +479,6 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
       }
     }
     return $data;
-  }
-
-  /**
-   * {@inheritdoc}
-   *
-   * @todo Remove when fixed in CTools: https://www.drupal.org/node/2642786
-   */
-  public function getSelectionConditions() {
-    if (!$this->selectionConditionCollection) {
-      $this->selectionConditionCollection = new ConditionPluginCollection($this->conditionManager, $this->getSelectionConfiguration());
-    }
-    return $this->selectionConditionCollection;
-  }
-
-  /**
-   * {@inheritdoc}
-   *
-   * @todo Remove when fixed in CTools: https://www.drupal.org/node/2642786
-   */
-  protected function getBlockCollection() {
-    if (!$this->blockPluginCollection) {
-      $this->blockPluginCollection = new BlockPluginCollection($this->blockManager, $this->getBlockConfig());
-    }
-    return $this->blockPluginCollection;
   }
 
 }
