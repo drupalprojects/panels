@@ -15,7 +15,7 @@ use Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant;
  *
  * This service allows Panels displays to be loaded from and saved to their
  * underlying storage (ie. config entity, field, etc) without needing to know
- * the details of the storage service, only its storage type and id.
+ * the details of the storage plugin, only its storage type and id.
  *
  * It also provides a way to check if a user has permission to create, update,
  * read or delete items from the underlying storage.
@@ -28,22 +28,12 @@ use Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant;
 interface PanelsStorageManagerInterface {
 
   /**
-   * Registers a storage service with the manager.
-   *
-   * @param \Drupal\panels\Storage\PanelsStorageInterface $storage
-   *   The storage service.
-   * @param string $storage_type
-   *   The storage type to use for this storage service.
-   */
-  public function addStorage(PanelsStorageInterface $storage, $storage_type);
-
-  /**
    * Loads a Panels display.
    *
    * @param string $storage_type
-   *   The storage type used by the storage service.
+   *   The storage type used by the storage plugin.
    * @param string $id
-   *   The id within the storage service for the requested Panels display.
+   *   The id within the storage plugin for the requested Panels display.
    *
    * @return \Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant|NULL
    *   The Panels display if one exists with this id; NULL otherwise.
@@ -56,12 +46,12 @@ interface PanelsStorageManagerInterface {
    * @param \Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant $panels_display
    *   The Panels display to save. $panels_display->getStorageType() and
    *   $panels_display->getStorageId() must return the storage type and id as
-   *   known to the storage service.
+   *   known to the storage plugin.
    *
    * @throws \Exception
    *   If $panels->getStorageType() or $panels->getStorageId() aren't set, the
-   *   storage service can't be found, or there is no Panels display found in
-   *   the storage service with the given id.
+   *   storage plugin can't be found, or there is no Panels display found in
+   *   the storage plugin with the given id.
    */
   public function save(PanelsDisplayVariant $panels_display);
 
@@ -69,9 +59,9 @@ interface PanelsStorageManagerInterface {
    * Checks if the user has access to underlying storage for a Panels display.
    *
    * @param string $storage_type
-   *   The storage type used by the storage service.
+   *   The storage type used by the storage plugin.
    * @param string $id
-   *   The id within the storage service for the requested Panels display.
+   *   The id within the storage plugin for the requested Panels display.
    * @param string $op
    *   The operation to perform (ie. create, read, update, delete).
    * @param \Drupal\Core\Session\AccountInterface|NULL $account

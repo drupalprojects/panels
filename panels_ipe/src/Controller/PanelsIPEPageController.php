@@ -90,9 +90,9 @@ class PanelsIPEPageController extends ControllerBase {
    * based on what's in TempStore for this user.
    *
    * @param string $panels_storage_type
-   *   The Panels storage service which holds the Panels display.
+   *   The Panels storage plugin which holds the Panels display.
    * @param string $panels_storage_id
-   *   The id within the Panels storage service for this Panels display.
+   *   The id within the Panels storage plugin for this Panels display.
    *
    * @return \Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant|NULL
    */
@@ -170,9 +170,9 @@ class PanelsIPEPageController extends ControllerBase {
    * Gets a list of available Layouts, without wrapping HTML.
    *
    * @param string $panels_storage_type
-   *   The id of the storage service.
+   *   The id of the storage plugin.
    * @param string $panels_storage_id
-   *   The id within the storage service for the requested Panels display.
+   *   The id within the storage plugin for the requested Panels display.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    */
@@ -203,9 +203,9 @@ class PanelsIPEPageController extends ControllerBase {
    * Gets a layout configuration form for the requested layout.
    *
    * @param string $panels_storage_type
-   *   The id of the storage service.
+   *   The id of the storage plugin.
    * @param string $panels_storage_id
-   *   The id within the storage service for the requested Panels display.
+   *   The id within the storage plugin for the requested Panels display.
    * @param string $layout_id
    *   The machine name of the requested layout.
    *
@@ -267,9 +267,9 @@ class PanelsIPEPageController extends ControllerBase {
    * Updates (PUT) an existing Layout in this Variant.
    *
    * @param string $panels_storage_type
-   *   The id of the storage service.
+   *   The id of the storage plugin.
    * @param string $panels_storage_id
-   *   The id within the storage service for the requested Panels display.
+   *   The id within the storage plugin for the requested Panels display.
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The current request.
    *
@@ -292,9 +292,9 @@ class PanelsIPEPageController extends ControllerBase {
    * Creates (POST) a new Layout for this Variant.
    *
    * @param string $panels_storage_type
-   *   The id of the storage service.
+   *   The id of the storage plugin.
    * @param string $panels_storage_id
-   *   The id within the storage service for the requested Panels display.
+   *   The id within the storage plugin for the requested Panels display.
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The current request.
    *
@@ -309,9 +309,9 @@ class PanelsIPEPageController extends ControllerBase {
    * Gets a list of Block Plugins from the server.
    *
    * @param string $panels_storage_type
-   *   The id of the storage service.
+   *   The id of the storage plugin.
    * @param string $panels_storage_id
-   *   The id within the storage service for the requested Panels display.
+   *   The id within the storage plugin for the requested Panels display.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    */
@@ -345,9 +345,9 @@ class PanelsIPEPageController extends ControllerBase {
    * Drupal AJAX compatible route for rendering a given Block Plugin's form.
    *
    * @param string $panels_storage_type
-   *   The id of the storage service.
+   *   The id of the storage plugin.
    * @param string $panels_storage_id
-   *   The id within the storage service for the requested Panels display.
+   *   The id within the storage plugin for the requested Panels display.
    * @param string $plugin_id
    *   The requested Block Plugin ID.
    * @param string $block_uuid

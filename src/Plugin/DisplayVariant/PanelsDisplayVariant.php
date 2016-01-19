@@ -203,9 +203,9 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
    * Configures how this Panel is being stored.
    *
    * @param string $type
-   *   The storage type used by the storage service.
+   *   The storage type used by the storage plugin.
    * @param string $id
-   *   The id within the storage service for this Panels display.
+   *   The id within the storage plugin for this Panels display.
    *
    * @return $this
    */
@@ -216,7 +216,7 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
   }
 
   /**
-   * Gets the id of the storage service which can save this.
+   * Gets the id of the storage plugin which can save this.
    *
    * @return string|NULL
    */
@@ -225,7 +225,7 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
   }
 
   /**
-   * Gets id within the storage service for this Panels display.
+   * Gets id within the storage plugin for this Panels display.
    *
    * @return string|NULL
    */
