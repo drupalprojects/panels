@@ -51,6 +51,7 @@
 }
 
 .ipe-icon.ipe-icon-loading:before {
+  display: inline-block;
   content: "\e907";
   animation: ipe-spin 1s infinite linear;
 }
