@@ -31,4 +31,5 @@ panels_ipe:
     - core/backbone
     - core/drupal
     - core/drupal.form
+    - core/drupal.ajax
     - core/drupalSettings
