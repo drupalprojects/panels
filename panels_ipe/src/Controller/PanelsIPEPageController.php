@@ -184,12 +184,14 @@ class PanelsIPEPageController extends ControllerBase {
 
     // Get a list of all available layouts.
     $layouts = $this->layoutPluginManager->getDefinitions();
+    $base_path = base_path();
     $data = [];
     foreach ($layouts as $id => $layout) {
+      $icon = !empty($layout['icon']) ? $layout['icon'] : drupal_get_path('module', 'panels') . '/images/no-layout-preview.png';
       $data[] = [
         'id' => $id,
         'label' => $layout['label'],
-        'icon' => !empty($layout['icon']) ? $layout['icon'] : drupal_get_path('module', 'panels') . '/images/no-layout-preview.png',
+        'icon' => $base_path . $icon,
         'current' => $id == $current_layout_id,
         'category' => $layout['category']
       ];
