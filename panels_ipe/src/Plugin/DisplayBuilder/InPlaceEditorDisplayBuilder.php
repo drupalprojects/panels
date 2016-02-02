@@ -14,6 +14,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\layout_plugin\Plugin\Layout\LayoutInterface;
 use Drupal\panels\Plugin\DisplayBuilder\StandardDisplayBuilder;
 use Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant;
+use Drupal\panels\Storage\PanelsStorageManagerInterface;
 use Drupal\user\SharedTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -34,6 +35,11 @@ class InPlaceEditorDisplayBuilder extends StandardDisplayBuilder {
   protected $tempStore;
 
   /**
+   * @var \Drupal\panels\Storage\PanelsStorageManagerInterface
+   */
+  protected $panelsStorage;
+
+  /**
    * Constructs a new InPlaceEditorDisplayBuilder.
    *
    * @param array $configuration
@@ -48,10 +54,13 @@ class InPlaceEditorDisplayBuilder extends StandardDisplayBuilder {
    *   The current user.
    * @param \Drupal\user\SharedTempStoreFactory $temp_store_factory
    *   The factory for the temp store object.
+   * @param \Drupal\panels\Storage\PanelsStorageManagerInterface
+   *   The Panels storage manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ContextHandlerInterface $context_handler, AccountInterface $account, SharedTempStoreFactory $temp_store_factory) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ContextHandlerInterface $context_handler, AccountInterface $account, SharedTempStoreFactory $temp_store_factory, PanelsStorageManagerInterface $panels_storage) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $context_handler, $account);
     $this->tempStore = $temp_store_factory->get('panels_ipe');
+    $this->panelsStorage = $panels_storage;
   }
 
   /**
@@ -64,7 +73,8 @@ class InPlaceEditorDisplayBuilder extends StandardDisplayBuilder {
       $plugin_definition,
       $container->get('context.handler'),
       $container->get('current_user'),
-      $container->get('user.shared_tempstore')
+      $container->get('user.shared_tempstore'),
+      $container->get('panels.storage_manager')
     );
   }
 
@@ -139,7 +149,7 @@ class InPlaceEditorDisplayBuilder extends StandardDisplayBuilder {
    */
   public function build(PanelsDisplayVariant $panels_display) {
     // Check to see if the current user has permissions to use the IPE.
-    $has_permission = $this->account->hasPermission('access panels in-place editing');
+    $has_permission = $this->account->hasPermission('access panels in-place editing') && $this->panelsStorage->access($panels_display->getStorageType(), $panels_display->getStorageId(), 'write', $this->account)->isAllowed();
 
     // Attach the Panels In-place editor library based on permissions.
     if ($has_permission) {
