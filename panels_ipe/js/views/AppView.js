@@ -53,8 +53,9 @@
         tabViews: options.tabContentViews
       });
 
-      // Display the cancel tab based on whether or not we have unsaved changes.
+      // Display the cancel and save tab based on whether or not we have unsaved changes.
       this.model.get('cancelTab').set('hidden', !this.model.get('unsaved'));
+      this.model.get('saveTab').set('hidden', !this.model.get('unsaved'));
 
       // Listen to important global events throughout the app.
       this.listenTo(this.model, 'changeLayout', this.changeLayout);
@@ -167,19 +168,14 @@
       // Change the LayoutView's layout.
       this.layoutView.changeLayout(layout);
 
-      // Mark all tabs as inactive.
-      this.tabsView.collection.each(function (tab) {
-        tab.set('active', false);
-      });
-
       // Re-render the app.
       this.render();
 
-      // Close the TabsView.
-      this.tabsView.closeTabContent();
-
       // Indicate that there are unsaved changes in the app.
       this.model.set('unsaved', true);
+
+      // Switch back to the edit tab.
+      this.tabsView.switchTab('edit');
     },
 
     /**
@@ -288,6 +284,7 @@
     unsavedChange: function() {
       // Show/hide the cancel tab based on our saved status.
       this.model.get('cancelTab').set('hidden', !this.model.get('unsaved'));
+      this.model.get('saveTab').set('hidden', !this.model.get('unsaved'));
 
       // Re-render ourselves.
       this.render();
