@@ -24,7 +24,7 @@ class PanelsTest extends WebTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['block', 'page_manager', 'panels_test', 'layout_plugin_example'];
+  public static $modules = ['block', 'page_manager', 'page_manager_ui', 'panels_test', 'layout_plugin_example'];
 
   /**
    * {@inheritdoc}
