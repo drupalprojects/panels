@@ -11,6 +11,7 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Block\BlockManager;
 use Drupal\Core\Condition\ConditionManager;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
@@ -34,6 +35,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class PanelsDisplayVariant extends BlockDisplayVariant {
+
+  /**
+   * The module handler.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected $moduleHandler;
 
   /**
    * The display builder plugin manager.
@@ -84,12 +92,15 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
    *   The block manager.
    * @param \Drupal\Core\Condition\ConditionManager $condition_manager
    *   The condition manager.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   The module handler.
    * @param \Drupal\panels\Plugin\DisplayBuilder\DisplayBuilderManagerInterface $builder_manager
    *   The display builder plugin manager.
    * @param \Drupal\layout_plugin\Plugin\Layout\LayoutPluginManagerInterface $layout_manager
    *   The layout plugin manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ContextHandlerInterface $context_handler, AccountInterface $account, UuidInterface $uuid_generator, Token $token, BlockManager $block_manager, ConditionManager $condition_manager, DisplayBuilderManagerInterface $builder_manager, LayoutPluginManagerInterface $layout_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ContextHandlerInterface $context_handler, AccountInterface $account, UuidInterface $uuid_generator, Token $token, BlockManager $block_manager, ConditionManager $condition_manager, ModuleHandlerInterface $module_handler, DisplayBuilderManagerInterface $builder_manager, LayoutPluginManagerInterface $layout_manager) {
+    $this->moduleHandler = $module_handler;
     $this->builderManager = $builder_manager;
     $this->layoutManager = $layout_manager;
 
@@ -110,6 +121,7 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
       $container->get('token'),
       $container->get('plugin.manager.block'),
       $container->get('plugin.manager.condition'),
+      $container->get('module_handler'),
       $container->get('plugin.manager.panels.display_builder'),
       $container->get('plugin.manager.layout_plugin')
     );
@@ -246,6 +258,10 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
   public function build() {
     $build = $this->getBuilder()->build($this);
     $build['#title'] = $this->renderPageTitle($this->configuration['page_title']);
+
+    // Allow other module to alter the built panel.
+    $this->moduleHandler->alter('panels_build', $build, $this);
+
     return $build;
   }
 

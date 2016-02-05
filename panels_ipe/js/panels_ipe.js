@@ -121,12 +121,11 @@
     };
 
     // Create an AppView instance.
-    var app_view = new Drupal.panels_ipe.AppView({
+    Drupal.panels_ipe.app_view = new Drupal.panels_ipe.AppView({
       model: Drupal.panels_ipe.app,
       el: '#panels-ipe-tray',
       tabContentViews: tab_views
     });
-    $('body').append(app_view.render().$el);
 
     // Assemble the initial region and block collections.
     // This logic is a little messy, as traditionally we would never initialize
@@ -160,10 +159,16 @@
       model: layout,
       el: '#panels-ipe-content'
     });
-    layout_view.render();
 
     Drupal.panels_ipe.app.set({layout: layout});
-    app_view.layoutView = layout_view;
+    Drupal.panels_ipe.app_view.layoutView = layout_view;
+
+    // Trigger a global Backbone event informing other Views that we're done
+    // initializing and ready to render.
+    Backbone.trigger('PanelsIPEInitialized');
+
+    // Render our AppView.
+    $('body').append(Drupal.panels_ipe.app_view.render().$el);
   };
 
   Drupal.panels_ipe.setFlipperHeight = function ($form) {

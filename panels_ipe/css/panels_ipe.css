@@ -223,13 +223,6 @@
   height: 112px;
 }
 
-/* Hide the tray for the edit and save tabs. */
-[data-tab-content-id="edit"].active,
-[data-tab-content-id="save"].active,
-[data-tab-content-id="cancel"].active {
-  display: none;
-}
-
 /* Style the block/region headers. */
 div.ipe-actions {
   display: flex;

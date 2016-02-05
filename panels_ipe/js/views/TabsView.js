@@ -87,10 +87,10 @@
 
         this.$('.ipe-tabs').append(this.template_tab(tab.toJSON()));
 
-        // Render the tab content.
-        this.$('.ipe-tabs-content').append(this.template_content(tab.toJSON()));
         // Check to see if this tab has content.
         if (tab.get('active') && this.tabViews[id]) {
+          // Render the tab content.
+          this.$('.ipe-tabs-content').append(this.template_content(tab.toJSON()));
           this.tabViews[id].setElement('[data-tab-content-id="' + id + '"]').render();
         }
       }, this);

@@ -258,6 +258,10 @@ class PanelsIPEPageController extends ControllerBase {
       $panels_display->removeBlock($uuid);
     }
 
+    // Allow other modules to modify the display before saving based on the
+    // contents of our $layout_model.
+    $this->moduleHandler()->invokeAll('panels_ipe_panels_display_presave', [$panels_display, $layout_model]);
+
     // Save the variant and remove temp storage.
     $this->savePanelsDisplay($panels_display, FALSE);
 
