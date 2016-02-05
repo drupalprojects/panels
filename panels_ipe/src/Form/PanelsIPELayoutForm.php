@@ -19,10 +19,8 @@ use Drupal\user\SharedTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides a form for adding a block plugin temporarily using AJAX.
+ * Provides a form for configuring a layout for use with the IPE.
  *
- * Unlike most forms, this never saves a block plugin instance or persists it
- * from state to state. This is only for the initial addition to the Layout.
  */
 class PanelsIPELayoutForm extends FormBase {
 
@@ -163,6 +161,11 @@ class PanelsIPELayoutForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    // Return early if there are any errors.
+    if ($form_state->hasAnyErrors()) {
+      return $form;
+    }
+
     $panels_display = $this->panelsDisplay;
 
     // Submit the layout form.

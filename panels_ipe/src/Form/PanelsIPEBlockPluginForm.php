@@ -232,6 +232,11 @@ class PanelsIPEBlockPluginForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    // Return early if there are any errors.
+    if ($form_state->hasAnyErrors()) {
+      return $form;
+    }
+
     $block_instance = $this->getBlockInstance($form_state);
 
     // Submit the block configuration form.
@@ -294,6 +299,11 @@ class PanelsIPEBlockPluginForm extends FormBase {
    *   The form structure.
    */
   public function submitPreview(array &$form, FormStateInterface $form_state) {
+    // Return early if there are any errors.
+    if ($form_state->hasAnyErrors()) {
+      return $form;
+    }
+
     // Get the Block instance.
     $block_instance = $this->getBlockInstance($form_state);
 
@@ -307,6 +317,13 @@ class PanelsIPEBlockPluginForm extends FormBase {
     // Add the preview to the backside of the card and inform JS that we need to
     // be flipped.
     $form['flipper']['back']['preview'] = $build;
+
+    // Add a cleafix element to the end of the preview. This prevents overlaps
+    // with nested float elements.
+    $build['clearfix'] = [
+      '#markup' => '<div class="clearfix"></div>'
+    ];
+
     $form['#attached']['drupalSettings']['panels_ipe']['toggle_preview'] = TRUE;
 
     return $form;

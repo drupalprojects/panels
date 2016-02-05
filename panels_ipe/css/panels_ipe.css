@@ -42,8 +42,12 @@
   content: "\e904";
 }
 
-.ipe-icon.ipe-icon-manage_content:before {
+.ipe-icon.ipe-icon-place_content:before {
   content: "\e905";
+}
+
+.ipe-icon.ipe-icon-create_content:before {
+  content: "\e90b";
 }
 
 .ipe-icon.ipe-icon-save:before {
@@ -359,6 +363,15 @@ div.ipe-actions-block {
   cursor: pointer;
 }
 
+.ipe-category h4, .ipe-category h5 {
+  margin: 0;
+}
+
+.ipe-category p {
+  text-transform: none;
+  font-weight: normal;
+}
+
 .ipe-category:hover,.ipe-category.active {
   border-color: rgb(67, 125, 33);
   color: inherit;
@@ -439,7 +452,6 @@ div.ipe-actions-block {
 /* Theme the category view. */
 
 .ipe-category-picker-top h4 {
-  font-size: 16px;
   text-transform: uppercase;
   border-bottom: 1px solid darkgray;
   padding: 5px;
@@ -448,7 +460,7 @@ div.ipe-actions-block {
 
 /* Theme the block plugin and layout forms. */
 
-.ipe-block-plugin-form,.ipe-layout-form  {
+.ipe-block-plugin-form,.ipe-layout-form,.ipe-block-type-form  {
   text-align: left;
   margin: 0 auto;
   display: inline-block;
@@ -488,7 +500,22 @@ div.ipe-actions-block {
 
 .ipe-form {
   max-width: 650px;
-  padding-right: 10px;
+  padding: 5px;
+  overflow-y: scroll;
+}
+
+/* Vertical-tabs specific styling. */
+.ipe-form .vertical-tabs__menu {
+  margin: 0;
+}
+
+.ipe-form .vertical-tabs__menu-item > a {
+  margin: inherit;
+  display: block !important;
+}
+
+.ipe-form .vertical-tabs__menu-item-summary {
+  display: block !important;
 }
 
 /* Styles required to do the card-flip affect. */
@@ -511,6 +538,8 @@ div.ipe-actions-block {
 /* hide back of pane during swap */
 .ipe-block-plugin-form .front, .ipe-block-plugin-form .back {
   backface-visibility: hidden;
+  background: white;
+  overflow: hidden;
 }
 
 /* front pane, placed above back */

@@ -31,6 +31,23 @@ panels_ipe.block_plugin_existing.form:
     _panels_storage_access: read
     _permission: 'access panels in-place editing'
 
+panels_ipe.block_content_types:
+  path: '/admin/panels_ipe/variant/{panels_storage_type}/{panels_storage_id}/block_content/types'
+  defaults:
+    _controller: '\Drupal\panels_ipe\Controller\PanelsIPEPageController::getBlockContentTypes'
+  requirements:
+    _panels_storage_access: read
+    _permission: 'access panels in-place editing'
+    _method: 'GET'
+
+panels_ipe.block_content.form:
+  path: '/admin/panels_ipe/variant/{panels_storage_type}/{panels_storage_id}/block_content/{type}/form'
+  defaults:
+    _controller: '\Drupal\panels_ipe\Controller\PanelsIPEPageController::getBlockContentForm'
+  requirements:
+    _panels_storage_access: read
+    _permission: 'access panels in-place editing'
+
 panels_ipe.layouts:
   path: '/admin/panels_ipe/variant/{panels_storage_type}/{panels_storage_id}/layouts'
   defaults:

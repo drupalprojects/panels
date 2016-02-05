@@ -12,6 +12,7 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\AppendCommand;
 use Drupal\Core\Block\BlockManagerInterface;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Form\FormState;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\layout_plugin\Plugin\Layout\LayoutPluginManagerInterface;
@@ -220,8 +221,6 @@ class PanelsIPEPageController extends ControllerBase {
     $form = $this->formBuilder()->getForm('Drupal\panels_ipe\Form\PanelsIPELayoutForm', $layout_id, $panels_display);
 
     // Return the rendered form as a proper Drupal AJAX response.
-    // This is needed as forms often have custom JS and CSS that need added,
-    // and it isn't worth replicating things that work in Drupal with Backbone.
     $response = new AjaxResponse();
     $command = new AppendCommand('.ipe-layout-form', $form);
     $response->addCommand($command);
@@ -372,10 +371,69 @@ class PanelsIPEPageController extends ControllerBase {
     $form = $this->formBuilder()->getForm('Drupal\panels_ipe\Form\PanelsIPEBlockPluginForm', $plugin_id, $panels_display, $block_uuid);
 
     // Return the rendered form as a proper Drupal AJAX response.
-    // This is needed as forms often have custom JS and CSS that need added,
-    // and it isn't worth replicating things that work in Drupal with Backbone.
     $response = new AjaxResponse();
     $command = new AppendCommand('.ipe-block-plugin-form', $form);
+    $response->addCommand($command);
+    return $response;
+  }
+
+  /**
+   * Gets a list of Block Content Types from the server.
+   *
+   * @param string $panels_storage_type
+   *   The id of the storage plugin.
+   * @param string $panels_storage_id
+   *   The id within the storage plugin for the requested Panels display.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   */
+  public function getBlockContentTypes($panels_storage_type, $panels_storage_id) {
+    // Assemble our relevant data.
+    $types = $this->entityTypeManager()->getStorage('block_content_type')->loadMultiple();
+    $data = [];
+
+    /** @var \Drupal\block_content\BlockContentTypeInterface $definition */
+    foreach ($types as $id => $definition) {
+      $data[] = [
+        'id' => $definition->id(),
+        'revision' => $definition->shouldCreateNewRevision(),
+        'label' => $definition->label(),
+        'description' => $definition->getDescription(),
+      ];
+    }
+
+    // Return a structured JSON response for our Backbone App.
+    return new JsonResponse($data);
+  }
+
+  /**
+   * Drupal AJAX compatible route for rendering a Block Content Type's form.
+   *
+   * @param string $panels_storage_type
+   *   The id of the storage plugin.
+   * @param string $panels_storage_id
+   *   The id within the storage plugin for the requested Panels display.
+   * @param string $type
+   *   The requested Block Type.
+   *  @param string $type
+   *   The Block Content UUID, if an entity already exists.
+   *
+   * @return NotFoundHttpException|Response
+   */
+  public function getBlockContentForm($panels_storage_type, $panels_storage_id, $type) {
+    $storage = $this->entityTypeManager()->getStorage('block_content');
+
+    // Create a new block of the given type.
+    $block = $storage->create([
+      'type' => $type
+    ]);
+
+    // Grab our Block Content Entity form handler.
+    $form = $this->entityFormBuilder()->getForm($block, 'panels_ipe');
+
+    // Return the rendered form as a proper Drupal AJAX response.
+    $response = new AjaxResponse();
+    $command = new AppendCommand('.ipe-block-type-form', $form);
     $response->addCommand($command);
     return $response;
   }

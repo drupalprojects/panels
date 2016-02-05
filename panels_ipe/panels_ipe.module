@@ -24,3 +24,15 @@ function panels_ipe_help($route_name, RouteMatchInterface $route_match) {
   }
 }
 
+/**
+ * Implements hook_entity_type_build().
+ *
+ * Adds a custom Form Class to Block Content entities, so we can add custom
+ * actions and potentially override normal Entity CRUD operations.
+ */
+function panels_ipe_entity_type_build(array &$entity_types) {
+  /** @var $entity_types \Drupal\Core\Entity\EntityTypeInterface[] */
+  if (isset($entity_types['block_content'])) {
+    $entity_types['block_content']->setFormClass('panels_ipe', 'Drupal\panels_ipe\Form\PanelsIPEBlockContentForm');
+  }
+}

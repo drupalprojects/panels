@@ -60,6 +60,7 @@
       this.listenTo(this.model, 'changeLayout', this.changeLayout);
       this.listenTo(this.model, 'addBlockPlugin', this.addBlockPlugin);
       this.listenTo(this.model, 'configureBlock', this.configureBlock);
+      this.listenTo(this.model, 'addContentBlock', this.addContentBlock);
 
       // Listen to tabs that don't have associated BackboneViews.
       this.listenTo(this.model.get('editTab'), 'change:active', this.clickEditTab);
@@ -254,9 +255,31 @@
      *   The Block that needs to have its form opened.
      */
     configureBlock: function (block) {
-      this.tabsView.tabViews['manage_content'].activeCategory = 'On Screen';
-      this.tabsView.tabViews['manage_content'].autoClick = '[data-existing-block-id=' + block.get('uuid') + ']';
-      this.tabsView.switchTab('manage_content');
+      this.tabsView.tabViews['place_content'].activeCategory = 'On Screen';
+      this.tabsView.tabViews['place_content'].autoClick = '[data-existing-block-id=' + block.get('uuid') + ']';
+      this.tabsView.switchTab('place_content');
+    },
+
+    /**
+     * Opens the Manage Content tray after adding a new Block Content entity.
+     *
+     * @param {string} uuid
+     *   The UUID of the newly added Content Block.
+     */
+    addContentBlock: function (uuid) {
+      // Deactivate the current category in our Create Content tab.
+      this.tabsView.tabViews['create_content'].activeCategory = null;
+
+      // Delete the current block plugin collection so that a new one is pulled in.
+      this.tabsView.tabViews['place_content'].collection = null;
+
+      // Auto-click the new block, which we know is in the "Custom" category.
+      // @todo When configurable categories are in, determine this from the
+      // passed-in settings.
+      this.tabsView.tabViews['place_content'].autoClick = '[data-plugin-id="block_content:' + uuid + '"]';
+      this.tabsView.tabViews['place_content'].activeCategory = 'Custom';
+
+      this.tabsView.switchTab('place_content');
     },
 
     /**

@@ -5,6 +5,7 @@ panels_ipe:
     js/panels_ipe.js: {}
     # Models.
     js/models/AppModel.js: {}
+    js/models/BlockContentTypeModel.js: {}
     js/models/BlockModel.js: {}
     js/models/BlockPluginModel.js: {}
     js/models/RegionModel.js: {}
@@ -15,6 +16,7 @@ panels_ipe:
     js/views/BlockView.js: {}
     js/views/CategoryView.js: {}
     js/views/BlockPicker.js: {}
+    js/views/BlockContentPicker.js: {}
     js/views/LayoutPicker.js: {}
     js/views/LayoutView.js: {}
     js/views/TabsView.js: {}

@@ -18,8 +18,11 @@
       // Perform initial setup of our app.
       $('body').once('panels-ipe-init').each(Drupal.panels_ipe.init, [settings]);
 
-      // If this setting is present, it means we need to add/update a new
-      // BlockModel somewhere. Inform the App that this has occurred.
+      // @todo Make every settings-related thing a generic event, or add a
+      // panels_ipe event command to Drupal.ajax.
+
+      // We need to add/update a new BlockModel somewhere. Inform the App that
+      // this has occurred.
       if (settings['panels_ipe']['updated_block']) {
         var data = settings['panels_ipe']['updated_block'];
         // Remove the setting.
@@ -30,8 +33,7 @@
         Drupal.panels_ipe.app.trigger('addBlockPlugin', block, data.region);
       }
 
-      // If this setting is present, it means we need to add/update our Layout
-      // Inform the App that this has occurred.
+      // We need to add/update our Layout Inform the App that this has occurred.
       if (settings['panels_ipe']['updated_layout']) {
         var data = settings['panels_ipe']['updated_layout'];
         // Remove the setting.
@@ -43,13 +45,35 @@
         Drupal.panels_ipe.app.trigger('changeLayout', layout);
       }
 
-      // If this setting is present, it means we need to toggle the preview.
-      // We need to do this with drupalSettings as the animation won't work
-      // if triggered by a form submit. It must occur after the form is rendered.
+      // Toggle the preview - We need to do this with drupalSettings as the
+      // animation won't work if triggered by a form submit. It must occur after
+      // the form is rendered.
       if (context.className == 'panels-ipe-block-plugin-form flip-container'
         && settings['panels_ipe']['toggle_preview']) {
-        $('.ipe-block-plugin-form').toggleClass('flipped');
+        var $form = $('.ipe-block-plugin-form');
+
+        // Flip the form.
+        $form.toggleClass('flipped');
+
+        // Calculate and set new heights, if appropriate.
+        Drupal.panels_ipe.setFlipperHeight($form);
+
+        // As images can load late on new content, recalculate the flipper
+        // height on image load.
+        $form.find('img').each(function() {
+          $(this).load(function() {
+            Drupal.panels_ipe.setFlipperHeight($form);
+          });
+        });
+
         delete settings['panels_ipe']['toggle_preview'];
+      }
+
+      // A new Block Content entity has been created. Trigger an app-level event
+      // to switch tabs and open the placement form.
+      if (settings['panels_ipe']['new_block_content']) {
+        Drupal.panels_ipe.app.trigger('addContentBlock', settings['panels_ipe']['new_block_content']);
+        delete settings['panels_ipe']['new_block_content'];
       }
     }
   };
@@ -69,7 +93,8 @@
     // Set up our initial tabs.
     var tab_collection = new Drupal.panels_ipe.TabCollection();
     tab_collection.add({title: 'Change Layout', id: 'change_layout'});
-    tab_collection.add({title: 'Manage Content', id: 'manage_content'});
+    tab_collection.add({title: 'Create Content', id: 'create_content'});
+    tab_collection.add({title: 'Place Content', id: 'place_content'});
 
     // The edit/save/cancel tabs are special, and are tracked by our app.
     var edit_tab = new Drupal.panels_ipe.TabModel({title: 'Edit', id: 'edit'});
@@ -91,7 +116,8 @@
     // Set up our initial tab views.
     var tab_views = {
       change_layout: new Drupal.panels_ipe.LayoutPicker(),
-      manage_content: new Drupal.panels_ipe.BlockPicker()
+      create_content: new Drupal.panels_ipe.BlockContentPicker(),
+      place_content: new Drupal.panels_ipe.BlockPicker()
     };
 
     // Create an AppView instance.
@@ -138,6 +164,25 @@
 
     Drupal.panels_ipe.app.set({layout: layout});
     app_view.layoutView = layout_view;
+  };
+
+  Drupal.panels_ipe.setFlipperHeight = function ($form) {
+    // The preview could be larger than the form.
+    // Manually set the height to be sure that things fit.
+    var $new_side, $current_side;
+    if ($form.hasClass('flipped')) {
+      $new_side = $form.find('.flipper > .back');
+      $current_side = $form.find('.flipper > .front');
+    }
+    else {
+      $new_side = $form.find('.flipper > .front');
+      $current_side = $form.find('.flipper > .back');
+    }
+
+    // If the new side is larger than the current side, change the height.
+    if ($new_side.outerHeight() > $current_side.outerHeight()) {
+      $current_side.animate({height: $new_side.outerHeight() + 10}, 600);
+    }
   };
 
   /**

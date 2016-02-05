@@ -178,7 +178,7 @@
     getFormInfo: function(e) {},
 
     /**
-     * Displays a Block Configuration form when adding a Block Plugin.
+     * Displays a Configuration form in our top region.
      *
      * @param {Object} e
      *   The event object.
@@ -202,12 +202,32 @@
         // Remove our throbber on load.
         ajax.options.complete = function () {
           self.$('.ipe-category-picker-top .ipe-icon-loading').remove();
+
+          self.setFormMaxHeight();
+
           self.$('.ipe-category-picker-top *').hide().fadeIn();
         };
 
         // Make the Drupal AJAX request.
         ajax.execute();
       });
+    },
+
+    /**
+     * Calculates and sets maximum height of our form based on known floating
+     * and fixed elements.
+     */
+    setFormMaxHeight: function() {
+      // Calculate the combined height of (known) floating elements.
+      var used_height = $('#toolbar-item-administration-tray:visible').outerHeight() +
+      $('#toolbar-bar').outerHeight() +
+      this.$('.ipe-category-picker-bottom').outerHeight();
+
+      // 175 (px) is an arbitrary offset, just to give padding on top.
+      var max_height = $(window).height() - used_height - 175;
+
+      // Set the form's max height.
+      this.$('.ipe-form').css('max-height', max_height);
     }
 
   });
