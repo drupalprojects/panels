@@ -253,6 +253,28 @@ class PanelsDisplayVariant extends BlockDisplayVariant {
   }
 
   /**
+   * Returns the configured page title.
+   *
+   * @return string
+   */
+  public function getPageTitle() {
+    return $this->configuration['page_title'];
+  }
+
+  /**
+   * Sets the page title.
+   *
+   * @param string $title
+   *   The desired page title.
+   *
+   * @return $this
+   */
+  public function setPageTitle($title) {
+    $this->configuration['page_title'] = $title;
+    return $this;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function build() {
