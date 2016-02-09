@@ -8,11 +8,13 @@
 namespace Drupal\panels_ipe\Form;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
+use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
-use Drupal\Component\Plugin\ContextAwarePluginInterface;
+use Drupal\Core\Plugin\ContextAwarePluginAssignmentTrait;
+use Drupal\Core\Plugin\ContextAwarePluginInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant;
 use Drupal\user\SharedTempStoreFactory;
@@ -25,6 +27,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * from state to state. This is only for the initial addition to the Layout.
  */
 class PanelsIPEBlockPluginForm extends FormBase {
+
+  use ContextAwarePluginAssignmentTrait;
 
   /**
    * @var \Drupal\Component\Plugin\PluginManagerInterface $blockManager
@@ -166,6 +170,7 @@ class PanelsIPEBlockPluginForm extends FormBase {
 
     // Get the base configuration form for this block.
     $form['flipper']['front']['settings'] = $block_instance->buildConfigurationForm([], $form_state);
+    $form['flipper']['front']['settings']['context_mapping'] = $this->addContextAssignmentElement($block_instance, $this->panelsDisplay->getContexts());
     $form['flipper']['front']['settings']['#tree'] = TRUE;
 
     // Add the block ID, variant ID to the form as values.
@@ -229,6 +234,26 @@ class PanelsIPEBlockPluginForm extends FormBase {
   }
 
   /**
+   * Executes the block plugin's submit handlers.
+   *
+   * @param \Drupal\Core\Block\BlockPluginInterface $block_instance
+   *   The block instance.
+   * @param array $form
+   *   The full form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The full form state.
+   */
+  protected function submitBlock(BlockPluginInterface $block_instance, array $form, FormStateInterface $form_state) {
+    $block_form_state = (new FormState())->setValues($form_state->getValue('settings'));
+    $block_instance->submitConfigurationForm($form['flipper']['front']['settings'], $block_form_state);
+    if ($block_instance instanceof ContextAwarePluginInterface) {
+      $block_instance->setContextMapping($block_form_state->getValue('context_mapping'));
+    }
+    // Update the original form values.
+    $form_state->setValue('settings', $block_form_state->getValues());
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
@@ -240,10 +265,7 @@ class PanelsIPEBlockPluginForm extends FormBase {
     $block_instance = $this->getBlockInstance($form_state);
 
     // Submit the block configuration form.
-    $block_form_state = (new FormState())->setValues($form_state->getValue('settings'));
-    $block_instance->submitConfigurationForm($form, $block_form_state);
-    // Update the original form values.
-    $form_state->setValue('settings', $block_form_state->getValues());
+    $this->submitBlock($block_instance, $form, $form_state);
 
     // If a temporary configuration for this variant exists, use it.
     $temp_store_key = $this->panelsDisplay->id();
@@ -308,8 +330,7 @@ class PanelsIPEBlockPluginForm extends FormBase {
     $block_instance = $this->getBlockInstance($form_state);
 
     // Submit the block configuration form.
-    $block_form_state = (new FormState())->setValues($form_state->getValue('settings'));
-    $block_instance->submitConfigurationForm($form, $block_form_state);
+    $this->submitBlock($block_instance, $form, $form_state);
 
     // Gather a render array for the block.
     $build = $this->buildBlockInstance($block_instance);
@@ -335,7 +356,7 @@ class PanelsIPEBlockPluginForm extends FormBase {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current state of the form.
    *
-   * @return \Drupal\Core\Block\BlockBase
+   * @return \Drupal\Core\Block\BlockPluginInterface
    *   The Block Plugin instance.
    */
   protected function getBlockInstance(FormStateInterface $form_state) {
@@ -356,11 +377,6 @@ class PanelsIPEBlockPluginForm extends FormBase {
       $block_instance = $this->blockManager->createInstance($form_state->getValue('plugin_id'));
     }
 
-    // Add context to the block.
-    if ($block_instance instanceof ContextAwarePluginInterface) {
-      $this->contextHandler->applyContextMapping($block_instance, $this->panelsDisplay->getContexts());
-    }
-
     return $block_instance;
   }
 
@@ -376,6 +392,11 @@ class PanelsIPEBlockPluginForm extends FormBase {
   protected function buildBlockInstance($block_instance) {
     // Get the new block configuration.
     $configuration = $block_instance->getConfiguration();
+
+    // Add context to the block.
+    if ($block_instance instanceof ContextAwarePluginInterface) {
+      $this->contextHandler->applyContextMapping($block_instance, $this->panelsDisplay->getContexts());
+    }
 
     // Compile the render array.
     $build = [
