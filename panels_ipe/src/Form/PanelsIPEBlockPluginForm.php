@@ -247,7 +247,7 @@ class PanelsIPEBlockPluginForm extends FormBase {
     $block_form_state = (new FormState())->setValues($form_state->getValue('settings'));
     $block_instance->submitConfigurationForm($form['flipper']['front']['settings'], $block_form_state);
     if ($block_instance instanceof ContextAwarePluginInterface) {
-      $block_instance->setContextMapping($block_form_state->getValue('context_mapping'));
+      $block_instance->setContextMapping($block_form_state->getValue('context_mapping', []));
     }
     // Update the original form values.
     $form_state->setValue('settings', $block_form_state->getValues());
