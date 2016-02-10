@@ -10,3 +10,4 @@ dependencies:
   - layout_plugin
 test_dependencies:
   - page_manager
+  - page_manager_ui
