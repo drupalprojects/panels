@@ -9,4 +9,5 @@ dependencies:
   - ctools (>= 3.0-alpha21)
   - layout_plugin
 test_dependencies:
+  - page_manager
   - page_manager_ui
