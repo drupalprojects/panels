@@ -68,6 +68,7 @@
      *   Return this, for chaining.
      */
     render: function () {
+      var current_layout = Drupal.panels_ipe.app.get('layout').get('id');
       // If we don't have layouts yet, pull some from the server.
       if (!this.collection) {
         // Indicate an AJAX request.
@@ -87,10 +88,14 @@
       // Render our categories.
       this.renderCategories();
 
+      // Flag the current layout.
+      var current_layout_text = Drupal.t('<p>@text</p>', {'@text': 'Current Layout'});
+      this.$('[data-layout-id="' + current_layout + '"]').append(current_layout_text);
+
       // Prepend the current layout as its own category.
       this.$('.ipe-categories').prepend(this.template_category({
         name: 'Current Layout',
-        count: 1,
+        count: null,
         active: this.activeCategory === 'Current Layout'
       }));
 

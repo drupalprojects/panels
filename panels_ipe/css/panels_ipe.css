@@ -60,8 +60,13 @@
   animation: ipe-spin 1s infinite linear;
 }
 
+.ipe-icon.ipe-icon-remove {
+  /* Normalize font size as the "X" is quite large. */
+  font-size: 20px;
+}
+
 .ipe-icon.ipe-icon-remove:before {
-  content: "\e908";
+  content: "\e90c";
 }
 
 .ipe-icon.ipe-icon-configure:before {
@@ -112,16 +117,6 @@
   margin-bottom: -1px;
   background-color: white;
   border-top: 1px solid darkgray;
-}
-
-/* Indicate unsaved changes. */
-#panels-ipe-tray.unsaved [data-tab-id="save"]:after {
-  content: "*";
-  font-size: 20px;
-  color: #7D0000;
-  position: absolute;
-  top: 5px;
-  right: 0;
 }
 
 .ipe-tab:first-child {
@@ -178,13 +173,6 @@
   display: block;
 }
 
-/* Don't show text for these tabs */
-[data-tab-id="save"] .ipe-tab-title,
-[data-tab-id="edit"] .ipe-tab-title,
-[data-tab-id="cancel"] .ipe-tab-title {
-  display: none;
-}
-
 /* Styles for the Layout selector. */
 .ipe-current-layout, .ipe-all-layouts {
   display: inline-block;
@@ -235,9 +223,7 @@ div.ipe-actions {
   clear: both;
 }
 
-/* Indicate that blocks are draggable */
 div.ipe-actions-block {
-  cursor: move;
   background-color: rgb(243, 243, 243);
 }
 
@@ -282,6 +268,16 @@ div.ipe-actions-block {
   background: transparent;
   border: none;
   text-transform: uppercase;
+}
+
+/* Indicate that blocks are draggable */
+[data-block-id].active {
+  cursor: move;
+  border: 1px dashed transparent;
+}
+
+[data-block-id].active:hover {
+  border: 1px dashed #3c3c3c;
 }
 
 /* This is used for highlighting new content on screen. */

@@ -131,11 +131,13 @@
       });
 
       // Prepend on screen blocks to our collection.
-      this.$('.ipe-categories').prepend(this.template_category({
-        name: 'On Screen',
-        count: on_screen_count,
-        active: this.activeCategory === 'On Screen'
-      }));
+      if (on_screen_count > 0) {
+        this.$('.ipe-categories').prepend(this.template_category({
+          name: 'On Screen',
+          count: on_screen_count,
+          active: this.activeCategory === 'On Screen'
+        }));
+      }
 
       // Check if we need to automatically select one item.
       if (this.autoClick) {

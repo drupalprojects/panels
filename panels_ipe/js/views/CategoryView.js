@@ -37,7 +37,7 @@
     template_category: _.template(
       '<a class="ipe-category<% if (active) { %> active<% } %>" data-category="<%- name %>">' +
       '  <%- name %>' +
-      '  <div class="ipe-category-count"><%- count %></div>' +
+      '  <% if (count) { %><div class="ipe-category-count"><%- count %></div><% } %>' +
       '</a>'
     ),
 

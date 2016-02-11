@@ -84,9 +84,11 @@
         // Prepend the ipe-actions header.
         this.$el.prepend(this.template_actions(this.model.toJSON()));
 
+        // Add an active class.
+        this.$el.addClass('active');
+
         // Make ourselves draggable.
         this.$el.draggable({
-          handle: '.ipe-actions',
           scroll: true,
           scrollSpeed: 20,
           // Maintain our original width when dragging.
@@ -98,6 +100,9 @@
           },
           start: function (e, ui) {
             $('.ipe-droppable').addClass('active');
+            // Remove the droppable regions closest to this block.
+            $(e.target).next('.ipe-droppable').removeClass('active');
+            $(e.target).prev('.ipe-droppable').removeClass('active');
           },
           stop: function (e, ui) {
             $('.ipe-droppable').removeClass('active');

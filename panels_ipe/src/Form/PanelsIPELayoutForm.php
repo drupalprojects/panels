@@ -122,11 +122,17 @@ class PanelsIPELayoutForm extends FormBase {
     $form['settings'] = $layout->buildConfigurationForm([], $form_state);
     $form['settings']['#tree'] = TRUE;
 
-    // If the form is empty, inform the user.
+    // If the form is empty, inform the user or auto-submit if they are changing
+    // layouts.
     if (empty(Element::getVisibleChildren($form['settings']))) {
-      $form['settings'][] = [
-        '#markup' => $this->t('<h5>This layout does not provide any configuration.</h5>')
-      ];
+      if ($current) {
+        $form['settings'][] = [
+          '#markup' => $this->t('<h5>This layout does not provide any configuration.</h5>')
+        ];
+      }
+      else {
+        $this->submitForm($form, $form_state);
+      }
     }
 
     // Add an add button, which is only used by our App.
