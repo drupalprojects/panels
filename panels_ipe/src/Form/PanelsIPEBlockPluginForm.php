@@ -16,6 +16,7 @@ use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Core\Plugin\ContextAwarePluginAssignmentTrait;
 use Drupal\Core\Plugin\ContextAwarePluginInterface;
 use Drupal\Core\Render\RendererInterface;
+use Drupal\Core\Render\Element;
 use Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant;
 use Drupal\user\SharedTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -381,6 +382,34 @@ class PanelsIPEBlockPluginForm extends FormBase {
   }
 
   /**
+   * Removes the "form" theme wrapper from all nested elements of the given
+   * render array.
+   *
+   * @param array $content
+   *   A render array that could potentially contain a nested form.
+   *
+   * @return array
+   *   The potentially modified render array.
+   */
+  protected function removeFormWrapperRecursive(array $content) {
+    if (is_array($content)) {
+      // If this block is rendered as a form, we'll need to disable its wrapping
+      // element.
+      if (isset($content['#theme_wrappers'])
+        && ($key = array_search('form', $content['#theme_wrappers'])) !== FALSE) {
+        unset($content['#theme_wrappers'][$key]);
+      }
+
+      // Perform the same operation on child elements.
+      foreach (Element::getVisibleChildren($content) as $key) {
+        $content[$key] = $this->removeFormWrapperRecursive($content[$key]);
+      }
+    }
+
+    return $content;
+  }
+
+  /**
    * Compiles a render array for the given Block instance based on the form.
    *
    * @param \Drupal\Core\Block\BlockBase $block_instance
@@ -398,6 +427,12 @@ class PanelsIPEBlockPluginForm extends FormBase {
       $this->contextHandler->applyContextMapping($block_instance, $this->panelsDisplay->getContexts());
     }
 
+    // Build the block content.
+    $content = $block_instance->build();
+
+    // Disable any nested forms from the render array.
+    $content = $this->removeFormWrapperRecursive($content);
+
     // Compile the render array.
     $build = [
       '#theme' => 'block',
@@ -405,7 +440,7 @@ class PanelsIPEBlockPluginForm extends FormBase {
       '#plugin_id' => $block_instance->getPluginId(),
       '#base_plugin_id' => $block_instance->getBaseId(),
       '#derivative_plugin_id' => $block_instance->getDerivativeId(),
-      'content' => $block_instance->build(),
+      'content' => $content,
     ];
 
     return $build;
