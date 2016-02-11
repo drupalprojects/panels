@@ -121,8 +121,8 @@
     if (settings.panels_ipe.layout.changeable) {
       tab_views.change_layout = new Drupal.panels_ipe.LayoutPicker();
     }
-    tab_views.create_content: new Drupal.panels_ipe.BlockContentPicker();
-    tab_views.place_content: new Drupal.panels_ipe.BlockPicker();
+    tab_views.create_content = new Drupal.panels_ipe.BlockContentPicker();
+    tab_views.place_content = new Drupal.panels_ipe.BlockPicker();
 
     // Create an AppView instance.
     Drupal.panels_ipe.app_view = new Drupal.panels_ipe.AppView({
