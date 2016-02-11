@@ -20,7 +20,7 @@
       '<a class="ipe-block-content-type ipe-category<% if (active) { %> active<% } %>" data-category="<%- id %>">' +
       ' <div class="ipe-block-content-type-info">' +
       '   <h4><%- label %></h4>' +
-      '   <p><%- description %></p>' +
+      '   <p title="<%- description %>"><%- trimmed_description %></p>' +
       ' </div>' +
       '</a>'
     ),
@@ -95,7 +95,16 @@
       this.collection.each(function (model) {
         var active = this.activeCategory == model.id;
         model.set('active', active);
-        this.$('.ipe-categories').append(this.template_category(model.toJSON()));
+
+        var template_vars = model.toJSON();
+
+        // Reduce the length of the Block Content description if needed.
+        template_vars.trimmed_description = template_vars.description;
+        if (template_vars.trimmed_description.length > 30) {
+          template_vars.trimmed_description = template_vars.description.substring(0, 30) + '...';
+        }
+
+        this.$('.ipe-categories').append(this.template_category(template_vars));
       }, this);
 
       // Check if a category is selected. If so, mark the top tray as active.

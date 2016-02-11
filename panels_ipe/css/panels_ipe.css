@@ -89,6 +89,8 @@
 /* Fix the output of the AppView to the bottom of the screen. */
 #panels-ipe-tray {
   position: fixed;
+  /* One below jQuery.ui dialogs. */
+  z-index: 100;
   width: 100%;
   bottom: 0;
   left: 0;
@@ -131,7 +133,6 @@
 
 .ipe-tab a {
   color: black;
-  height: 30px;
   padding: 10px 5px 12px 5px;
   display: block;
   text-transform: uppercase;
@@ -203,6 +204,7 @@
   cursor: pointer;
   display: inline-block;
   margin-right: 10px;
+  vertical-align: top;
 }
 
 /* Make sure image icons aren't t0o big */
@@ -356,6 +358,10 @@ div.ipe-actions-block {
   margin: 0;
 }
 
+.ipe-category h4 {
+  font-size: 18px;
+}
+
 .ipe-category p {
   text-transform: none;
   font-weight: normal;
@@ -396,6 +402,11 @@ div.ipe-actions-block {
   line-height: 20px;
   display: inline-block;
   vertical-align: middle;
+}
+
+.ipe-block-content-type {
+  max-width: 250px;
+  overflow: hidden;
 }
 
 .ipe-block-plugin {
@@ -445,6 +456,7 @@ div.ipe-actions-block {
   border-bottom: 1px solid darkgray;
   padding: 5px;
   margin: 0 0 10px 0;
+  font-size: 18px;
 }
 
 /* Theme the block plugin and layout forms. */
