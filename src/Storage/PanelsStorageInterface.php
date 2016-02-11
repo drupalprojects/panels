@@ -44,7 +44,9 @@ interface PanelsStorageInterface {
    * @param string $id
    *   The id for the Panels display within this storage plugin.
    * @param string $op
-   *   The operation to perform (ie. create, read, update, delete).
+   *   The operation to perform (create, read, update, delete, change layout).
+   *   If the operation is 'change layout', implementing classes should
+   *   implicitly check the 'update' permission as well.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user to check access for.
    *

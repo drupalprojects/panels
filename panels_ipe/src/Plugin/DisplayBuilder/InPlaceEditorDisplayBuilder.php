@@ -123,18 +123,22 @@ class InPlaceEditorDisplayBuilder extends StandardDisplayBuilder {
       }
     }
 
+    $storage_type = $panels_display->getStorageType();
+    $storage_id = $panels_display->getStorageId();
+
     // Add the layout information.
     $layout_definition = $layout->getPluginDefinition();
     $settings['layout'] = [
       'id' => $layout->getPluginId(),
       'label' => $layout_definition['label'],
       'original' => true,
+      'changeable' => $this->panelsStorage->access($storage_type, $storage_id, 'change layout', $this->account)->isAllowed(),
     ];
 
     // Add the display variant's config.
     $settings['panels_display'] = [
-      'storage_type' => $panels_display->getStorageType(),
-      'storage_id' => $panels_display->getStorageId(),
+      'storage_type' => $storage_type,
+      'storage_id' => $storage_id,
       'id' => $panels_display->id(),
     ];
 

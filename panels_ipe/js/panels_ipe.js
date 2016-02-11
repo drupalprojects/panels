@@ -92,7 +92,10 @@
   Drupal.panels_ipe.init = function (settings) {
     // Set up our initial tabs.
     var tab_collection = new Drupal.panels_ipe.TabCollection();
-    tab_collection.add({title: 'Change Layout', id: 'change_layout'});
+
+    if (settings.panels_ipe.layout.changeable) {
+      tab_collection.add({title: 'Change Layout', id: 'change_layout'});
+    }
     tab_collection.add({title: 'Create Content', id: 'create_content'});
     tab_collection.add({title: 'Place Content', id: 'place_content'});
 
@@ -114,11 +117,12 @@
     });
 
     // Set up our initial tab views.
-    var tab_views = {
-      change_layout: new Drupal.panels_ipe.LayoutPicker(),
-      create_content: new Drupal.panels_ipe.BlockContentPicker(),
-      place_content: new Drupal.panels_ipe.BlockPicker()
-    };
+    var tab_views = {};
+    if (settings.panels_ipe.layout.changeable) {
+      tab_views.change_layout = new Drupal.panels_ipe.LayoutPicker();
+    }
+    tab_views.create_content: new Drupal.panels_ipe.BlockContentPicker();
+    tab_views.place_content: new Drupal.panels_ipe.BlockPicker();
 
     // Create an AppView instance.
     Drupal.panels_ipe.app_view = new Drupal.panels_ipe.AppView({

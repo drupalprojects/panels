@@ -62,7 +62,7 @@ panels_ipe.layout.form:
   defaults:
     _controller: '\Drupal\panels_ipe\Controller\PanelsIPEPageController::getLayoutForm'
   requirements:
-    _panels_storage_access: read
+    _panels_storage_access: 'change layout'
     _permission: 'access panels in-place editing'
 
 panels_ipe.layout.update:
