@@ -153,7 +153,7 @@ class InPlaceEditorDisplayBuilder extends StandardDisplayBuilder {
    */
   public function build(PanelsDisplayVariant $panels_display) {
     // Check to see if the current user has permissions to use the IPE.
-    $has_permission = $this->account->hasPermission('access panels in-place editing') && $this->panelsStorage->access($panels_display->getStorageType(), $panels_display->getStorageId(), 'write', $this->account)->isAllowed();
+    $has_permission = $this->account->hasPermission('access panels in-place editing') && $this->panelsStorage->access($panels_display->getStorageType(), $panels_display->getStorageId(), 'update', $this->account)->isAllowed();
 
     // Attach the Panels In-place editor library based on permissions.
     if ($has_permission) {
