@@ -20,7 +20,7 @@ class PageManagerPanelsStorageIntegrationTest extends WebTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['block', 'page_manager', 'panels_test', 'panels_ipe'];
+  public static $modules = ['block', 'page_manager', 'page_manager_ui', 'panels_test', 'panels_ipe'];
 
   /**
    * {@inheritdoc}
