@@ -110,6 +110,9 @@
       this.model.get('layout').set({active: true});
 
       this.$el.addClass('active');
+
+      // Add a top-level body class.
+      $('body').addClass('panels-ipe-active');
     },
 
     /**
@@ -128,6 +131,9 @@
       this.model.get('layout').set({active: false});
 
       this.$el.removeClass('active');
+
+      // Remove our top-level body class.
+      $('body').removeClass('panels-ipe-active');
     },
 
     /**

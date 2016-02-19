@@ -172,7 +172,7 @@
         self.render();
       });
 
-      // Add a top-level body class.
+      // Remove our top-level body class.
       $('body').removeClass('panels-ipe-tabs-open');
     },
 
