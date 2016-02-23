@@ -16,7 +16,7 @@
      */
     template_actions: _.template(
       '<div class="ipe-actions-block ipe-actions" data-block-action-id="<%- uuid %>">' +
-      '  <h5>Block: <%- label %></h5>' +
+      '  <h5>' + Drupal.t('Block: <%- label %>') + '</h5>' +
       '  <ul class="ipe-action-list">' +
       '    <li data-action-id="remove">' +
       '      <a><span class="ipe-icon ipe-icon-remove"></span></a>' +
@@ -28,7 +28,7 @@
       '      <a><span class="ipe-icon ipe-icon-down"></span></a>' +
       '    </li>' +
       '    <li data-action-id="move">' +
-      '      <select><option>Move</option></select>' +
+      '      <select><option>' + Drupal.t('Move') + '</option></select>' +
       '    </li>' +
       '    <li data-action-id="configure">' +
       '      <a><span class="ipe-icon ipe-icon-configure"></span></a>' +

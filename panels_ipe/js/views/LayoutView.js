@@ -16,7 +16,7 @@
      */
     template_region_actions: _.template(
       '<div class="ipe-actions" data-region-action-id="<%- name %>">' +
-      '  <h5>Region: <%- name %></h5>' +
+      '  <h5>' + Drupal.t('Region: <%- name %>') + '</h5>' +
       '  <ul class="ipe-action-list"></ul>' +
       '</div>'
     ),
@@ -216,7 +216,7 @@
      *   The event object.
      */
     hideBlockRegionList: function (e) {
-      $(e.currentTarget).html('<option>Move</option>');
+      $(e.currentTarget).html('<option>' + Drupal.t('Move') + '</option>');
     },
 
     /**
