@@ -171,8 +171,8 @@
     // initializing and ready to render.
     Backbone.trigger('PanelsIPEInitialized');
 
-    // Render our AppView.
-    $('body').append(Drupal.panels_ipe.app_view.render().$el);
+    // Render our AppView, without rendering the layout.
+    $('body').append(Drupal.panels_ipe.app_view.render(false).$el);
 
     function createTabModel(title, id) {
       return new Drupal.panels_ipe.TabModel({title: title, id: id});

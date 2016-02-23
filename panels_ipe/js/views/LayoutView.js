@@ -154,7 +154,6 @@
         }, this);
       }, this);
 
-      // Attach any Drupal behaviors.
       Drupal.attachBehaviors(this.el);
 
       return this;
@@ -374,16 +373,19 @@
       var new_region = this.model.get('regionCollection').get(new_region_name);
       new_region.get('blockCollection').add(block, {at: index, silent: true});
 
-      // Re-render ourselves.
-      // We do this twice as jQuery UI mucks with the DOM as it lets go of a
-      // cloned element. Typically we would only ever need to re-render once.
-      this.render().render();
+      // Re-render after the current execution cycle, to account for DOM editing
+      // that jQuery.ui is going to do on this run. Modules like Contextual do
+      // something similar to ensure rendering order is preserved.
+      var self = this;
+      window.setTimeout(function (){
+        self.render();
 
-      // Highlight the block.
-      this.$('[data-block-id="' + id + '"]').addClass('ipe-highlight');
+        // Highlight the block.
+        self.$('[data-block-id="' + id + '"]').addClass('ipe-highlight');
 
-      // Mark that we have unsaved changes in our App.
-      Drupal.panels_ipe.app.set('unsaved', true);
+        // Mark that we have unsaved changes in our App.
+        Drupal.panels_ipe.app.set('unsaved', true);
+      });
     },
 
     /**
