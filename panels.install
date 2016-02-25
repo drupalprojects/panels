@@ -1543,10 +1543,16 @@ function panels_update_6311() {
  * Add a custom cache table for Panels.
  */
 function panels_update_6312() {
+  $ret = array();
+
   $table_name = 'cache_panels';
   if (!db_table_exists($table_name)) {
     $ret = array();
     $schema = drupal_get_schema_unprocessed('system', 'cache');
     db_create_table($ret, $table_name, $schema);
   }
+
+  $ret[] = array('success' => TRUE, 'query' => t('Added a cache panels table.'));
+
+  return $ret;
 }
