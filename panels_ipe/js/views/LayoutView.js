@@ -476,7 +476,7 @@
       if (region) {
         // Add the block, at its previous index if necessary.
         var options = {};
-        if (index) {
+        if (index !== null && index !== -1) {
           options.at = index;
         }
         region.addBlock(block, options);
