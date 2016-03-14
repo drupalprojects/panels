@@ -195,6 +195,9 @@
      *   An object containing the properties "url" and "model".
      */
     getFormInfo: function(e) {
+      // Remove our unique top picker class.
+      this.$('.ipe-category-picker-top').removeClass('ipe-block-picker-list');
+
       // Get the current plugin_id.
       var plugin_id = $(e.currentTarget).data('plugin-id');
 
