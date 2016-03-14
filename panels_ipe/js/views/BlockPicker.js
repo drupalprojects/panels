@@ -197,6 +197,7 @@
     getFormInfo: function(e) {
       // Remove our unique top picker class.
       this.$('.ipe-category-picker-top').removeClass('ipe-block-picker-list');
+      this.$('.ipe-category-picker-top').css('display', '');
 
       // Get the current plugin_id.
       var plugin_id = $(e.currentTarget).data('plugin-id');
