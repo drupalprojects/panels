@@ -209,6 +209,9 @@
 
           self.setTopMaxHeight();
 
+          // Remove the inline display style and add a unique class.
+          self.$('.ipe-category-picker-top').css('display', '').addClass('form-displayed');
+
           self.$('.ipe-category-picker-top').hide().fadeIn();
         };
 
