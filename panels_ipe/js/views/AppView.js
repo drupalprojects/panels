@@ -238,13 +238,19 @@
      */
     clickCancelTab: function () {
       var cancel_tab = this.model.get('cancelTab');
-      if (cancel_tab.get('active') && !cancel_tab.get('loading')) {
-        // Remove our changes and refresh the page.
-        cancel_tab.set({loading: true});
-        $.ajax(Drupal.panels_ipe.urlRoot(drupalSettings) + '/cancel')
-          .done(function (data) {
-            location.reload();
-          });
+
+      if (confirm(Drupal.t('Are you sure you want to cancel your changes?'))) {
+        if (cancel_tab.get('active') && !cancel_tab.get('loading')) {
+          // Remove our changes and refresh the page.
+          cancel_tab.set({loading: true});
+          $.ajax(Drupal.panels_ipe.urlRoot(drupalSettings) + '/cancel')
+            .done(function (data) {
+              location.reload();
+            });
+        }
+      }
+      else {
+        cancel_tab.set('active', false, {silent: true});
       }
     },
 
