@@ -50,7 +50,7 @@
       // the form is rendered.
       if (context.className == 'panels-ipe-block-plugin-form flip-container'
         && settings['panels_ipe']['toggle_preview']) {
-        var $form = $('.ipe-block-plugin-form');
+        var $form = $('.ipe-block-form');
 
         // Flip the form.
         $form.toggleClass('flipped');
@@ -103,8 +103,7 @@
     if (settings.panels_ipe.layout.changeable) {
       tab_collection.add(createTabModel(Drupal.t('Change Layout'), 'change_layout'));
     }
-    tab_collection.add(createTabModel(Drupal.t('Create Content'), 'create_content'));
-    tab_collection.add(createTabModel(Drupal.t('Place Content'), 'place_content'));
+    tab_collection.add(createTabModel(Drupal.t('Manage Content'), 'manage_content'));
 
     // The edit/save/cancel tabs are special, and are tracked by our app.
     var edit_tab = createTabModel(Drupal.t('Edit'), 'edit');
@@ -128,8 +127,7 @@
     if (settings.panels_ipe.layout.changeable) {
       tab_views.change_layout = new Drupal.panels_ipe.LayoutPicker();
     }
-    tab_views.create_content = new Drupal.panels_ipe.BlockContentPicker();
-    tab_views.place_content = new Drupal.panels_ipe.BlockPicker();
+    tab_views.manage_content = new Drupal.panels_ipe.BlockPicker();
 
     // Create an AppView instance.
     Drupal.panels_ipe.app_view = new Drupal.panels_ipe.AppView({

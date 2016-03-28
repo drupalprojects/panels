@@ -113,6 +113,7 @@
       if (this.activeCategory) {
         var $top = this.$('.ipe-category-picker-top');
         $top.addClass('active');
+        this.$('.ipe-category-picker-bottom').addClass('top-open');
         this.collection.each(function (model) {
           if (model.get('category') === this.activeCategory) {
             $top.append(this.template_item(model));
@@ -226,6 +227,7 @@
           self.$('.ipe-category-picker-top').css('display', '').addClass('form-displayed');
 
           self.$('.ipe-category-picker-top').hide().fadeIn();
+          self.$('.ipe-category-picker-bottom').addClass('top-open');
         };
 
         // Make the Drupal AJAX request.
