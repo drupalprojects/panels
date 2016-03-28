@@ -298,6 +298,16 @@ div.ipe-actions-block {
   border: 1px dashed #3c3c3c;
 }
 
+/* Indicate an HTML request if a block is syncing. */
+[data-block-id].syncing:before {
+  float: left;
+  vertical-align: middle;
+  font-family: PanelsIPEIcon;
+  font-size: 24px;
+  content: "\e907";
+  animation: ipe-spin 1s infinite linear;
+}
+
 /* This is used for highlighting new content on screen. */
 .ipe-highlight {
   animation: ipe-blink .4s ease-in-out 2;
