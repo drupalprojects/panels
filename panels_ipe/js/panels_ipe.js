@@ -72,15 +72,16 @@
       // A new Block Content entity has been created. Trigger an app-level event
       // to switch tabs and open the placement form.
       if (settings['panels_ipe']['new_block_content']) {
-        Drupal.panels_ipe.app.trigger('addContentBlock', settings['panels_ipe']['new_block_content']);
+        var data = settings['panels_ipe']['new_block_content'];
         delete settings['panels_ipe']['new_block_content'];
+        Drupal.panels_ipe.app.trigger('addContentBlock', data);
       }
 
       // A Block Content entity has been edited.
       if (settings['panels_ipe']['edit_block_content']) {
-        var uuid = settings['panels_ipe']['edit_block_content'];
-        Drupal.panels_ipe.app.trigger('editContentBlockDone', uuid);
+        var data = settings['panels_ipe']['edit_block_content'];
         delete settings['panels_ipe']['edit_block_content'];
+        Drupal.panels_ipe.app.trigger('editContentBlockDone', data);
       }
     }
   };
