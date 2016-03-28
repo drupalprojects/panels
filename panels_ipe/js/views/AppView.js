@@ -259,15 +259,11 @@
     addBlockPlugin: function (block, region) {
       this.layoutView.addBlock(block, region);
 
-      // Mark all tabs as inactive and close the view.
-      this.tabsView.collection.each(function (tab) {
-        tab.set('active', false);
-      });
-
       // Indicate that there are unsaved changes in the app.
       this.model.set('unsaved', true);
 
-      this.tabsView.closeTabContent();
+      // Switch back to the edit tab.
+      this.tabsView.switchTab('edit');
     },
 
     /**
@@ -328,11 +324,6 @@
      *   The UUID of the Block Content entity that was edited.
      */
     editContentBlockDone: function(block_content_uuid) {
-      // Mark all tabs as inactive and close the view.
-      this.tabsView.collection.each(function (tab) {
-        tab.set('active', false);
-      });
-
       // Find all on-screen Blocks that render this Content Block and refresh
       // them from the server.
       this.layoutView.model.get('regionCollection').each(function (region) {
@@ -340,11 +331,12 @@
         var blocks = region.get('blockCollection').where({id: id});
 
         for (var i in blocks) {
+          blocks[i].set('syncing', true);
           blocks[i].fetch();
         }
       });
 
-      this.tabsView.closeTabContent();
+      this.tabsView.switchTab('edit');
     },
 
     /**
