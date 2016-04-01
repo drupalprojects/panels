@@ -86,6 +86,8 @@
       if (this.model.get('html')) {
         this.$el.html(this.model.get('html'));
       }
+
+      this.on('tabActiveChange', this.tabActiveChange, this);
       this.listenTo(this.model, 'change:active', this.changeState);
     },
 

@@ -108,6 +108,9 @@
       if (options && options.collection) {
         this.collection = options.collection;
       }
+
+      this.on('tabActiveChange', this.tabActiveChange, this);
+
       // Extend our parent's events.
       _.extend(this.events, Drupal.panels_ipe.CategoryView.prototype.events);
     },
