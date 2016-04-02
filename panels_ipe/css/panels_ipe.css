@@ -203,9 +203,26 @@
 /* Show layouts as clickable things. */
 .ipe-layout {
   cursor: pointer;
+  position: relative;
   display: inline-block;
   margin-right: 10px;
   vertical-align: top;
+}
+
+/* Show the layout's label on hover. */
+.ipe-layout-label {
+  display: block;
+  position: absolute;
+  top: 5px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 5px black, 1px 1px black;
+  opacity: 0;
+  transition: .2s;
+}
+
+.ipe-layout:hover .ipe-layout-label {
+  opacity: 100;
 }
 
 /* Make sure image icons aren't t0o big */
