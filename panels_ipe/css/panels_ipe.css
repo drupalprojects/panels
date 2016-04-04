@@ -510,8 +510,10 @@ div.ipe-actions-block {
 
 /* Theme the category view. */
 
-.ipe-category-picker-top h4 {
+.ipe-category-picker-top > h4 {
   text-transform: uppercase;
+  display: block;
+  width: 100%;
   border-bottom: 1px solid darkgray;
   padding: 5px;
   margin: 0 0 10px 0;
