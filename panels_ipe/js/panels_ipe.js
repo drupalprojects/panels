@@ -180,9 +180,8 @@
     // Render our AppView, without rendering the layout.
     $('body').append(Drupal.panels_ipe.app_view.render(false).$el);
 
-    // Form our dynamic url root here.
-    var panels_display = settings.panels_ipe.panels_display;
-    settings.panels_ipe.url_root = settings.path.baseUrl + 'admin/panels_ipe/variant/' + panels_display.storage_type + '/' + panels_display.storage_id;
+    // Set our initial URL root.
+    Drupal.panels_ipe.setUrlRoot(settings);
 
     function createTabModel(title, id) {
       return new Drupal.panels_ipe.TabModel({title: title, id: id});
@@ -206,7 +205,7 @@
   };
 
   /**
-   * Returns the urlRoot for all callbacks
+   * Returns the urlRoot for all callbacks.
    *
    * @param {Object} settings
    *   The contextual drupalSettings.
@@ -216,6 +215,17 @@
    */
   Drupal.panels_ipe.urlRoot = function (settings) {
     return settings.panels_ipe.url_root;
+  };
+
+  /**
+   * Sets the urlRoot for all callbacks.
+   *
+   * @param {Object} settings
+   *   The contextual drupalSettings.
+   */
+  Drupal.panels_ipe.setUrlRoot = function (settings) {
+    var panels_display = settings.panels_ipe.panels_display;
+    settings.panels_ipe.url_root = settings.path.baseUrl + 'admin/panels_ipe/variant/' + panels_display.storage_type + '/' + panels_display.storage_id;
   };
 
 }(jQuery, _, Backbone, Drupal));
