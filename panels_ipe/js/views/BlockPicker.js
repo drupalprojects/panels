@@ -37,7 +37,6 @@
       '  <a data-plugin-id="<%- plugin_id %>">' +
       '    <div class="ipe-block-plugin-info">' +
       '      <h5 title="<%- label %>"><%- trimmed_label %></h5>' +
-      '      <p>' + Drupal.t('Provider: <strong><%- provider %></strong>') + '</p>' +
       '    </div>' +
       '  </a>' +
       '</div>'
