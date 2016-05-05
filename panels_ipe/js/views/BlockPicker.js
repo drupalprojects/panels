@@ -149,6 +149,9 @@
       // If the create content category is active, render items in our top
       // region.
       if (create_active) {
+        // Hide the search box.
+        this.$('.ipe-category-picker-search').hide();
+
         this.contentCollection.each(function (block_content_type) {
           var template_vars = block_content_type.toJSON();
 
