@@ -13,7 +13,12 @@ use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Core\Plugin\ContextAwarePluginInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\layout_plugin\Plugin\Layout\LayoutInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\ctools\Plugin\PluginWizardInterface;
+use Drupal\panels\Form\LayoutChangeRegions;
+use Drupal\panels\Form\LayoutChangeSettings;
+use Drupal\panels\Form\LayoutPluginSelector;
+use Drupal\panels\Form\PanelsContentForm;
 use Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -25,7 +30,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   label = @Translation("Standard")
  * )
  */
-class StandardDisplayBuilder extends DisplayBuilderBase implements ContainerFactoryPluginInterface {
+class StandardDisplayBuilder extends DisplayBuilderBase implements PluginWizardInterface, ContainerFactoryPluginInterface {
 
   /**
    * The context handler.
@@ -151,6 +156,18 @@ class StandardDisplayBuilder extends DisplayBuilderBase implements ContainerFact
       $regions = $layout->build($regions);
     }
     return $regions;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getWizardOperations($cached_values) {
+    $operations = [];
+    $operations['content'] = [
+      'title' => $this->t('Content'),
+      'form' => PanelsContentForm::class
+    ];
+    return $operations;
   }
 
 }

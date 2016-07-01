@@ -53,18 +53,28 @@ class PanelsTest extends WebTestBase {
       'id' => 'foo',
       'label' => 'foo',
       'path' => 'testing',
+      'variant_plugin_id' => 'panels_variant',
     ];
-    $this->drupalPostForm(NULL, $edit, 'Save');
+    $this->drupalPostForm(NULL, $edit, 'Next');
 
     // Add variant with a layout that has settings.
-    $this->clickLink('Add new variant');
-    $this->clickLink('Panels');
     $edit = [
-      'id' => 'panels_1',
-      'label' => 'Default',
-      'variant_settings[layout]' => 'layout_example_test',
+      'page_variant_label' => 'Default',
     ];
-    $this->drupalPostForm(NULL, $edit, 'Save');
+    $this->drupalPostForm(NULL, $edit, 'Next');
+
+    // Choose a layout.
+    $edit = [
+      'layout' => 'layout_example_test',
+    ];
+    $this->drupalPostForm(NULL, $edit, 'Next');
+
+    // Update the layout's settings.
+    $this->assertFieldByName('layout_settings_wrapper[layout_settings][setting_1]', 'Default');
+    $edit = [
+      'layout_settings_wrapper[layout_settings][setting_1]' => 'Abracadabra',
+    ];
+    $this->drupalPostForm(NULL, $edit, 'Next');
 
     // Add a block.
     $this->clickLink('Add new block');
@@ -74,17 +84,8 @@ class PanelsTest extends WebTestBase {
     ];
     $this->drupalPostForm(NULL, $edit, 'Add block');
 
-    // Check the default value and change a layout setting.
-    $this->assertText('Blah');
-    $this->assertFieldByName("variant_settings[layout_settings][setting_1]", "Default");
-    $edit = [
-      'variant_settings[layout_settings][setting_1]' => 'Abracadabra',
-    ];
-    $this->drupalPostForm(NULL, $edit, 'Save');
-
-    // Go back to the variant edit form and see that the setting stuck.
-    $this->drupalGet('admin/structure/page_manager/manage/foo/variant/panels_1');
-    $this->assertFieldByName("variant_settings[layout_settings][setting_1]", "Abracadabra");
+    // Finish the page add wizard.
+    $this->drupalPostForm(NULL, [], 'Finish');
 
     // View the page and make sure the setting is present.
     $this->drupalGet('testing');
