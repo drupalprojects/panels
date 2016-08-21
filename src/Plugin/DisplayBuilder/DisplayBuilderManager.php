@@ -35,4 +35,13 @@ class DisplayBuilderManager extends DefaultPluginManager implements DisplayBuild
     $this->alterInfo('display_builder');
   }
 
+  public function createInstance($plugin_id, array $configuration = array()) {
+    // Redirect the deprecated editor builder to use the standard builder.
+    if ($plugin_id == 'editor') {
+      return parent::createInstance('standard', $configuration);
+    }
+
+    return parent::createInstance($plugin_id, $configuration);
+  }
+
 }
