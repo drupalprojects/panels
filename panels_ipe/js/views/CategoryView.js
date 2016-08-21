@@ -41,7 +41,7 @@
       '  <input type="submit" value="' + Drupal.t('Search') + '" />' +
       '</div>' +
       '<div class="ipe-category-picker-top"></div>' +
-      '<div class="ipe-category-picker-bottom">' +
+      '<div class="ipe-category-picker-bottom" tabindex="-1">' +
       '  <div class="ipe-categories"></div>' +
       '</div>'
     ),
@@ -50,7 +50,7 @@
      * @type {function}
      */
     template_category: _.template(
-      '<a class="ipe-category<% if (active) { %> active<% } %>" data-category="<%- name %>">' +
+      '<a href="javascript:;" class="ipe-category<% if (active) { %> active<% } %>" data-category="<%- name %>">' +
       '  <%- name %>' +
       '  <% if (count) { %><div class="ipe-category-count"><%- count %></div><% } %>' +
       '</a>'
@@ -147,10 +147,16 @@
 
         // Add a top-level body class.
         $('body').addClass('panels-ipe-category-picker-top-open');
+
+        // Focus on the active category.
+        this.$('.ipe-category.active').focus();
       }
       else {
         // Remove our top-level body class.
         $('body').removeClass('panels-ipe-category-picker-top-open');
+
+        // Focus on the bottom region.
+        this.$('.ipe-category-picker-bottom').focus();
       }
 
       this.setTopMaxHeight();
@@ -201,6 +207,9 @@
       else {
         this.render();
       }
+
+      // Focus on the first focusable element.
+      this.$('.ipe-category-picker-top :focusable:first').focus();
     },
 
     /**
@@ -315,6 +324,9 @@
 
           self.$('.ipe-category-picker-top').hide().fadeIn();
           self.$('.ipe-category-picker-bottom').addClass('top-open');
+
+          // Focus on the first focusable element.
+          self.$('.ipe-category-picker-top :focusable:first').focus();
         };
 
         // Make the Drupal AJAX request.
