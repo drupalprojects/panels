@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\panels\getCachedValuesTrait.
- */
-
 namespace Drupal\panels;
 
 use Drupal\user\SharedTempStoreFactory;

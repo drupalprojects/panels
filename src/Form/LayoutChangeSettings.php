@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\panels\Form\LayoutChangeSettings.
- */
-
 namespace Drupal\panels\Form;
 
 use Drupal\Component\Plugin\ConfigurablePluginInterface;

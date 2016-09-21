@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant.
- */
-
 namespace Drupal\panels\Plugin\DisplayVariant;
 
 use Drupal\Component\Uuid\UuidInterface;

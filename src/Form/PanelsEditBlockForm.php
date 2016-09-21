@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\panels\Form\PanelsEditBlockForm.
- */
-
 namespace Drupal\panels\Form;
 
 /**

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\panels\Form\LayoutChangeRegions.
- */
-
 namespace Drupal\panels\Form;
 
 use Drupal\Core\Form\FormBase;

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\panels\PanelsPattern\DefaultPattern.
- */
-
 namespace Drupal\panels\Plugin\PanelsPattern;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;

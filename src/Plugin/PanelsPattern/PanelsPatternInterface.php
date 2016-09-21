@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\panels\Plugin\PanelsPattern\PanelsPatternInterface.
- */
-
 namespace Drupal\panels\Plugin\PanelsPattern;
 
 use Drupal\Component\Plugin\PluginInspectionInterface;

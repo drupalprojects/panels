@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\panels\PanelsPatternManager.
- */
-
 namespace Drupal\panels;
 
 use Drupal\Core\Cache\CacheBackendInterface;

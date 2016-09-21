@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\panels\Plugin\DisplayBuilder\StandardDisplayBuilder.
- */
-
 namespace Drupal\panels\Plugin\DisplayBuilder;
 
 use Drupal\Component\Utility\Html;

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\panels\Plugin\DisplayBuilder\DisplayBuilderManager.
- */
-
 namespace Drupal\panels\Plugin\DisplayBuilder;
 
 use Drupal\Core\Cache\CacheBackendInterface;

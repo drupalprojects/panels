@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\panels_ipe\Form\PanelsIPELayoutForm.
- */
-
 namespace Drupal\panels_ipe\Form;
 
 use Drupal\Core\Form\FormBase;
