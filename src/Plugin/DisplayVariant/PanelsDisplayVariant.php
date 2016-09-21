@@ -18,7 +18,6 @@ use Drupal\layout_plugin\Plugin\Layout\LayoutPluginManagerInterface;
 use Drupal\panels\Form\LayoutChangeRegions;
 use Drupal\panels\Form\LayoutChangeSettings;
 use Drupal\panels\Form\LayoutPluginSelector;
-use Drupal\panels\Form\LayoutPluginUpdate;
 use Drupal\panels\Plugin\DisplayBuilder\DisplayBuilderInterface;
 use Drupal\panels\Plugin\DisplayBuilder\DisplayBuilderManagerInterface;
 use Drupal\panels\Plugin\PanelsPattern\PanelsPatternInterface;
