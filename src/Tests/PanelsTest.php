@@ -3,6 +3,7 @@
 namespace Drupal\panels\Tests;
 
 use Drupal\simpletest\WebTestBase;
+use Drupal\user\Entity\User;
 
 /**
  * Tests using PanelsVariant with page_manager.
@@ -89,4 +90,47 @@ class PanelsTest extends WebTestBase {
     $this->assertText('Powered by Drupal');
   }
 
+  /**
+   * Tests that special characters are not escaped when using tokens in titles.
+   */
+  public function testPageTitle() {
+    // Change the logged in user's name to include a special character.
+    $user = User::load($this->loggedInUser->id());
+    $user->setUsername("My User's Name");
+    $user->save();
+
+    // Create new page.
+    $this->drupalGet('admin/structure/page_manager/add');
+    $edit = [
+      'id' => 'foo',
+      'label' => 'foo',
+      'path' => 'testing',
+      'variant_plugin_id' => 'panels_variant',
+    ];
+    $this->drupalPostForm(NULL, $edit, 'Next');
+
+    // Use default variant settings.
+    $edit = [
+      'page_variant_label' => 'Default',
+    ];
+    $this->drupalPostForm(NULL, $edit, 'Next');
+
+    // Choose a simple layout.
+    $edit = [
+      'layout' => 'onecol',
+    ];
+    $this->drupalPostForm(NULL, $edit, 'Next');
+
+    // Set the title to a token value that includes an apostrophe.
+    $edit = [
+      'page_title' => '[user:name]',
+    ];
+    $this->drupalPostForm(NULL, $edit, 'Finish');
+
+    // View the page and make sure the page title is valid.
+    $this->drupalGet('testing');
+    // We expect "'" to be escaped only once, which is why we're doing a raw
+    // assertion here.
+    $this->assertRaw('<h1 class="page-title">My User&#039;s Name</h1>');
+  }
 }
