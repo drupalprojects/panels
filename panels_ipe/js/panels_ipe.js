@@ -102,7 +102,7 @@
     // Set up our initial tabs.
     var tab_collection = new Drupal.panels_ipe.TabCollection();
 
-    if (settings.panels_ipe.layout.changeable) {
+    if (settings.panels_ipe.user_permission.change_layout) {
       tab_collection.add(createTabModel(Drupal.t('Change Layout'), 'change_layout'));
     }
     tab_collection.add(createTabModel(Drupal.t('Manage Content'), 'manage_content'));
@@ -126,7 +126,7 @@
 
     // Set up our initial tab views.
     var tab_views = {};
-    if (settings.panels_ipe.layout.changeable) {
+    if (settings.panels_ipe.user_permission.change_layout) {
       tab_views.change_layout = new Drupal.panels_ipe.LayoutPicker();
     }
     tab_views.manage_content = new Drupal.panels_ipe.BlockPicker();

@@ -130,7 +130,12 @@ class InPlaceEditorDisplayBuilder extends StandardDisplayBuilder {
       'id' => $layout->getPluginId(),
       'label' => $layout_definition['label'],
       'original' => true,
-      'changeable' => $this->panelsStorage->access($storage_type, $storage_id, 'change layout', $this->account)->isAllowed(),
+    ];
+
+    // Add information about the current user's permissions.
+    $settings['user_permission'] = [
+      'change_layout' => $this->panelsStorage->access($storage_type, $storage_id, 'change layout', $this->account)->isAllowed(),
+      'create_content' => $this->account->hasPermission('administer blocks'),
     ];
 
     // Add the display variant's config.

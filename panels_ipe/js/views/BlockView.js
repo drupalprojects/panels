@@ -33,7 +33,7 @@
       '    <li data-action-id="configure">' +
       '      <a><span class="ipe-icon ipe-icon-configure"></span></a>' +
       '    </li>' +
-      '<% if (plugin_id == "block_content") { %>' +
+      '<% if (plugin_id == "block_content" && edit_access) { %>' +
       '    <li data-action-id="edit-content-block">' +
       '      <a><span class="ipe-icon ipe-icon-edit"></span></a>' +
       '    </li>' +
@@ -84,7 +84,9 @@
       // We modify our content if the IPE is active.
       if (this.model.get('active')) {
         // Prepend the ipe-actions header.
-        this.$el.prepend(this.template_actions(this.model.toJSON()));
+        var template_vars = this.model.toJSON();
+        template_vars['edit_access'] = drupalSettings.panels_ipe.user_permission.create_content;
+        this.$el.prepend(this.template_actions(template_vars));
 
         // Add an active class.
         this.$el.addClass('active');

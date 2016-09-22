@@ -139,11 +139,13 @@
       // Add a unique class to our top region to scope CSS.
       this.$el.addClass('ipe-block-picker-list');
 
-      // Prepend a custom button for creating content.
-      this.$('.ipe-categories').prepend(this.template_create_button({
-        name: 'Create Content',
-        active: create_active
-      }));
+      // Prepend a custom button for creating content, if the user has access.
+      if (drupalSettings.panels_ipe.user_permission.create_content) {
+        this.$('.ipe-categories').prepend(this.template_create_button({
+          name: 'Create Content',
+          active: create_active
+        }));
+      }
 
       // If the create content category is active, render items in our top
       // region.
