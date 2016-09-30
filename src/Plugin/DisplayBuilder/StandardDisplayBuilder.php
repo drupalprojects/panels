@@ -3,6 +3,7 @@
 namespace Drupal\panels\Plugin\DisplayBuilder;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Core\Plugin\ContextAwarePluginInterface;
@@ -122,6 +123,18 @@ class StandardDisplayBuilder extends DisplayBuilderBase implements PluginWizardI
                 $block_render_array[$property] += $content[$property];
                 unset($content[$property]);
               }
+            }
+          }
+
+          // If the block is empty, instead of trying to render the block
+          // correctly return just #cache, so that the render system knows the
+          // reasons (cache contexts & tags) why this block is empty.
+          if (Element::isEmpty($content)) {
+            $block_render_array = [];
+            $cacheable_metadata = CacheableMetadata::createFromObject($block_render_array);
+            $cacheable_metadata->applyTo($block_render_array);
+            if (isset($content['#cache'])) {
+              $block_render_array += $content['#cache'];
             }
           }
 
