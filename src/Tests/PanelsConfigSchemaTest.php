@@ -2,7 +2,6 @@
 
 namespace Drupal\panels\Tests;
 
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\simpletest\WebTestBase;
 
 /**
