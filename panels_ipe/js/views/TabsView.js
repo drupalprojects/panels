@@ -186,7 +186,7 @@
      *   The event object.
      */
     keydownHandler: function (e) {
-      if (e.keyCode == 27) {
+      if (e.keyCode === 27) {
         // Get the currently focused element.
         var $focused = $(':focus');
 

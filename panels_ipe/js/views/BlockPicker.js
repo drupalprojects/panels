@@ -246,7 +246,7 @@
       var collection;
       var self = this;
 
-      if (type == 'default') {
+      if (type === 'default') {
         // Indicate an AJAX request.
         this.$el.html(this.template_loading());
 

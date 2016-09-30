@@ -33,7 +33,7 @@
       '    <li data-action-id="configure">' +
       '      <a><span class="ipe-icon ipe-icon-configure"></span></a>' +
       '    </li>' +
-      '<% if (plugin_id == "block_content" && edit_access) { %>' +
+      '<% if (plugin_id === "block_content" && edit_access) { %>' +
       '    <li data-action-id="edit-content-block">' +
       '      <a><span class="ipe-icon ipe-icon-edit"></span></a>' +
       '    </li>' +
@@ -128,7 +128,8 @@
      * into the Model for future rendering. This is required as modules like
      * Quickedit modify Block HTML without our knowledge.
      *
-     * @returns {Drupal.panels_ipe.BlockView}
+     * @return {Drupal.panels_ipe.BlockView}
+     *   Return this, for chaining.
      */
     remove: function () {
       // Remove known augmentations to HTML so that they do not persist.
