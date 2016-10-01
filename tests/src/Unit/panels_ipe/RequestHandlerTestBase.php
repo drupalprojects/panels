@@ -6,6 +6,7 @@ namespace Drupal\Tests\panels\Unit\panels_ipe;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant;
 use Drupal\panels\Storage\PanelsStorageManagerInterface;
+use Drupal\user\SharedTempStore;
 use PHPUnit_Framework_MockObject_MockObject;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

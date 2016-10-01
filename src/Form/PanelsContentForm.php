@@ -4,6 +4,7 @@ namespace Drupal\panels\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\ctools\Form\AjaxFormTrait;
 use Drupal\user\SharedTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
