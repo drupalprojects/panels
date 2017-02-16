@@ -342,8 +342,12 @@ class PanelsIPEBlockPluginForm extends FormBase {
     // Gather a render array for the block.
     $build = $this->buildBlockInstance($block_instance, $this->panelsDisplay);
 
-    // Disable any nested forms from the render array.
-    $build['content'] = $this->removeFormWrapperRecursive($build['content']);
+    // Replace any nested form tags from the render array.
+    $build['content']['#post_render'][] = function ($html, array $elements) {
+      $search = ['<form', '</form>'];
+      $replace = ['<div', '</div>'];
+      return str_replace($search, $replace, $html);
+    };
 
     // Add the preview to the backside of the card and inform JS that we need to
     // be flipped.
@@ -388,34 +392,6 @@ class PanelsIPEBlockPluginForm extends FormBase {
     }
 
     return $block_instance;
-  }
-
-  /**
-   * Removes the "form" theme wrapper from all nested elements of the given
-   * render array.
-   *
-   * @param array $content
-   *   A render array that could potentially contain a nested form.
-   *
-   * @return array
-   *   The potentially modified render array.
-   */
-  protected function removeFormWrapperRecursive(array $content) {
-    if (is_array($content)) {
-      // If this block is rendered as a form, we'll need to disable its wrapping
-      // element.
-      if (isset($content['#theme_wrappers'])
-        && ($key = array_search('form', $content['#theme_wrappers'])) !== FALSE) {
-        unset($content['#theme_wrappers'][$key]);
-      }
-
-      // Perform the same operation on child elements.
-      foreach (Element::getVisibleChildren($content) as $key) {
-        $content[$key] = $this->removeFormWrapperRecursive($content[$key]);
-      }
-    }
-
-    return $content;
   }
 
 }
