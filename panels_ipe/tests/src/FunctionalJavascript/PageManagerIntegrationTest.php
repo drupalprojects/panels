@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @file
+ */
+
 namespace Drupal\Tests\panels_ipe\FunctionalJavascript;
 
 /**

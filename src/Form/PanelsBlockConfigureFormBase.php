@@ -1,12 +1,14 @@
 <?php
 
+/**
+ * @file
+ */
+
 namespace Drupal\panels\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\Context\Context;
-use Drupal\Core\Plugin\Context\ContextDefinition;
 use Drupal\Core\Plugin\ContextAwarePluginAssignmentTrait;
 use Drupal\Core\Plugin\ContextAwarePluginInterface;
 use Drupal\panels\CachedValuesGetterTrait;

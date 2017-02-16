@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @file
+ */
+
 namespace Drupal\Tests\panels_ipe\FunctionalJavascript;
 
 use Drupal\simpletest\ContentTypeCreationTrait;
@@ -46,7 +50,7 @@ class PanelizerIntegrationTest extends PanelsIPETestBase {
     // Create the "Basic Page" content type.
     $this->createContentType([
       'type' => 'page',
-      'name' => 'Basic Page'
+      'name' => 'Basic Page',
     ]);
 
     // Enable Panelizer for the "Basic Page" content type.

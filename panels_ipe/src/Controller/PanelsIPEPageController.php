@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @file
+ */
+
 namespace Drupal\panels_ipe\Controller;
 
 use Drupal\Core\Ajax\AjaxResponse;
@@ -176,7 +180,7 @@ class PanelsIPEPageController extends ControllerBase {
         'label' => $layout['label'],
         'icon' => $base_path . $icon,
         'current' => $id == $current_layout_id,
-        'category' => $layout['category']
+        'category' => $layout['category'],
       ];
     }
 
@@ -412,7 +416,7 @@ class PanelsIPEPageController extends ControllerBase {
     }
     else {
       $block = $storage->create([
-        'type' => $type
+        'type' => $type,
       ]);
 
       $operation = 'create';

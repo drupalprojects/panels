@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @file
+ */
+
 namespace Drupal\panels_ipe\Form;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
@@ -182,7 +186,7 @@ class PanelsIPEBlockPluginForm extends FormBase {
       '#type' => 'select',
       '#options' => $regions,
       '#required' => TRUE,
-      '#default_value' => $region
+      '#default_value' => $region,
     ];
 
     // Add an add button, which is only used by our App.
@@ -356,7 +360,7 @@ class PanelsIPEBlockPluginForm extends FormBase {
     // Add a cleafix element to the end of the preview. This prevents overlaps
     // with nested float elements.
     $build['clearfix'] = [
-      '#markup' => '<div class="clearfix"></div>'
+      '#markup' => '<div class="clearfix"></div>',
     ];
 
     $form['#attached']['drupalSettings']['panels_ipe']['toggle_preview'] = TRUE;
