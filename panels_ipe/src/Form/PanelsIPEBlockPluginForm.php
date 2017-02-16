@@ -134,6 +134,10 @@ class PanelsIPEBlockPluginForm extends FormBase {
       $region = reset($regions);
     }
 
+    // Some Block Plugins rely on the block_theme value to load theme settings.
+    // @see \Drupal\system\Plugin\Block\SystemBrandingBlock::blockForm().
+    $form_state->set('block_theme', $this->config('system.theme')->get('default'));
+
     // Wrap the form so that our AJAX submit can replace its contents.
     $form['#prefix'] = '<div id="panels-ipe-block-plugin-form-wrapper">';
     $form['#suffix'] = '</div>';

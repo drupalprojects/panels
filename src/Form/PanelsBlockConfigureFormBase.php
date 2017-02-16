@@ -121,6 +121,10 @@ abstract class PanelsBlockConfigureFormBase extends FormBase {
     $form_state->set('machine_name', $machine_name);
     $form_state->set('block_id', $this->block->getConfiguration()['uuid']);
 
+    // Some Block Plugins rely on the block_theme value to load theme settings.
+    // @see \Drupal\system\Plugin\Block\SystemBrandingBlock::blockForm().
+    $form_state->set('block_theme', $this->config('system.theme')->get('default'));
+
     $form['#tree'] = TRUE;
     $form['settings'] = $this->block->buildConfigurationForm([], $form_state);
     $form['settings']['id'] = [
