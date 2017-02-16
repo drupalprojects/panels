@@ -297,13 +297,13 @@ class PanelsIPEPageController extends ControllerBase {
     $definitions = $this->blockManager->getDefinitionsForContexts($panels_display->getContexts());
 
     // Assemble our relevant data.
-    $data = [];
+    $blocks = [];
     foreach ($definitions as $plugin_id => $definition) {
       // Don't add broken Blocks.
       if ($plugin_id == 'broken') {
         continue;
       }
-      $data[] = [
+      $blocks[] = [
         'plugin_id' => $plugin_id,
         'label' => $definition['admin_label'],
         'category' => $definition['category'],
@@ -312,8 +312,12 @@ class PanelsIPEPageController extends ControllerBase {
       ];
     }
 
+    // Trigger hook_panels_ipe_blocks_alter(). Allows other modules to change
+    // the list of blocks that are visible.
+    \Drupal::moduleHandler()->alter('panels_ipe_blocks', $blocks);
+
     // Return a structured JSON response for our Backbone App.
-    return new JsonResponse($data);
+    return new JsonResponse($blocks);
   }
 
   /**
