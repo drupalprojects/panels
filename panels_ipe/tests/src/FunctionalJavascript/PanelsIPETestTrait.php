@@ -71,7 +71,7 @@ trait PanelsIPETestTrait {
    * @param string $category
    *   The name of the category, i.e. "One Column".
    * @param string $layout_id
-   *   The ID of the layout, i.e. "onecol".
+   *   The ID of the layout, i.e. "layout_onecol".
    */
   protected function changeLayout($category, $layout_id) {
     // Open the "Change Layout" tab.

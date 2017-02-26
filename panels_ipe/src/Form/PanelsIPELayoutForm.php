@@ -10,9 +10,9 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Layout\LayoutPluginManagerInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Render\RendererInterface;
-use Drupal\layout_plugin\Plugin\Layout\LayoutPluginManagerInterface;
 use Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant;
 use Drupal\user\SharedTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -33,7 +33,7 @@ class PanelsIPELayoutForm extends FormBase {
   protected $tempStore;
 
   /**
-   * @var \Drupal\layout_plugin\Plugin\Layout\LayoutPluginManagerInterface
+   * @var \Drupal\Core\Layout\LayoutPluginManagerInterface
    */
   protected $layoutManager;
 
@@ -47,14 +47,14 @@ class PanelsIPELayoutForm extends FormBase {
   /**
    * The current layout.
    *
-   * @var \Drupal\layout_plugin\Plugin\Layout\LayoutBase
+   * @var \Drupal\Core\Layout\LayoutInterface
    */
   protected $layout;
 
   /**
    * Constructs a new PanelsIPEBlockPluginForm.
    *
-   * @param \Drupal\layout_plugin\Plugin\Layout\LayoutPluginManagerInterface $layout_manager
+   * @param \Drupal\Core\Layout\LayoutPluginManagerInterface $layout_manager
    * @param \Drupal\Core\Render\RendererInterface $renderer
    * @param \Drupal\user\SharedTempStoreFactory $temp_store_factory
    */
@@ -69,7 +69,7 @@ class PanelsIPELayoutForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('plugin.manager.layout_plugin'),
+      $container->get('plugin.manager.core.layout'),
       $container->get('renderer'),
       $container->get('user.shared_tempstore')
     );

@@ -8,9 +8,9 @@ namespace Drupal\panels_ipe\Plugin\DisplayBuilder;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Layout\LayoutInterface;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\layout_plugin\Plugin\Layout\LayoutInterface;
 use Drupal\panels\Plugin\DisplayBuilder\StandardDisplayBuilder;
 use Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant;
 use Drupal\panels\Storage\PanelsStorageManagerInterface;
@@ -82,7 +82,7 @@ class InPlaceEditorDisplayBuilder extends StandardDisplayBuilder {
    *
    * @param array $regions
    *   The render array representing regions.
-   * @param \Drupal\layout_plugin\Plugin\Layout\LayoutInterface $layout
+   * @param \Drupal\Core\Layout\LayoutInterface $layout
    *   The current layout.
    * @param \Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant $panels_display
    *   The Panels display we are editing.
@@ -132,7 +132,7 @@ class InPlaceEditorDisplayBuilder extends StandardDisplayBuilder {
     $layout_definition = $layout->getPluginDefinition();
     $settings['layout'] = [
       'id' => $layout->getPluginId(),
-      'label' => $layout_definition['label'],
+      'label' => $layout_definition->getLabel(),
       'original' => TRUE,
     ];
 

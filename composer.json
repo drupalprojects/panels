@@ -27,6 +27,5 @@
   "minimum-stability": "dev",
   "require": {
     "drupal/ctools": ">=3.0.0-alpha26",
-    "drupal/layout_plugin": ">=1.0.0-alpha22"
   }
 }
