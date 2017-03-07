@@ -11,4 +11,3 @@ dependencies:
   - drupal:system (>= 8.3.x)
 test_dependencies:
   - page_manager
-  - panelizer
