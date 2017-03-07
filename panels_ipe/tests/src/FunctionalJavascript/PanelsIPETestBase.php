@@ -51,7 +51,7 @@ abstract class PanelsIPETestBase extends JavascriptTestBase {
 
     // Change the layout to two columns.
     $this->changeLayout('Columns: 2', 'layout_twocol');
-    $this->waitUntilVisible('.panel-2col', 10000, 'Layout changed to two column.');
+    $this->waitUntilVisible('.layout--twocol', 10000, 'Layout changed to two column.');
   }
 
   /**
