@@ -48,7 +48,8 @@
       // Toggle the preview - We need to do this with drupalSettings as the
       // animation won't work if triggered by a form submit. It must occur after
       // the form is rendered.
-      if (context.className === 'panels-ipe-block-plugin-form flip-container'
+      if (context.classList && context.classList.contains('panels-ipe-block-plugin-form')
+        && context.classList.contains('flip-container')
         && settings['panels_ipe']['toggle_preview']) {
         var $form = $('.ipe-block-form');
 
