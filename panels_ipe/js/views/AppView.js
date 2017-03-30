@@ -294,16 +294,16 @@
      *   The UUID of the newly added Content Block.
      */
     addContentBlock: function (uuid) {
-      // Delete the current block plugin collection so that a new one is pulled in.
-      delete this.tabsView.tabViews['manage_content'].collection;
-
-      // Auto-click the new block, which we know is in the "Custom" category.
-      // @todo When configurable categories are in, determine this from the
-      // passed-in settings.
-      this.tabsView.tabViews['manage_content'].autoClick = '[data-plugin-id="block_content:' + uuid + '"]';
-      this.tabsView.tabViews['manage_content'].activeCategory = 'Custom';
-
-      this.tabsView.tabViews['manage_content'].render();
+      // Fetch the derived block plugin and load the new form.
+      var view = this.tabsView.tabViews['manage_content'];
+      view.fetchCollection('default').done(function () {
+        var plugin_id = 'block_content:' + uuid;
+        var info = {
+          url: Drupal.panels_ipe.urlRoot(drupalSettings) + '/block_plugins/' + plugin_id + '/form',
+          model: view.collection.get(plugin_id)
+        };
+        this.loadBlockForm(info);
+      }.bind(this));
     },
 
     /**
@@ -375,7 +375,6 @@
       // render. Load the Block edit form on render.
       var manage_content = this.tabsView.tabViews['manage_content'];
       manage_content.on('render', function () {
-
         if (template) {
           manage_content.loadForm(info, template);
         }
@@ -390,7 +389,12 @@
       // Disable the active category to avoid confusion.
       manage_content.activeCategory = null;
 
-      this.tabsView.switchTab('manage_content');
+      if (this.tabsView.collection.get('manage_content').get('active')) {
+        this.tabsView.tabViews['manage_content'].render();
+      }
+      else {
+        this.tabsView.switchTab('manage_content');
+      }
     }
 
   });

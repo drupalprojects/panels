@@ -13,13 +13,6 @@
   Drupal.panels_ipe.BlockPicker = Drupal.panels_ipe.CategoryView.extend(/** @lends Drupal.panels_ipe.BlockPicker# */{
 
     /**
-     * A selector to automatically click on render.
-     *
-     * @type {string}
-     */
-    autoClick: null,
-
-    /**
      * @type {Drupal.panels_ipe.BlockPluginCollection}
      */
     collection: null,
@@ -166,12 +159,6 @@
         }, this);
       }
 
-      // Check if we need to automatically select one item.
-      if (this.autoClick) {
-        this.$(this.autoClick).click();
-        this.autoClick = null;
-      }
-
       this.trigger('render');
 
       // Focus on the current category.
@@ -241,6 +228,9 @@
      *
      * @param {string} type
      *   The type of collection to fetch.
+     *
+     * @return {jqXHR}
+     *   The jQuery XMLHttpRequest representing the fetch request.
      */
     fetchCollection: function (type) {
       var collection;
@@ -263,10 +253,12 @@
         collection = this.contentCollection;
       }
 
-      collection.fetch().done(function () {
+      var fetch = collection.fetch();
+      fetch.done(function () {
         // We have a collection now, re-render ourselves.
         self.render();
       });
+      return fetch;
     }
 
   });
