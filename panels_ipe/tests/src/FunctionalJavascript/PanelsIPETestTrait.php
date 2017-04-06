@@ -63,6 +63,18 @@ trait PanelsIPETestTrait {
   }
 
   /**
+   * Breaks the lock of an IPE session.
+   */
+  protected function breakLock() {
+    // Click the "Locked" tab.
+    $selector = '[data-tab-id="locked"]:not(.active)';
+    $inactive_tab = $this->getSession()->getPage()->find('css', $selector);
+    if ($inactive_tab) {
+      $this->click($selector);
+    }
+  }
+
+  /**
    * Changes the IPE layout.
    *
    * This function assumes you're using Panels layouts and as a result expects

@@ -19,6 +19,7 @@ use Drupal\Core\Plugin\PluginFormInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Utility\Token;
+use Drupal\ctools\Context\AutomaticContext;
 use Drupal\ctools\Plugin\DisplayVariant\BlockDisplayVariant;
 use Drupal\ctools\Plugin\PluginWizardInterface;
 use Drupal\panels\Form\LayoutChangeRegions;
@@ -513,6 +514,21 @@ class PanelsDisplayVariant extends BlockDisplayVariant implements PluginWizardIn
       }
     }
     return $data;
+  }
+
+  /**
+   * Returns the ID to be used to store this in the tempstore.
+   *
+   * @return string
+   */
+  public function getTempStoreId() {
+    $id = [$this->id()];
+    foreach ($this->getContexts() as $context) {
+      if ($context instanceof AutomaticContext && $context->isAutomatic()) {
+        $id = array_merge($id, $context->getCacheTags());
+      }
+    }
+    return implode(':', $id);
   }
 
 }

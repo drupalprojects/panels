@@ -121,7 +121,7 @@ class PanelsIPEPageController extends ControllerBase {
     $panels_display = $this->panelsStorage->load($panels_storage_type, $panels_storage_id);
 
     // If a temporary configuration for this variant exists, use it.
-    if ($variant_config = $this->tempStore->get($panels_display->id())) {
+    if ($variant_config = $this->tempStore->get($panels_display->getTempStoreId())) {
       $panels_display->setConfiguration($variant_config);
     }
 
@@ -144,7 +144,7 @@ class PanelsIPEPageController extends ControllerBase {
     $panels_display = $this->loadPanelsDisplay($panels_storage_type, $panels_storage_id);
 
     // If a temporary configuration for this variant exists, use it.
-    $temp_store_key = $panels_display->id();
+    $temp_store_key = $panels_display->getTempStoreId();
     if ($variant_config = $this->tempStore->get($temp_store_key)) {
       $this->tempStore->delete($temp_store_key);
     }
