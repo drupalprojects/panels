@@ -174,7 +174,7 @@ class PanelsIPEPageController extends ControllerBase {
     $base_path = base_path();
     $data = [];
     foreach ($layouts as $id => $layout) {
-      $icon = $layout->getIconPath() ?: drupal_get_path('module', 'panels') . '/images/no-layout-preview.png';
+      $icon = $layout->getIconPath() ?: drupal_get_path('module', 'panels') . '/layouts/no-layout-preview.png';
       $data[] = [
         'id' => $id,
         'label' => $layout->getLabel(),

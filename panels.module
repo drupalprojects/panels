@@ -51,6 +51,22 @@ function panels_page_variant_create(PageVariantInterface $page_variant) {
 }
 
 /**
+ * Implements hook_layout_alter().
+ */
+function panels_layout_alter(&$definitions) {
+  $core_layouts = ['layout_onecol', 'layout_twocol', 'layout_twocol_bricks', 'layout_threecol_25_50_25', 'layout_threecol_33_34_33'];
+  foreach($definitions as $layout_name => $layout) {
+    if (in_array($layout_name, $core_layouts) && empty($definitions[$layout_name]->getIconPath())) {
+      $definitions[$layout_name]->setIconPath(drupal_get_path('module', 'panels') . '/layouts/'.$layout_name.'/'.$layout_name.'.png');
+    }
+    if (empty($definitions[$layout_name]->getIconPath())) {
+      $definitions[$layout_name]->setIconPath(drupal_get_path('module', 'panels') . '/layouts/no-layout-preview.png');
+    }
+  }
+}
+
+
+/**
  * Implements hook_ENTITY_TYPE_presave().
  *
  * Now that we have the id for the page variant, we need to set the storage
