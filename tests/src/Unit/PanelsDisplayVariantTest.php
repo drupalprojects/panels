@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Tests\panels\Unit\PanelsDisplayVariantTest.
- */
-
 namespace Drupal\Tests\panels\Unit;
 
 use Drupal\Component\Uuid\UuidInterface;

@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @file
- */
-
 namespace Drupal\panels_ipe\Controller;
 
 use Drupal\Core\Ajax\AjaxResponse;
