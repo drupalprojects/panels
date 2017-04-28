@@ -108,23 +108,47 @@ class LayoutChangeRegions extends FormBase {
       // Loop through the blocks per region.
       $new_regions = $new_layout->getPluginDefinition()->getRegionLabels();
       $new_regions['__unassigned__'] = $this->t('Unassigned');
+
+      $regions = [];
+      foreach ($old_layout->getPluginDefinition()->getRegions() as $region => $region_definition) {
+        if (empty($block_assignments[$region])) {
+          continue;
+        }
+        $label = $region_definition['label'];
+        // Prevent region names clashing with new regions.
+        $region_id = 'old_'.$region;
+        $new_region = isset($new_regions[$region]) ? $region : '__unassigned__';
+        $row['label']['#markup'] = $label;
+        $row['id']['#markup'] = $region;
+        // Allow the region to be changed for each block.
+        $row['region'] = [
+          '#title' => $this->t('Region'),
+          '#title_display' => 'invisible',
+          '#type' => 'select',
+          '#options' => $new_regions,
+          '#default_value' => $new_region,
+          '#attributes' => [
+            'class' => ['block-region-select', 'block-region-' . $new_region],
+          ],
+        ];
+        // Allow the weight to be changed for each region.
+        $row['weight'] = [
+          '#type' => 'weight',
+          '#default_value' => 0,
+          '#title' => $this->t('Weight for @block block', ['@block' => $label]),
+          '#title_display' => 'invisible',
+          '#attributes' => [
+            'class' => ['block-weight', 'block-weight-' . $region],
+          ],
+        ];
+        $form['blocks'][$region_id] = $row;
+        $regions[$new_region][] = $region_id;
+      }
+
       foreach ($new_regions as $region => $label) {
 
         // Add a section for each region and allow blocks to be dragged between
         // them.
-        $form['blocks']['#tabledrag'][] = [
-          'action' => 'match',
-          'relationship' => 'sibling',
-          'group' => 'block-region-select',
-          'subgroup' => 'block-region-' . $region,
-          'hidden' => FALSE,
-        ];
-        $form['blocks']['#tabledrag'][] = [
-          'action' => 'order',
-          'relationship' => 'sibling',
-          'group' => 'block-weight',
-          'subgroup' => 'block-weight-' . $region,
-        ];
         $form['blocks']['region-' . $region] = [
           '#attributes' => [
             'class' => ['region-title', 'region-title-' . $region],
@@ -142,55 +166,18 @@ class LayoutChangeRegions extends FormBase {
             'class' => [
               'region-message',
               'region-' . $region . '-message',
-              empty($blocks) ? 'region-empty' : 'region-populated',
+              empty($regions[$region]) ? 'region-empty' : 'region-populated',
             ],
           ],
         ];
-        $form['blocks']['region-' . $region . '-message']['message'] = [
-          '#markup' => '<em>' . $this->t('No blocks in this region') . '</em>',
-          '#wrapper_attributes' => [
-            'colspan' => 4,
-          ],
-        ];
-      }
-
-      foreach ($old_layout->getPluginDefinition()->getRegions() as $region => $region_definition) {
-        if (empty($block_assignments[$region])) {
-          continue;
+        if (empty($regions[$region])) {
+          $form['blocks']['region-' . $region . '-message']['message'] = [
+            '#markup' => '<em>' . $this->t('No blocks in this region') . '</em>',
+            '#wrapper_attributes' => [
+              'colspan' => 4,
+            ],
+          ];
         }
-        $label = $region_definition['label'];
-        // Prevent region names clashing with new regions.
-        $region_id = 'old_'.$region;
-
-        $row = [
-          '#attributes' => [
-            'class' => ['draggable'],
-          ],
-        ];
-        $row['label']['#markup'] = $label;
-        $row['id']['#markup'] = $region;
-        // Allow the region to be changed for each block.
-        $row['region'] = [
-          '#title' => $this->t('Region'),
-          '#title_display' => 'invisible',
-          '#type' => 'select',
-          '#options' => $new_regions,
-          '#default_value' => isset($new_regions[$region]) ? $region : '__unassigned__',
-          '#attributes' => [
-            'class' => ['block-region-select', 'block-region-' . $region],
-          ],
-        ];
-        // Allow the weight to be changed for each region.
-        $row['weight'] = [
-          '#type' => 'weight',
-          '#default_value' => 0,
-          '#title' => $this->t('Weight for @block block', ['@block' => $label]),
-          '#title_display' => 'invisible',
-          '#attributes' => [
-            'class' => ['block-weight', 'block-weight-' . $region],
-          ],
-        ];
-        $form['blocks'][$region_id] = $row;
       }
     }
     return $form;
