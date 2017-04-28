@@ -150,16 +150,16 @@ class PanelsIPEPageController extends ControllerBase {
   }
 
   /**
-   * Gets a list of available Layouts, without wrapping HTML.
+   * Gets a list of available Layouts as a data array.
    *
    * @param string $panels_storage_type
    *   The id of the storage plugin.
    * @param string $panels_storage_id
    *   The id within the storage plugin for the requested Panels display.
    *
-   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   * @return array
    */
-  public function getLayouts($panels_storage_type, $panels_storage_id) {
+  public function getLayoutsData($panels_storage_type, $panels_storage_id) {
     $panels_display = $this->loadPanelsDisplay($panels_storage_type, $panels_storage_id);
 
     // Get the current layout.
@@ -179,6 +179,23 @@ class PanelsIPEPageController extends ControllerBase {
         'category' => $layout->getCategory(),
       ];
     }
+
+    return $data;
+  }
+
+  /**
+   * Gets a list of available Layouts as JSON.
+   *
+   * @param string $panels_storage_type
+   *   The id of the storage plugin.
+   * @param string $panels_storage_id
+   *   The id within the storage plugin for the requested Panels display.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   */
+  public function getLayouts($panels_storage_type, $panels_storage_id) {
+    // Get the layouts data.
+    $data = $this->getLayoutsData($panels_storage_type, $panels_storage_id);
 
     // Return a structured JSON response for our Backbone App.
     return new JsonResponse($data);
@@ -281,7 +298,7 @@ class PanelsIPEPageController extends ControllerBase {
   }
 
   /**
-   * Gets a list of Block Plugins from the server.
+   * Gets a list of Block Plugins from the server as data.
    *
    * @param string $panels_storage_type
    *   The id of the storage plugin.
@@ -290,7 +307,7 @@ class PanelsIPEPageController extends ControllerBase {
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    */
-  public function getBlockPlugins($panels_storage_type, $panels_storage_id) {
+  public function getBlockPluginsData($panels_storage_type, $panels_storage_id) {
     $panels_display = $this->loadPanelsDisplay($panels_storage_type, $panels_storage_id);
 
     // Get block plugin definitions from the server.
@@ -317,6 +334,23 @@ class PanelsIPEPageController extends ControllerBase {
     \Drupal::moduleHandler()->alter('panels_ipe_blocks', $blocks);
     // We need to re-index our return value, in case a hook unset a block.
     $blocks = array_values($blocks);
+
+    return $blocks;
+  }
+
+  /**
+   * Gets a list of Block Plugins from the server as JSON.
+   *
+   * @param string $panels_storage_type
+   *   The id of the storage plugin.
+   * @param string $panels_storage_id
+   *   The id within the storage plugin for the requested Panels display.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   */
+  public function getBlockPlugins($panels_storage_type, $panels_storage_id) {
+    // Get the block plugins data.
+    $blocks = $this->getBlockPluginsData($panels_storage_type, $panels_storage_id);
 
     // Return a structured JSON response for our Backbone App.
     return new JsonResponse($blocks);
@@ -358,18 +392,20 @@ class PanelsIPEPageController extends ControllerBase {
   }
 
   /**
-   * Gets a list of Block Content Types from the server.
+   * Gets a list of Block Content Types from the server as data.
    *
    * @param string $panels_storage_type
    *   The id of the storage plugin.
    * @param string $panels_storage_id
    *   The id within the storage plugin for the requested Panels display.
    *
-   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   * @return array
    */
-  public function getBlockContentTypes($panels_storage_type, $panels_storage_id) {
+  public function getBlockContentTypesData($panels_storage_type, $panels_storage_id) {
     // Assemble our relevant data.
-    $types = $this->entityTypeManager()->getStorage('block_content_type')->loadMultiple();
+    $types = $this->entityTypeManager()
+      ->getStorage('block_content_type')
+      ->loadMultiple();
     $data = [];
 
     /** @var \Drupal\block_content\BlockContentTypeInterface $definition */
@@ -381,6 +417,23 @@ class PanelsIPEPageController extends ControllerBase {
         'description' => $definition->getDescription(),
       ];
     }
+
+    return $data;
+  }
+
+  /**
+   * Gets a list of Block Content Types from the server as JSON.
+   *
+   * @param string $panels_storage_type
+   *   The id of the storage plugin.
+   * @param string $panels_storage_id
+   *   The id within the storage plugin for the requested Panels display.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   */
+  public function getBlockContentTypes($panels_storage_type, $panels_storage_id) {
+    // Get the block content types data.
+    $data = $this->getBlockContentTypesData($panels_storage_type, $panels_storage_id);
 
     // Return a structured JSON response for our Backbone App.
     return new JsonResponse($data);
@@ -436,7 +489,7 @@ class PanelsIPEPageController extends ControllerBase {
   }
 
   /**
-   * Gets a single Block from the current Panels Display. Uses TempStore.
+   * Gets a single Block from the current Panels Display as data. Uses TempStore.
    *
    * @param string $panels_storage_type
    *   The id of the storage plugin.
@@ -447,7 +500,7 @@ class PanelsIPEPageController extends ControllerBase {
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    */
-  public function getBlock($panels_storage_type, $panels_storage_id, $block_uuid) {
+  public function getBlockModelData($panels_storage_type, $panels_storage_id, $block_uuid) {
     $panels_display = $this->loadPanelsDisplay($panels_storage_type, $panels_storage_id);
 
     /** @var \Drupal\Core\Block\BlockBase $block_instance */
@@ -476,7 +529,27 @@ class PanelsIPEPageController extends ControllerBase {
       'html' => $this->renderer->render($build),
     ];
 
-    return new JsonResponse($block_model);
+    return $block_model;
+  }
+
+  /**
+   * Gets a single Block from the current Panels Display as JSON.
+   *
+   * @param string $panels_storage_type
+   *   The id of the storage plugin.
+   * @param string $panels_storage_id
+   *   The id within the storage plugin for the requested Panels display.
+   * @param string $block_uuid
+   *   The Block UUID.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   */
+  public function getBlock($panels_storage_type, $panels_storage_id, $block_uuid) {
+    // Get the block model data.
+    $data = $this->getBlockModelData($panels_storage_type, $panels_storage_id, $block_uuid);
+
+    // Return a structured JSON response for our Backbone App.
+    return new JsonResponse($data);
   }
 
 }
