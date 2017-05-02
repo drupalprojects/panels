@@ -108,6 +108,10 @@ class LayoutPluginSelector extends FormBase {
       $next_op = $wizard->getNextOp();
       $form_state->setValue('op', $next_op);
     }
+    // Creating a new layout. Take the selected layout value.
+    else {
+      $variant_plugin->setLayout($form_state->getValue('layout'));
+    }
 
     $cached_values['plugin'] = $variant_plugin;
 
