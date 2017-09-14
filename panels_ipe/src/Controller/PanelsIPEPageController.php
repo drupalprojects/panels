@@ -331,7 +331,7 @@ class PanelsIPEPageController extends ControllerBase {
 
     // Trigger hook_panels_ipe_blocks_alter(). Allows other modules to change
     // the list of blocks that are visible.
-    \Drupal::moduleHandler()->alter('panels_ipe_blocks', $blocks);
+    \Drupal::moduleHandler()->alter('panels_ipe_blocks', $blocks, $panels_display);
     // We need to re-index our return value, in case a hook unset a block.
     $blocks = array_values($blocks);
 

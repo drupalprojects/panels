@@ -32,8 +32,10 @@ function hook_panels_ipe_panels_display_presave(PanelsDisplayVariant $panels_dis
  *
  * @param array $blocks
  *   The blocks that are currently available.
+ * @param \Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant $panels_display
+ *   The current Panels display.
  */
-function hook_panels_ipe_blocks_alter(array &$blocks = array()) {
+function hook_panels_ipe_blocks_alter(array &$blocks, PanelsDisplayVariant $panels_display) {
   // Only show blocks that were provided by the 'mymodule' module.
   foreach ($blocks as $key => $block) {
     if ($block['provider'] !== 'mymodule') {
