@@ -43,3 +43,20 @@ function hook_panels_ipe_blocks_alter(array &$blocks, PanelsDisplayVariant $pane
     }
   }
 }
+
+/**
+ * Modify the list of layouts available through the IPE interface.
+ *
+ * @param array $layouts
+ *   The layouts that are currently available.
+ * @param \Drupal\panels\Plugin\DisplayVariant\PanelsDisplayVariant $panels_display
+ *   The current Panels display.
+ */
+function hook_panels_ipe_layouts_alter(array &$layouts, PanelsDisplayVariant $panels_display) {
+  // Only show layouts that are in the 'threecol' category.
+  foreach ($layouts as $key => $layout) {
+    if ($layout['category'] !== 'threecol') {
+      unset($layout[$key]);
+    }
+  }
+}

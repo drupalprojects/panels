@@ -180,6 +180,14 @@ class PanelsIPEPageController extends ControllerBase {
       ];
     }
 
+    // Trigger hook_panels_ipe_layouts_alter(). Allows other modules to change
+    // the list of layouts that are visible.
+    \Drupal::moduleHandler()->alter('panels_ipe_layouts', $data, $panels_display);
+
+    // Reindex the blocks after they were altered in case one of them was
+    // removed.
+    $data = array_values($data);
+
     return $data;
   }
 
